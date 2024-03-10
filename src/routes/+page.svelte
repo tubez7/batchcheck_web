@@ -32,14 +32,24 @@
   let name = "";
   let hasSerial = false;
   let serial = 0;
+  $: minimumPadLength = serial.toString().length;
   let incrementValue = 0;
   let recordsPerIncrement = 1;
   let serialPadded = false;
-  let padLength;
+  let padLength = null;
   let padLeading = "";
   let padTrailing = "";
   let prefix = "";
   let suffix = "";
+  let buttonDisable = false;
+
+  function toggleButtonDisable() { //continue to build button disabled logic into this func
+    if (padLength !== null && padLength < minimumPadLength) {
+      buttonDisable = true;
+    } else {
+      buttonDisable = false;
+    }
+  }
 
   function addField(field) {
     console.log("field = ...", field);
@@ -50,6 +60,8 @@
   function handleClick(e) {
     e.preventDefault();
     console.log("button clicked!");
+
+    padLength = pad ? padLength || minimumPadLength : null;
     const field = new Field(
       name,
       hasSerial,
@@ -70,7 +82,7 @@
     incrementValue = 0;
     recordsPerIncrement = 1;
     serialPadded = false;
-    padLength = 1;
+    padLength = null;
     padLeading = "";
     padTrailing = "";
     prefix = "";
@@ -135,11 +147,12 @@
       {#if serialPadded}
         <label for="pad-length">Pad length: </label>
         <input
-          bind:value={padLength}
+          bind:value={padLength} 
+          on:input={toggleButtonDisable}
           type="number"
           inputmode="numeric"
-          min={serial.toString().length}
-          placeholder={serial.toString().length}
+          min={minimumPadLength}
+          placeholder={minimumPadLength}
           id="pad-length"
         />
         <label for="pad-leading">Leading pad character: </label>
@@ -180,7 +193,7 @@
     />
     <br />
     <br />
-    <button on:click={handleClick}>Add Field</button>
+    <button on:click={handleClick} disabled={buttonDisable}>Add Field</button>
   </form>
 </fieldset>
 
