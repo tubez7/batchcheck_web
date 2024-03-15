@@ -11,7 +11,8 @@
       padLead,
       padTrail,
       prefix,
-      suffix
+      suffix,
+      type
     ) {
       this.name = name;
       this.hasSerial = hasSerial;
@@ -24,27 +25,71 @@
       this.padTrail = padTrail;
       this.prefix = prefix;
       this.suffix = suffix;
+      this.type = type;
     }
   }
 
+  // - VARIABLES
+
   let records = 1;
+  $: recordError = records < 1 ? true : false;
   let fields = [];
-  let name = "";
+  let fieldName = "";
+  let fieldNameError = false;
+  $: validFieldName = fieldName.length < 1 ? false : true;
   let hasSerial = false;
-  let serial = 0;
-  $: minimumPadLength = serial.toString().length;
+  $: serial = hasSerial ? 0 : null;
+  let serialError = false;
+  let serialErrorMessage = "";
+  let serialPadded = false;
+  $: minimumPadLength = serialPadded ? serial.toString().length : null;
   let incrementValue = 0;
   let recordsPerIncrement = 1;
-  let serialPadded = false;
   let padLength = null;
   let padLeading = "";
   let padTrailing = "";
   let prefix = "";
   let suffix = "";
-  let buttonDisable = false;
+  let type = "data";
+  let buttonDisable = true;
 
-  function toggleButtonDisable() { //continue to build button disabled logic into this func
-    if (padLength !== null && padLength < minimumPadLength) {
+  // - FUNCTIONS
+
+  function checkFieldName() {
+    if (fieldName.length < 1) {
+      fieldNameError = true;
+    } else {
+      fieldNameError = false;
+    }
+    toggleButtonDisable();
+  }
+
+  function checkSerial() {
+    if (serial < 0) {
+      serialError = true;
+      serialErrorMessage = "Serial number cannot be less than 0";
+    } else if (serial === null) {
+      serialError = true;
+      serialErrorMessage =
+        "A valid serial number must be entered if field has a serial number";
+    } else {
+      serialError = false;
+    }
+    toggleButtonDisable();
+  }
+
+  function serialToggle() {
+    if (hasSerial) {
+      serialError = false;
+      serialErrorMessage = "";
+    }
+    toggleButtonDisable();
+  }
+
+  function toggleButtonDisable() {
+    if (recordError || !validFieldName || serialError) {
+      buttonDisable = true;
+    } else if (padLength !== null && padLength < minimumPadLength) {
       buttonDisable = true;
     } else {
       buttonDisable = false;
@@ -57,13 +102,31 @@
     console.log("fields = ...", fields);
   }
 
+  function resetValues() {
+    fieldName = "";
+    hasSerial = false;
+    incrementValue = 0;
+    recordsPerIncrement = 1;
+    serialPadded = false;
+    padLength = null;
+    padLeading = "";
+    padTrailing = "";
+    prefix = "";
+    suffix = "";
+    type = "data";
+    buttonDisable = true;
+  }
+
+  function resetFields() {
+    resetValues();
+    fields = [];
+  }
+
   function handleClick(e) {
     e.preventDefault();
-    console.log("button clicked!");
-
-    padLength = pad ? padLength || minimumPadLength : null;
+    padLength = serialPadded ? padLength || minimumPadLength : null;
     const field = new Field(
-      name,
+      fieldName,
       hasSerial,
       serial,
       incrementValue,
@@ -73,20 +136,11 @@
       padLeading,
       padTrailing,
       prefix,
-      suffix
+      suffix,
+      type
     );
     addField(field);
-    name = "";
-    hasSerial = false;
-    serial = 0;
-    incrementValue = 0;
-    recordsPerIncrement = 1;
-    serialPadded = false;
-    padLength = null;
-    padLeading = "";
-    padTrailing = "";
-    prefix = "";
-    suffix = "";
+    resetValues();
   }
 </script>
 
@@ -99,30 +153,52 @@
     <label for="batch-quantity">Batch/Record Qty: </label>
     <input
       bind:value={records}
+      on:input={toggleButtonDisable}
       type="number"
       min="1"
       inputmode="numeric"
       id="batch-quantity"
       placeholder="Enter number of scans..."
     />
+    {#if recordError}
+      <p>The minimum amount of batch records is 1</p>
+    {/if}
 
     <h2>Field Creation</h2>
     <label for="field">Enter Field Name: </label>
-    <input bind:value={name} type="text" id="field" placeholder="Column name" />
+    <input
+      bind:value={fieldName}
+      on:input={checkFieldName}
+      type="text"
+      id="field"
+      placeholder="Column name"
+    />
+    {#if fieldNameError}
+      <p>Field Name is a mandatory field</p>
+    {/if}
     <br />
     <br />
     <label for="has-serial">Field has Serial#: </label>
-    <input bind:checked={hasSerial} type="checkbox" id="has-serial" />
+    <input
+      bind:checked={hasSerial}
+      on:input={serialToggle}
+      type="checkbox"
+      id="has-serial"
+    />
     {#if hasSerial}
       <label for="serial">Serial No#: </label>
       <input
         bind:value={serial}
+        on:input={checkSerial}
         type="number"
         inputmode="numeric"
         min="0"
         id="serial"
         placeholder="Enter first serial number"
       />
+      {#if serialError}
+        <p>{serialErrorMessage}</p>
+      {/if}
       <label for="increment">Increment each batch/record by: </label>
       <input
         bind:value={incrementValue}
@@ -147,7 +223,7 @@
       {#if serialPadded}
         <label for="pad-length">Pad length: </label>
         <input
-          bind:value={padLength} 
+          bind:value={padLength}
           on:input={toggleButtonDisable}
           type="number"
           inputmode="numeric"
@@ -175,7 +251,7 @@
     {/if}
     <br />
     <br />
-    <label for="prefix">Prefix: </label>
+    <label for="prefix">Prefix/static text: </label>
     <input
       bind:value={prefix}
       type="text"
@@ -184,16 +260,52 @@
     />
     <br />
     <br />
-    <label for="prefix">Suffix: </label>
+    <label for="prefix">Suffix/static text: </label>
     <input
       bind:value={suffix}
       type="text"
       id="suffix"
       placeholder="Enter field suffix text"
     />
+
+    <h2>Field Type</h2>
+    <input
+      type="radio"
+      id="fieldType1"
+      name="field-type"
+      value="data"
+      bind:group={type}
+      checked
+    />
+    <label for="fieldType1">Data Field</label>
+    <input
+      type="radio"
+      id="fieldType2"
+      name="field-type"
+      value="QR"
+      bind:group={type}
+    />
+    <label for="fieldType2">QR Code</label>
+    <input
+      type="radio"
+      id="fieldType3"
+      name="field-type"
+      value="vis-scan"
+      bind:group={type}
+    />
+    <label for="fieldType3">Visible Scan Check</label>
+    <input
+      type="radio"
+      id="fieldType4"
+      name="field-type"
+      value="invis-scan"
+      bind:group={type}
+    />
+    <label for="fieldType4">Invisible Scan Check</label>
     <br />
     <br />
     <button on:click={handleClick} disabled={buttonDisable}>Add Field</button>
+    <button on:click={resetValues}>Reset Form</button>
   </form>
 </fieldset>
 
@@ -225,10 +337,13 @@
           FIELD PREFIX: {field.prefix}
           <br />
           FIELD SUFFIX: {field.suffix}
+          <br />
+          FIELD TYPE: {field.type}
         </li>
         <br />
         <br />
       {/each}
     </ul>
+    <button on:click={resetFields}>RESET ALL FIELDS</button>
   </div>
 {/if}
