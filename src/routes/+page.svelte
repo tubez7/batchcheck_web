@@ -32,11 +32,11 @@
   // - VARIABLES
 
   let records = 1;
-  $: recordError = records < 1 ? true : false;
+  $: recordError = records < 1;
   let fields = [];
   let fieldName = "";
   let fieldNameError = false;
-  $: validFieldName = fieldName.length < 1 ? false : true;
+  $: validFieldName = !fieldName.length < 1;
   let hasSerial = false;
   $: serial = hasSerial ? 0 : null;
   let serialError = false;
@@ -44,7 +44,10 @@
   let serialPadded = false;
   $: minimumPadLength = serialPadded ? serial.toString().length : null;
   let incrementValue = 0;
+  $: validIncrement = Number.isInteger(incrementValue);
   let recordsPerIncrement = 1;
+  $: validRecordPerIncrement =
+    recordsPerIncrement > 0 && Number.isInteger(recordsPerIncrement);
   let padLength = null;
   let padLeading = "";
   let padTrailing = "";
@@ -64,6 +67,14 @@
     toggleButtonDisable();
   }
 
+  function serialToggle() {
+    if (hasSerial) {
+      serialError = false;
+      serialErrorMessage = "";
+    }
+    toggleButtonDisable();
+  }
+
   function checkSerial() {
     if (serial < 0) {
       serialError = true;
@@ -78,16 +89,18 @@
     toggleButtonDisable();
   }
 
-  function serialToggle() {
-    if (hasSerial) {
-      serialError = false;
-      serialErrorMessage = "";
-    }
+  function checkIncrement() {
     toggleButtonDisable();
   }
 
   function toggleButtonDisable() {
-    if (recordError || !validFieldName || serialError) {
+    if (
+      recordError ||
+      !validFieldName ||
+      serialError ||
+      !validIncrement ||
+      !validRecordPerIncrement
+    ) {
       buttonDisable = true;
     } else if (padLength !== null && padLength < minimumPadLength) {
       buttonDisable = true;
@@ -102,7 +115,8 @@
     console.log("fields = ...", fields);
   }
 
-  function resetValues() {
+  function resetValues(e) {
+    e.preventDefault();
     fieldName = "";
     hasSerial = false;
     incrementValue = 0;
@@ -117,7 +131,8 @@
     buttonDisable = true;
   }
 
-  function resetFields() {
+  function resetFields(e) {
+    e.preventDefault();
     resetValues();
     fields = [];
   }
@@ -148,9 +163,10 @@
 
 <fieldset>
   <legend>Batch-Check Constructor</legend>
+  <p>NB - * denotes a mandatory field</p>
   <form>
     <h2>Records</h2>
-    <label for="batch-quantity">Batch/Record Qty: </label>
+    <label for="batch-quantity">Batch/Record Qty*: </label>
     <input
       bind:value={records}
       on:input={toggleButtonDisable}
@@ -165,7 +181,7 @@
     {/if}
 
     <h2>Field Creation</h2>
-    <label for="field">Enter Field Name: </label>
+    <label for="field">Enter Field Name*: </label>
     <input
       bind:value={fieldName}
       on:input={checkFieldName}
@@ -186,7 +202,7 @@
       id="has-serial"
     />
     {#if hasSerial}
-      <label for="serial">Serial No#: </label>
+      <label for="serial">Serial No#*: </label>
       <input
         bind:value={serial}
         on:input={checkSerial}
@@ -199,29 +215,42 @@
       {#if serialError}
         <p>{serialErrorMessage}</p>
       {/if}
-      <label for="increment">Increment each batch/record by: </label>
+      <br />
+      <br />
+      <label for="increment">Increment each batch/record by*: </label>
       <input
         bind:value={incrementValue}
+        on:input={checkIncrement}
         type="number"
         inputmode="numeric"
         id="increment"
         placeholder="Enter a whole integer (including negative values) to increment or decrement each record by"
       />
-      <label for="records-per-increment">Records per increment: </label>
+      {#if !validIncrement}
+        <p>
+          Number to increment serial by must be an integer (zero and negative
+          values are accepted)
+        </p>
+      {/if}
+      <label for="records-per-increment">Records per increment*: </label>
       <input
         bind:value={recordsPerIncrement}
+        on:input={checkIncrement}
         type="number"
         min="1"
         inputmode="numeric"
         id="records-per-increment"
         placeholder="Number increments every 'x' records"
       />
+      {#if !validRecordPerIncrement}
+        <p>Record per increment value must be an integer of 1 or greater</p>
+      {/if}
       <br />
       <br />
       <label for="pad">Pad serial: </label>
       <input bind:checked={serialPadded} type="checkbox" id="pad" />
       {#if serialPadded}
-        <label for="pad-length">Pad length: </label>
+        <label for="pad-length">Pad length*: </label>
         <input
           bind:value={padLength}
           on:input={toggleButtonDisable}
@@ -231,22 +260,29 @@
           placeholder={minimumPadLength}
           id="pad-length"
         />
-        <label for="pad-leading">Leading pad character: </label>
-        <input
-          bind:value={padLeading}
-          type="text"
-          id="pad-leading"
-          maxLength="1"
-          disabled={padTrailing.length > 0}
-        />
-        <label for="pad-trailing">Trailing pad character: </label>
-        <input
-          bind:value={padTrailing}
-          type="text"
-          id="pad-trailing"
-          maxLength="1"
-          disabled={padLeading.length > 0}
-        />
+        <br />
+        <br />
+        <fieldset>
+          <p>Pad character*:</p>
+          <label for="pad-leading">Leading pad character: </label>
+          <input
+            bind:value={padLeading}
+            type="text"
+            id="pad-leading"
+            maxLength="1"
+            placeholder="Enter a single pad character"
+            disabled={padTrailing.length > 0}
+          />
+          <label for="pad-trailing">Trailing pad character: </label>
+          <input
+            bind:value={padTrailing}
+            type="text"
+            id="pad-trailing"
+            maxLength="1"
+            placeholder="Enter a single pad character"
+            disabled={padLeading.length > 0}
+          />
+        </fieldset>
       {/if}
     {/if}
     <br />
@@ -290,7 +326,7 @@
       type="radio"
       id="fieldType3"
       name="field-type"
-      value="vis-scan"
+      value="visible-scan"
       bind:group={type}
     />
     <label for="fieldType3">Visible Scan Check</label>
@@ -298,7 +334,7 @@
       type="radio"
       id="fieldType4"
       name="field-type"
-      value="invis-scan"
+      value="invisible-scan"
       bind:group={type}
     />
     <label for="fieldType4">Invisible Scan Check</label>
@@ -312,7 +348,7 @@
 {#if fields.length > 0}
   <div>
     <h2>EDIT BATCH-CHECK TABLE</h2>
-    <h3>NUMBER OF BATCHES/RECORDS TO SCAN: {records}</h3>
+    <h3>NUMBER OF BATCHES/RECORDS TO CHECK: {records}</h3>
     <ul>
       {#each fields as field}
         <li>
