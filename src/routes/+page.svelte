@@ -1,11 +1,11 @@
 <script>
-  import Form from '$lib/components/Form.svelte';  
-  // import FieldsEdit from '$lib/components/FieldsEdit.svelte';
-  let fields;
-  let records;
+  import FieldsEdit from "$lib/components/FieldsEdit.svelte";
+  import Form from "$lib/components/Form.svelte";
+
+  let fields = [];
+  let records = 1;
 </script>
 
-
 <h1>BATCH-CHECK v1.0</h1>
-<Form bind:fields={fields} bind:records={records} />
-<!-- <FieldsEdit bind:fields={fields} bind:records={records} /> -->
+<Form bind:fields bind:records />
+<FieldsEdit bind:fields bind:records />

@@ -1,15 +1,14 @@
 <script>
-    export let fields;
-    export let records;
-    export let resetValues;
+  export let fields;
+  export let records;
 
-    function resetFields(e) {
-      if (e) {
-        e.preventDefault();
-      }
-      resetValues();
-      fields = [];
+  function resetFields(e) {
+    if (e) {
+      e.preventDefault();
     }
+    records = 1;
+    fields = [];
+  }
 </script>
 
 {#if fields.length > 0}

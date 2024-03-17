@@ -1,13 +1,11 @@
 <script>
-  //import FieldsEdit from "$lib/components/FieldsEdit.svelte";
   import Field from "$lib/field";
 
-  export let fields = [];
-  export let records = 1;
-
   // - VARIABLES
+  export let fields;
+  export let records;
 
-  $: recordError = records < 1;
+  $: recordError = records < 1 || !Number.isInteger(records);
   let fieldName = "";
   let fieldNameError = false;
   $: validFieldName = !fieldName.length < 1;
@@ -61,9 +59,7 @@
   }
 
   function addField(field) {
-    console.log("field = ...", field);
     fields = [...fields, field];
-    console.log("fields = ...", fields);
   }
 
   function resetValues(e) {
@@ -82,14 +78,6 @@
     suffix = "";
     type = "data";
     buttonDisable = true;
-  }
-
-  function resetFields(e) {
-    if (e) {
-      e.preventDefault();
-    }
-    resetValues();
-    fields = [];
   }
 
   function handleClick(e) {
@@ -136,7 +124,7 @@
       placeholder="Enter number of scans..."
     />
     {#if recordError}
-      <p>The minimum amount of batch records is 1</p>
+      <p>Batch/Record quantity must be an integer of 1 or more</p>
     {/if}
 
     <h2>Field Creation</h2>
@@ -308,44 +296,3 @@
     <button on:click={resetValues} type="reset">Reset Form</button>
   </form>
 </fieldset>
-
-{#if fields.length > 0}
-  <div>
-    <h2>EDIT BATCH-CHECK TABLE</h2>
-    <h3>NUMBER OF BATCHES/RECORDS TO CHECK: {records}</h3>
-    <ul>
-      {#each fields as field}
-        <li>
-          FIELD NAME: {field.name}
-          <br />
-          FIELD HAS SERIAL: {field.hasSerial}
-          <br />
-          FIELD SERIAL: {field.serial}
-          <br />
-          SERIAL INCREMENT VAL: {field.incrementValue}
-          <br />
-          SERIAL RECORDS PER INCREMENT: {field.recordsPerIncrement}
-          <br />
-          SERIAL HAS PAD: {field.padded}
-          <br />
-          SERIAL PAD LENGTH: {field.padLength}
-          <br />
-          SERIAL PAD LEAD CHAR: {field.padLead}
-          <br />
-          SERIAL PAD TRAIL CHAR: {field.padTrail}
-          <br />
-          FIELD PREFIX: {field.prefix}
-          <br />
-          FIELD SUFFIX: {field.suffix}
-          <br />
-          FIELD TYPE: {field.type}
-        </li>
-        <br />
-        <br />
-      {/each}
-    </ul>
-    <button on:click={resetFields} type="reset">RESET ALL FIELDS</button>
-  </div>
-{/if}
-
-<!-- <FieldsEdit {fields} {records} {resetValues} /> -->
