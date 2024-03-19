@@ -6,6 +6,7 @@
   export let fields;
   export let records;
   export let fieldNumber;
+  
 
   // VARIABLES
   $: recordError = records < 1 || !Number.isInteger(records);
