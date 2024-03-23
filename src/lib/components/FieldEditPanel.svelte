@@ -1,14 +1,12 @@
 <script>
   // IMPORTS
-  import { regex } from "$lib/fieldVariables.js";
+  import { nonWhiteSpaceRegex } from "$lib/fieldVariables.js";
 
   // PROPS
   export let editPanelVisible;
   export let fields;
   export let field;
   export let index;
-
-  console.log(fields, index); //to prevent prop error whilst not being utilised
 
   // VARIABLES
   const fieldClone = { ...field };
@@ -27,7 +25,7 @@
     type,
   } = fieldClone;
 
-  $: validFieldName = !fieldName.length < 1 && regex.test(fieldName);
+  $: validFieldName = !fieldName.length < 1 && nonWhiteSpaceRegex.test(fieldName);
   let editFieldName = false;
 
   // - CONTINUE HERE - TESTING
@@ -49,37 +47,43 @@
   }
 
   // FUNCTIONS
-  function hideEditPanel(e) {
-    e.preventDefault();
-    // - PROMPT USER THAT ANY UNSAVED CHANGES WILL BE LOST FIRST
-    editPanelVisible = false;
-  }
-
   function viewEditField(fieldToEdit) {
     if (fieldToEdit === "name") {
       editFieldName = true;
     }
   }
-
+  
   function saveField(fieldToSave) {
     if (fieldToSave === "name") {
       fieldClone.name = fieldName;
       editFieldName = false;
     }
   }
-
+  
   function cancelChange(fieldToCancel) {
     if (fieldToCancel === "name") {
       fieldName = fieldClone.name;
       editFieldName = false;
     }
   }
-
+  
   function resetField(fieldToReset) {
     if (fieldToReset === "name") {
       fieldName = field.name;
       editFieldName = false;
     }
+  }
+  
+  function hideEditPanel(e) {
+    e.preventDefault();
+    // - PROMPT USER THAT ANY UNSAVED CHANGES WILL BE LOST FIRST
+    editPanelVisible = false;
+  }
+  
+  function saveAndUpdate(e) {
+    e.preventDefault();
+    fields[index] = fieldClone;
+    editPanelVisible = false;
   }
 </script>
 
@@ -135,7 +139,7 @@
   <p>type: {type}</p>
   <button on:click={hideEditPanel}>CANCEL & CLOSE</button>
   {#if !editFieldName}
-    <button disabled={saveButtonDisabled}>SAVE & UPDATE</button>
+    <button disabled={saveButtonDisabled} on:click={saveAndUpdate}>SAVE & UPDATE</button>
   {/if}
 </div>
 <br />

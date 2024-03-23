@@ -1,11 +1,16 @@
 <script>
+  // COMPONENTS
   import FieldEditPanel from "$lib/components/FieldEditPanel.svelte";
 
+  // PROPS
   export let fields;
   export let field;
-  export let editPanelVisible;
   export let index;
 
+  // VARIABLES
+  let editPanelVisible = false;
+
+  // FUNCTIONS
   function showEditPanel(e) {
     e.preventDefault();
     editPanelVisible = true;
@@ -48,5 +53,5 @@
   <button>MOVE DOWN</button>
 </div>
 {#if editPanelVisible}
-  <FieldEditPanel bind:fields bind:editPanelVisible {field} {index} />
+  <FieldEditPanel bind:fields bind:editPanelVisible bind:field {index} />
 {/if}
