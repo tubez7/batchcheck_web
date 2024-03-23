@@ -30,8 +30,23 @@
   $: validFieldName = !fieldName.length < 1 && regex.test(fieldName);
   let editFieldName = false;
 
-  $: saveButtonDisabled = !validFieldName;
+  // - CONTINUE HERE - TESTING
+  $: validSerial = hasSerial
+    ? serial === null || (serial >= 0 && Number.isInteger(serial))
+    : true;
 
+  $: saveButtonDisabled = !validFieldName || !validSerial;
+
+  function test() {
+    console.log(
+      "validSerial = ",
+      validSerial,
+      "validFieldName = ",
+      validFieldName,
+      "saveButtonDisabled = ",
+      saveButtonDisabled
+    );
+  }
 
   // FUNCTIONS
   function hideEditPanel(e) {
@@ -71,6 +86,7 @@
 <br />
 <br />
 <div id="field-edit-popup">
+  <p>THIS IS GOING TO BE A POP-UP OVERLAY WITH A Z-INDEX</p>
   {#if !editFieldName}
     <button on:click={() => viewEditField("name")}
       >fieldName: {fieldName}</button
@@ -93,19 +109,34 @@
     <button on:click={() => resetField("name")}>RESET ALL CHANGES</button>
   {/if}
   <p>hasSerial: {hasSerial}</p>
-  <p>serial: {serial}</p>
-  <p>incrementValue: {incrementValue}</p>
-  <p>recordsPerIncrement: {recordsPerIncrement}</p>
-  <p>padded: {padded}</p>
-  <p>padLength: {padLength}</p>
-  <p>padLead: {padLead}</p>
-  <p>padTrail: {padTrail}</p>
+  <label for="has-serial-edit">Field has Serial#: </label>
+  <input bind:checked={hasSerial} type="checkbox" id="has-serial-edit" />
+  {#if hasSerial}
+    <p>serial: {serial}</p>
+    <label for="serial-edit">Serial No#*: </label>
+    <input
+      bind:value={serial}
+      on:input={test}
+      type="number"
+      inputmode="numeric"
+      min="0"
+      id="serial-edit"
+      placeholder="0"
+    />
+    <p>incrementValue: {incrementValue}</p>
+    <p>recordsPerIncrement: {recordsPerIncrement}</p>
+    <p>padded: {padded}</p>
+    <p>padLength: {padLength}</p>
+    <p>padLead: {padLead}</p>
+    <p>padTrail: {padTrail}</p>
+  {/if}
   <p>prefix: {prefix}</p>
   <p>suffix: {suffix}</p>
   <p>type: {type}</p>
-  <p>THIS IS GOING TO BE A POP-UP OVERLAY WITH A Z-INDEX</p>
   <button on:click={hideEditPanel}>CANCEL & CLOSE</button>
-  <button disabled={saveButtonDisabled}>SAVE & UPDATE</button>
+  {#if !editFieldName}
+    <button disabled={saveButtonDisabled}>SAVE & UPDATE</button>
+  {/if}
 </div>
 <br />
 <br />

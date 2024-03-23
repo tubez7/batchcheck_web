@@ -6,17 +6,19 @@
   export let fields;
   export let records;
   export let fieldNumber;
-  
 
   // VARIABLES
-  $: recordError = records < 1 || !Number.isInteger(records);
+  $: records = records === "" ? 0 : parseInt(records);
+  $: formValidated = fields.length > 0 && records > 0;
   let fieldName = "";
   let fieldNameError = false;
   const regex = /\S/;
   $: validFieldName = !fieldName.length < 1 && regex.test(fieldName);
   let hasSerial = false;
   $: serial = hasSerial ? 0 : null;
-  $: validSerial = hasSerial ? serial === null || serial >= 0 : true;
+  $: validSerial = hasSerial
+    ? serial === null || (serial >= 0 && Number.isInteger(serial))
+    : true;
   let incrementValue = 0;
   $: validIncrement = Number.isInteger(incrementValue);
   let recordsPerIncrement = 1;
@@ -35,30 +37,30 @@
   let prefix = "";
   let suffix = "";
   let type = "data";
-  let buttonDisable = true;
+  $: buttonDisable =
+    !validFieldName ||
+    !validSerial ||
+    !validIncrement ||
+    !validRecordPerIncrement ||
+    !validPadLength;
 
   // FUNCTIONS
+
+  function handleKeyPress(e) {
+    if (
+      e.charCode !== 8 &&
+      e.charCode !== 0 &&
+      !(e.charCode >= 48 && e.charCode <= 57) // Not backspace, not special key, & not a numeric digit
+    ) {
+      e.preventDefault();
+    }
+  }
+
   function checkFieldName() {
     if (fieldName.length < 1) {
       fieldNameError = true;
     } else {
       fieldNameError = false;
-    }
-    toggleButtonDisable();
-  }
-
-  function toggleButtonDisable() {
-    if (
-      recordError ||
-      !validFieldName ||
-      !validSerial ||
-      !validIncrement ||
-      !validRecordPerIncrement ||
-      !validPadLength
-    ) {
-      buttonDisable = true;
-    } else {
-      buttonDisable = false;
     }
   }
 
@@ -70,6 +72,7 @@
     if (e) {
       e.preventDefault();
     }
+    records = 1;
     fieldName = "";
     hasSerial = false;
     incrementValue = 0;
@@ -81,7 +84,6 @@
     prefix = "";
     suffix = "";
     type = "data";
-    buttonDisable = true;
   }
 
   function handleClick(e) {
@@ -111,6 +113,7 @@
     addField(field);
     resetValues();
   }
+
 </script>
 
 <fieldset>
@@ -122,15 +125,14 @@
       <label for="batch-quantity">Batch/Record Qty*: </label>
       <input
         bind:value={records}
-        on:input={toggleButtonDisable}
-        type="number"
+        on:keypress={handleKeyPress}
         min="1"
         inputmode="numeric"
         id="batch-quantity"
         placeholder="Enter number of scans..."
       />
-      {#if recordError}
-        <p>Batch/Record quantity must be an integer of 1 or more</p>
+      {#if records < 1}
+      <p>(Defaults to 1 if not specified)</p>
       {/if}
     </fieldset>
 
@@ -155,7 +157,7 @@
         <label for="serial">Serial No#*: </label>
         <input
           bind:value={serial}
-          on:input={toggleButtonDisable}
+          on:keypress={handleKeyPress}
           type="number"
           inputmode="numeric"
           min="0"
@@ -163,14 +165,13 @@
           placeholder="0"
         />
         {#if !validSerial}
-          <p>Serial number cannot be less than 0</p>
+          <p>Serial serial by must be an integer of 0 or greater</p>
         {/if}
         <br />
         <br />
         <label for="increment">Increment each batch/record by*: </label>
         <input
           bind:value={incrementValue}
-          on:input={toggleButtonDisable}
           type="number"
           inputmode="numeric"
           id="increment"
@@ -185,7 +186,7 @@
         <label for="records-per-increment">Records per increment*: </label>
         <input
           bind:value={recordsPerIncrement}
-          on:input={toggleButtonDisable}
+          on:keypress={handleKeyPress}
           type="number"
           min="1"
           inputmode="numeric"
@@ -203,7 +204,7 @@
           <label for="pad-length">Pad length*: </label>
           <input
             bind:value={padLength}
-            on:input={toggleButtonDisable}
+            on:keypress={handleKeyPress}
             type="number"
             inputmode="numeric"
             min={minimumPadLength}
@@ -306,4 +307,5 @@
       <button on:click={resetValues} type="reset">Reset Form</button>
     </fieldset>
   </form>
+  <button disabled={!formValidated}>GENERATE BATCH_CHECK TABLE</button>
 </fieldset>

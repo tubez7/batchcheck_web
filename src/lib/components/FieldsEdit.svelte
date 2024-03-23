@@ -5,6 +5,7 @@
   // PROPS
   export let fields;
   export let records;
+  $: records = records === "" ? 0 : parseInt(records);
 
   // VARIABLES
   let editPanelVisible = false;

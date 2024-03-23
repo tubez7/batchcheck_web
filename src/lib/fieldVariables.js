@@ -4,7 +4,7 @@ export const regex = /\S/;
 export let validFieldName = !fieldName.length < 1 && regex.test(fieldName); //2
 export let hasSerial = false;
 export let serial = hasSerial ? 0 : null; //3
-export let validSerial = hasSerial ? serial === null || serial >= 0 : true; //4
+export let validSerial = hasSerial ? (serial === null || (serial >= 0 && Number.isInteger(serial))) : true; //4
 export let incrementValue = 0;
 export let validIncrement = Number.isInteger(incrementValue); //5
 export let recordsPerIncrement = 1;
