@@ -25,7 +25,8 @@
     type,
   } = fieldClone;
 
-  $: validFieldName = !fieldName.length < 1 && nonWhiteSpaceRegex.test(fieldName);
+  $: validFieldName =
+    !fieldName.length < 1 && nonWhiteSpaceRegex.test(fieldName);
   let editFieldName = false;
 
   // - CONTINUE HERE - TESTING
@@ -52,34 +53,34 @@
       editFieldName = true;
     }
   }
-  
+
   function saveField(fieldToSave) {
     if (fieldToSave === "name") {
       fieldClone.name = fieldName;
       editFieldName = false;
     }
   }
-  
+
   function cancelChange(fieldToCancel) {
     if (fieldToCancel === "name") {
       fieldName = fieldClone.name;
       editFieldName = false;
     }
   }
-  
+
   function resetField(fieldToReset) {
     if (fieldToReset === "name") {
       fieldName = field.name;
       editFieldName = false;
     }
   }
-  
+
   function hideEditPanel(e) {
     e.preventDefault();
     // - PROMPT USER THAT ANY UNSAVED CHANGES WILL BE LOST FIRST
     editPanelVisible = false;
   }
-  
+
   function saveAndUpdate(e) {
     e.preventDefault();
     fields[index] = fieldClone;
@@ -139,7 +140,9 @@
   <p>type: {type}</p>
   <button on:click={hideEditPanel}>CANCEL & CLOSE</button>
   {#if !editFieldName}
-    <button disabled={saveButtonDisabled} on:click={saveAndUpdate}>SAVE & UPDATE</button>
+    <button disabled={saveButtonDisabled} on:click={saveAndUpdate}
+      >SAVE & UPDATE</button
+    >
   {/if}
 </div>
 <br />

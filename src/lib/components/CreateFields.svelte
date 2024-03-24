@@ -1,4 +1,35 @@
+<script context="module">
+  export function handleKeyDown(e) {
+    const numericOnlyRegex = /\d/;
+    const key = e.key;
+    const validKeys = [
+      "Backspace",
+      "Delete",
+      "Del",
+      "Tab",
+      "ArrowLeft",
+      "ArrowRight",
+    ];
+
+    if (!numericOnlyRegex.test(key) && !validKeys.includes(key)) {
+      e.preventDefault();
+    }
+  }
+</script>
+
 <script>
+  // COMPONENTS
+  import SetFieldName from "$lib/components/SetFieldName.svelte";
+  import SetFieldType from "$lib/components/SetFieldType.svelte";
+  import SetHasSerial from "$lib/components/SetHasSerial.svelte";
+  import SetIncrement from "$lib/components/SetIncrement.svelte";
+  import SetPadCharacter from "$lib/components/SetPadCharacter.svelte";
+  import SetPadLength from "$lib/components/SetPadLength.svelte";
+  import SetPrefix from "$lib/components/SetPrefix.svelte";
+  import SetRecordsPerIncrement from "$lib/components/SetRecordsPerIncrement.svelte";
+  import SetSerial from "$lib/components/SetSerial.svelte";
+  import SetSerialPadded from "$lib/components/SetSerialPadded.svelte";
+  import SetSuffix from "$lib/components/SetSuffix.svelte";
   // IMPORTS
   import Field from "$lib/field";
   import {
@@ -8,25 +39,32 @@
 
   // PROPS
   export let fields;
-  export let records;
 
   // VARIABLES
+
+  // Set FieldName
   $: fieldNumber = fields.length + 1;
-  $: records = records === "" ? 0 : parseInt(records);
   let fieldName = "";
-  let fieldNameError = false;
   $: validFieldName =
     !fieldName.length < 1 && nonWhiteSpaceRegex.test(fieldName);
+  let fieldNameError;
+
+  // Set Serial
   let hasSerial = false;
-  $: serial = hasSerial ? 0 : null;
-  $: validSerial = hasSerial
-    ? serial === null || (serial >= 0 && Number.isInteger(serial))
-    : true;
+  let serial = null;
+  let validSerial = true;
+
+  //Set Increment
   let incrementValue = 0;
-  $: validIncrement = Number.isInteger(incrementValue);
+  $: validIncrement = Number.isInteger(incrementValue) || !hasSerial;
+
+  // Set Records Per Increment
   let recordsPerIncrement = 1;
-  $: validRecordPerIncrement =
-    recordsPerIncrement > 0 && Number.isInteger(recordsPerIncrement);
+  $: validRecordPerIncrement = hasSerial
+    ? recordsPerIncrement > 0 && Number.isInteger(recordsPerIncrement)
+    : true;
+
+  //Set Pad
   let serialPadded = false;
   $: minimumPadLength = serialPadded
     ? serial
@@ -37,6 +75,8 @@
   $: validPadLength = padLength === null || padLength >= minimumPadLength;
   let padLeading = "";
   let padTrailing = "";
+
+  // Set prefix/Suffix
   let prefix = "";
   let suffix = "";
   let type = "data";
@@ -48,24 +88,6 @@
     !validPadLength;
 
   // FUNCTIONS
-  function handleKeyPress(e) {
-    if (
-      e.charCode !== 8 &&
-      e.charCode !== 0 &&
-      !(e.charCode >= 48 && e.charCode <= 57) // Not backspace, not special key, & not a numeric digit
-    ) {
-      e.preventDefault();
-    }
-  }
-
-  function checkFieldName() {
-    if (!validFieldName) {
-      fieldNameError = true;
-    } else {
-      fieldNameError = false;
-    }
-  }
-
   function addField(field) {
     fields = [...fields, field];
   }
@@ -75,6 +97,7 @@
       e.preventDefault();
     }
     fieldName = "";
+    fieldNameError = false;
     hasSerial = false;
     incrementValue = 0;
     recordsPerIncrement = 1;
@@ -96,6 +119,7 @@
         ? "0"
         : padLeading
       : "";
+    incrementValue = incrementValue || 0;
     const field = new Field(
       fieldName,
       hasSerial,
@@ -114,193 +138,59 @@
     addField(field);
     resetValues();
   }
+
+  // DEBUG WATCHERS
+  // $: console.log("fieldName = ", fieldName);
+  // $: console.log("validFieldName = ", validFieldName);
+  $: console.log("hasSerial = ", hasSerial);
+  $: console.log("serial = ", serial, "validSerial = ", validSerial);
+  // $: console.log("incrementValue changed to = ", incrementValue);
+  // $: console.log("validIncrement changed to = ", validIncrement);
+  // $: console.log("recordsPerIncrement changed to = ", recordsPerIncrement);
+  // $: console.log(
+  //   "validRecordPerIncrement changed to = ",
+  //   validRecordPerIncrement
+  // );
 </script>
 
-<form>
-  <fieldset>
-    <h2>Records</h2>
-    <label for="batch-quantity">Batch/Record Qty*: </label>
-    <input
-      bind:value={records}
-      on:keypress={handleKeyPress}
-      min="1"
-      inputmode="numeric"
-      id="batch-quantity"
-      placeholder="Enter number of scans..."
+<fieldset>
+  <h2>Field Creation</h2>
+  <SetFieldName bind:fieldName {validFieldName} {fieldNameError} />
+  <br />
+  <br />
+  <SetHasSerial bind:hasSerial />
+  {#if hasSerial}
+    <SetSerial bind:hasSerial bind:serial bind:validSerial />
+    <br />
+    <br />
+    <SetIncrement bind:incrementValue {validIncrement} />
+    <SetRecordsPerIncrement
+      bind:recordsPerIncrement
+      {validRecordPerIncrement}
     />
-    {#if records < 1}
-      <p>(Values below 1 are not valid)</p>
+    <br />
+    <br />
+    <SetSerialPadded bind:serialPadded />
+    {#if serialPadded}
+      <SetPadLength bind:padLength {validPadLength} {minimumPadLength} />
+      <br />
+      <br />
+      <SetPadCharacter bind:padLeading bind:padTrailing />
     {/if}
-  </fieldset>
+  {/if}
+  <br />
+  <br />
+  <SetPrefix bind:prefix />
+  <br />
+  <br />
+  <SetSuffix bind:suffix />
 
-  <fieldset>
-    <h2>Field Creation</h2>
-    <label for="field">Enter Field Name*: </label>
-    <input
-      bind:value={fieldName}
-      on:input={checkFieldName}
-      type="text"
-      id="field"
-      placeholder="Column name"
-    />
-    {#if fieldNameError}
-      <p>Field Name is a mandatory field</p>
-    {/if}
-    <br />
-    <br />
-    <label for="has-serial">Field has Serial#: </label>
-    <input bind:checked={hasSerial} type="checkbox" id="has-serial" />
-    {#if hasSerial}
-      <label for="serial">Serial No#*: </label>
-      <input
-        bind:value={serial}
-        on:keypress={handleKeyPress}
-        type="number"
-        inputmode="numeric"
-        min="0"
-        id="serial"
-        placeholder="0"
-      />
-      {#if !validSerial}
-        <p>Serial serial by must be an integer of 0 or greater</p>
-      {/if}
-      <br />
-      <br />
-      <label for="increment">Increment each batch/record by*: </label>
-      <input
-        bind:value={incrementValue}
-        type="number"
-        inputmode="numeric"
-        id="increment"
-        placeholder="Enter a whole integer (including negative values) to increment or decrement each record by"
-      />
-      {#if !validIncrement}
-        <p>
-          Number to increment serial by must be an integer (zero and negative
-          values are accepted)
-        </p>
-      {/if}
-      <label for="records-per-increment">Records per increment*: </label>
-      <input
-        bind:value={recordsPerIncrement}
-        on:keypress={handleKeyPress}
-        type="number"
-        min="1"
-        inputmode="numeric"
-        id="records-per-increment"
-        placeholder="Number increments every 'x' records"
-      />
-      {#if !validRecordPerIncrement}
-        <p>Record per increment value must be an integer of 1 or greater</p>
-      {/if}
-      <br />
-      <br />
-      <label for="pad">Pad serial: </label>
-      <input bind:checked={serialPadded} type="checkbox" id="pad" />
-      {#if serialPadded}
-        <label for="pad-length">Pad length*: </label>
-        <input
-          bind:value={padLength}
-          on:keypress={handleKeyPress}
-          type="number"
-          inputmode="numeric"
-          min={minimumPadLength}
-          placeholder={minimumPadLength}
-          id="pad-length"
-        />
-        {#if !validPadLength}
-          <p>
-            Pad length cannot be less than the length of the starting serial
-            number
-          </p>
-        {/if}
-        <br />
-        <br />
-
-        <fieldset>
-          <p>
-            Pad character*: {"(Will default to leading pad character of '0' if left unspecified"}
-          </p>
-          <label for="pad-leading">Leading pad character: </label>
-          <input
-            bind:value={padLeading}
-            type="text"
-            id="pad-leading"
-            maxLength="1"
-            placeholder="Enter a single pad character"
-            disabled={padTrailing.length > 0}
-          />
-          <label for="pad-trailing">Trailing pad character: </label>
-          <input
-            bind:value={padTrailing}
-            type="text"
-            id="pad-trailing"
-            maxLength="1"
-            placeholder="Enter a single pad character"
-            disabled={padLeading.length > 0}
-          />
-        </fieldset>
-      {/if}
-    {/if}
-
-    <br />
-    <br />
-    <label for="prefix">Prefix/static text: </label>
-    <input
-      bind:value={prefix}
-      type="text"
-      id="prefix"
-      placeholder="Enter field prefix text"
-    />
-    <br />
-    <br />
-    <label for="prefix">Suffix/static text: </label>
-    <input
-      bind:value={suffix}
-      type="text"
-      id="suffix"
-      placeholder="Enter field suffix text"
-    />
-
-    <h2>Field Type</h2>
-    <input
-      type="radio"
-      id="fieldType1"
-      name="field-type"
-      value="data"
-      bind:group={type}
-      checked
-    />
-    <label for="fieldType1">Data Field</label>
-    <input
-      type="radio"
-      id="fieldType2"
-      name="field-type"
-      value="QR"
-      bind:group={type}
-    />
-    <label for="fieldType2">QR Code</label>
-    <input
-      type="radio"
-      id="fieldType3"
-      name="field-type"
-      value="visible-scan"
-      bind:group={type}
-    />
-    <label for="fieldType3">Visible Scan Check</label>
-    <input
-      type="radio"
-      id="fieldType4"
-      name="field-type"
-      value="invisible-scan"
-      bind:group={type}
-    />
-    <label for="fieldType4">Invisible Scan Check</label>
-    <br />
-    <br />
-    <button on:click={handleClick} type="submit" disabled={buttonDisable}
-      >Add Field</button
-    >
-    <button on:click={resetValues} type="reset">Reset Field Values</button>
-  </fieldset>
-</form>
+  <h2>Field Type</h2>
+  <SetFieldType bind:type />
+  <br />
+  <br />
+  <button on:click={handleClick} type="submit" disabled={buttonDisable}
+    >Add Field</button
+  >
+  <button on:click={resetValues} type="reset">Reset Field Values</button>
+</fieldset>
