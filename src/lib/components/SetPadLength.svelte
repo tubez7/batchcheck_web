@@ -1,7 +1,8 @@
 <script>
-     // IMPORTS
-  import { handleKeyDown } from "$lib/components/CreateFields.svelte";
+  // IMPORTS
+  import { handleKeyDown } from "$lib/utils.js";
 
+  // PROPS
   export let padLength;
   export let validPadLength;
   export let minimumPadLength;

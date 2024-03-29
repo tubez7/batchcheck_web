@@ -1,6 +1,6 @@
 <script>
   // IMPORTS
-  import { handleKeyDown } from "$lib/components/CreateFields.svelte";
+  import { handleKeyDown } from "$lib/utils.js";
 
   // PROPS
   export let records;

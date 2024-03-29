@@ -1,6 +1,6 @@
 <script>
   // IMPORTS
-  import { nonWhiteSpaceRegex } from "$lib/fieldVariables.js";
+  import { nonWhiteSpaceRegex } from "$lib/utils.js";
 
   // PROPS
   export let editPanelVisible;

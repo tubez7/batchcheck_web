@@ -1,4 +1,4 @@
-<script context="module">
+<!-- <script context="module">
   export function handleKeyDown(e) {
     const numericOnlyRegex = /\d/;
     const key = e.key;
@@ -15,7 +15,7 @@
       e.preventDefault();
     }
   }
-</script>
+</script> -->
 
 <script>
   // COMPONENTS
@@ -32,10 +32,7 @@
   import SetSuffix from "$lib/components/SetSuffix.svelte";
   // IMPORTS
   import Field from "$lib/field";
-  import {
-    globalNumericRegex,
-    nonWhiteSpaceRegex,
-  } from "$lib/fieldVariables.js";
+  import { globalNumericRegex } from "$lib/utils.js";
 
   // PROPS
   export let fields;
@@ -45,8 +42,7 @@
   // Set FieldName
   $: fieldNumber = fields.length + 1;
   let fieldName = "";
-  $: validFieldName =
-    !fieldName.length < 1 && nonWhiteSpaceRegex.test(fieldName);
+  let validFieldName;
   let fieldNameError;
 
   // Set Serial
@@ -140,10 +136,10 @@
   }
 
   // DEBUG WATCHERS
-  // $: console.log("fieldName = ", fieldName);
-  // $: console.log("validFieldName = ", validFieldName);
-  $: console.log("hasSerial = ", hasSerial);
-  $: console.log("serial = ", serial, "validSerial = ", validSerial);
+  $: console.log("fieldName = ", fieldName);
+  $: console.log("validFieldName = ", validFieldName);
+  //$: console.log("hasSerial = ", hasSerial);
+  //$: console.log("serial = ", serial, "validSerial = ", validSerial);
   // $: console.log("incrementValue changed to = ", incrementValue);
   // $: console.log("validIncrement changed to = ", validIncrement);
   // $: console.log("recordsPerIncrement changed to = ", recordsPerIncrement);
@@ -155,7 +151,7 @@
 
 <fieldset>
   <h2>Field Creation</h2>
-  <SetFieldName bind:fieldName {validFieldName} {fieldNameError} />
+  <SetFieldName bind:fieldName bind:validFieldName {fieldNameError} />
   <br />
   <br />
   <SetHasSerial bind:hasSerial />
