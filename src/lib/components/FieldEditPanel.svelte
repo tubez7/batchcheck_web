@@ -3,7 +3,6 @@
   import EditFieldButton from "$lib/components/EditFieldButton.svelte";
   import SetFieldName from "$lib/components/SetFieldName.svelte";
   import UpdateValuesButtons from "$lib/components/UpdateValuesButtons.svelte";
-  import CreateFields from "./CreateFields.svelte";
 
   // PROPS
   export let editPanelVisible;
@@ -30,7 +29,6 @@
 
   let validFieldName = null;
   let editFieldName = false;
-  $: console.log("FIELD-EDIT - validFieldName = ", validFieldName);
 
   // - CONTINUE HERE - TESTING
   $: validSerial = hasSerial
@@ -51,33 +49,6 @@
   }
 
   // FUNCTIONS
-  // function viewEditField(fieldToEdit) {
-  //   if (fieldToEdit === "name") {
-  //     editFieldName = true;
-  //   }
-  // }
-
-  // function saveField(fieldToSave) {
-  //   if (fieldToSave === "name") {
-  //     fieldClone.name = fieldName;
-  //     editFieldName = false;
-  //   }
-  // }
-
-  // function cancelChange(fieldToCancel) {
-  //   if (fieldToCancel === "name") {
-  //     fieldName = fieldClone.name;
-  //     editFieldName = false;
-  //   }
-  // }
-
-  // function resetField(fieldToReset) {
-  //   if (fieldToReset === "name") {
-  //     fieldName = field.name;
-  //     editFieldName = false;
-  //   }
-  // }
-
   function hideEditPanel(e) {
     e.preventDefault();
     // - PROMPT USER THAT ANY UNSAVED CHANGES WILL BE LOST FIRST
@@ -98,8 +69,9 @@
   {#if !editFieldName}
     <EditFieldButton
       bind:editFieldName
+      {fieldClone}
       fieldId="Field Name"
-      value={fieldName}
+      value="name"
     />
   {/if}
   {#if editFieldName}
@@ -108,18 +80,10 @@
       bind:fieldClone
       bind:field
       bind:editFieldName
-      bind:fieldName
+      value={fieldName}
       validCheck={validFieldName}
       fieldToEditName="name"
     />
-    <!-- <UpdateValuesButtons
-      bind:fieldClone
-      bind:field
-      bind:editFieldName
-      //value={fieldName}
-      validCheck={validFieldName}
-      fieldToEditName="name"
-    /> -->
   {/if}
   <p>hasSerial: {hasSerial}</p>
   <label for="has-serial-edit">Field has Serial#: </label>
