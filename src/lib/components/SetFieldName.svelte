@@ -5,8 +5,9 @@
   // PROPS
   export let fieldName;
   export let validFieldName;
-  export let fieldNameError = false;
 
+  // VARIABLES
+  let fieldNameError = false;
   $: validFieldName = !fieldName.length < 1 && nonWhiteSpaceRegex.test(fieldName);
 
   // FUNCTIONS

@@ -1,22 +1,3 @@
-<!-- <script context="module">
-  export function handleKeyDown(e) {
-    const numericOnlyRegex = /\d/;
-    const key = e.key;
-    const validKeys = [
-      "Backspace",
-      "Delete",
-      "Del",
-      "Tab",
-      "ArrowLeft",
-      "ArrowRight",
-    ];
-
-    if (!numericOnlyRegex.test(key) && !validKeys.includes(key)) {
-      e.preventDefault();
-    }
-  }
-</script> -->
-
 <script>
   // COMPONENTS
   import SetFieldName from "$lib/components/SetFieldName.svelte";
@@ -43,7 +24,6 @@
   $: fieldNumber = fields.length + 1;
   let fieldName = "";
   let validFieldName;
-  let fieldNameError;
 
   // Set Serial
   let hasSerial = false;
@@ -93,7 +73,6 @@
       e.preventDefault();
     }
     fieldName = "";
-    fieldNameError = false;
     hasSerial = false;
     incrementValue = 0;
     recordsPerIncrement = 1;
@@ -151,7 +130,7 @@
 
 <fieldset>
   <h2>Field Creation</h2>
-  <SetFieldName bind:fieldName bind:validFieldName {fieldNameError} />
+  <SetFieldName bind:fieldName bind:validFieldName />
   <br />
   <br />
   <SetHasSerial bind:hasSerial />

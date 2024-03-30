@@ -1,6 +1,9 @@
 <script>
   // IMPORTS
-  import { nonWhiteSpaceRegex } from "$lib/utils.js";
+  import EditFieldButton from "$lib/components/EditFieldButton.svelte";
+  import SetFieldName from "$lib/components/SetFieldName.svelte";
+  import UpdateValuesButtons from "$lib/components/UpdateValuesButtons.svelte";
+  import CreateFields from "./CreateFields.svelte";
 
   // PROPS
   export let editPanelVisible;
@@ -9,7 +12,7 @@
   export let index;
 
   // VARIABLES
-  const fieldClone = { ...field };
+  let fieldClone = { ...field };
   let {
     name: fieldName,
     hasSerial,
@@ -25,9 +28,9 @@
     type,
   } = fieldClone;
 
-  $: validFieldName =
-    !fieldName.length < 1 && nonWhiteSpaceRegex.test(fieldName);
+  let validFieldName = null;
   let editFieldName = false;
+  $: console.log("FIELD-EDIT - validFieldName = ", validFieldName);
 
   // - CONTINUE HERE - TESTING
   $: validSerial = hasSerial
@@ -48,32 +51,32 @@
   }
 
   // FUNCTIONS
-  function viewEditField(fieldToEdit) {
-    if (fieldToEdit === "name") {
-      editFieldName = true;
-    }
-  }
+  // function viewEditField(fieldToEdit) {
+  //   if (fieldToEdit === "name") {
+  //     editFieldName = true;
+  //   }
+  // }
 
-  function saveField(fieldToSave) {
-    if (fieldToSave === "name") {
-      fieldClone.name = fieldName;
-      editFieldName = false;
-    }
-  }
+  // function saveField(fieldToSave) {
+  //   if (fieldToSave === "name") {
+  //     fieldClone.name = fieldName;
+  //     editFieldName = false;
+  //   }
+  // }
 
-  function cancelChange(fieldToCancel) {
-    if (fieldToCancel === "name") {
-      fieldName = fieldClone.name;
-      editFieldName = false;
-    }
-  }
+  // function cancelChange(fieldToCancel) {
+  //   if (fieldToCancel === "name") {
+  //     fieldName = fieldClone.name;
+  //     editFieldName = false;
+  //   }
+  // }
 
-  function resetField(fieldToReset) {
-    if (fieldToReset === "name") {
-      fieldName = field.name;
-      editFieldName = false;
-    }
-  }
+  // function resetField(fieldToReset) {
+  //   if (fieldToReset === "name") {
+  //     fieldName = field.name;
+  //     editFieldName = false;
+  //   }
+  // }
 
   function hideEditPanel(e) {
     e.preventDefault();
@@ -93,25 +96,30 @@
 <div id="field-edit-popup">
   <p>THIS IS GOING TO BE A POP-UP OVERLAY WITH A Z-INDEX</p>
   {#if !editFieldName}
-    <button on:click={() => viewEditField("name")}
-      >fieldName: {fieldName}</button
-    >
+    <EditFieldButton
+      bind:editFieldName
+      fieldId="Field Name"
+      value={fieldName}
+    />
   {/if}
   {#if editFieldName}
-    <input
-      bind:value={fieldName}
-      type="text"
-      id="field"
-      placeholder="Enter the field/column name"
+    <SetFieldName bind:fieldName bind:validFieldName />
+    <UpdateValuesButtons
+      bind:fieldClone
+      bind:field
+      bind:editFieldName
+      bind:fieldName
+      validCheck={validFieldName}
+      fieldToEditName="name"
     />
-    {#if !validFieldName}
-      <p>Field Name is a mandatory field</p>
-    {/if}
-    <button on:click={() => saveField("name")} disabled={!validFieldName}
-      >SAVE CHANGES</button
-    >
-    <button on:click={() => cancelChange("name")}>CANCEL & CLOSE</button>
-    <button on:click={() => resetField("name")}>RESET ALL CHANGES</button>
+    <!-- <UpdateValuesButtons
+      bind:fieldClone
+      bind:field
+      bind:editFieldName
+      //value={fieldName}
+      validCheck={validFieldName}
+      fieldToEditName="name"
+    /> -->
   {/if}
   <p>hasSerial: {hasSerial}</p>
   <label for="has-serial-edit">Field has Serial#: </label>
