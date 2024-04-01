@@ -2,6 +2,8 @@
   // IMPORTS
   import EditFieldButton from "$lib/components/EditFieldButton.svelte";
   import SetFieldName from "$lib/components/SetFieldName.svelte";
+  import SetHasSerial from "$lib/components/SetHasSerial.svelte";
+  import SetSerial from "$lib/components/SetSerial.svelte";
   import UpdateValuesButtons from "$lib/components/UpdateValuesButtons.svelte";
 
   // PROPS
@@ -13,9 +15,6 @@
   // VARIABLES
   let fieldClone = { ...field };
   let {
-    name: fieldName,
-    hasSerial,
-    serial,
     incrementValue,
     recordsPerIncrement,
     padded,
@@ -27,26 +26,32 @@
     type,
   } = fieldClone;
 
-  let validFieldName = null;
+  let changeMade = false;
+
+  //FIELD NAME VARIABLES
+  let validFieldName = true;
   let editFieldName = false;
+  $: fieldName = !editFieldName ? fieldClone.name : fieldName;
+  // SERIAL VARIABLES
+  let validSerial = true;
+  let editSerial = false;
+  $: serial = !editSerial ? fieldClone.serial : serial;
+  $: hasSerial = !editSerial ? fieldClone.hasSerial : hasSerial;
 
-  // - CONTINUE HERE - TESTING
-  $: validSerial = hasSerial
-    ? serial === null || (serial >= 0 && Number.isInteger(serial))
-    : true;
+  // CONTINUE FROM HERE
 
-  $: saveButtonDisabled = !validFieldName || !validSerial;
+  $: saveButtonDisabled = !changeMade || !validFieldName || !validSerial;
 
-  function test() {
-    console.log(
-      "validSerial = ",
-      validSerial,
-      "validFieldName = ",
-      validFieldName,
-      "saveButtonDisabled = ",
-      saveButtonDisabled
-    );
-  }
+  // function test() {
+  //   console.log(
+  //     "validSerial = ",
+  //     validSerial,
+  //     "validFieldName = ",
+  //     validFieldName,
+  //     "saveButtonDisabled = ",
+  //     saveButtonDisabled
+  //   );
+  // }
 
   // FUNCTIONS
   function hideEditPanel(e) {
@@ -66,9 +71,10 @@
 <br />
 <div id="field-edit-popup">
   <p>THIS IS GOING TO BE A POP-UP OVERLAY WITH A Z-INDEX</p>
-  {#if !editFieldName}
+  {#if !editFieldName && !editSerial}
     <EditFieldButton
       bind:editFieldName
+      bind:editSerial
       {fieldClone}
       fieldId="Field Name"
       value="name"
@@ -80,26 +86,41 @@
       bind:fieldClone
       bind:field
       bind:editFieldName
+      bind:editSerial
+      bind:hasSerial
+      bind:changeMade
       value={fieldName}
       validCheck={validFieldName}
       fieldToEditName="name"
     />
   {/if}
-  <p>hasSerial: {hasSerial}</p>
-  <label for="has-serial-edit">Field has Serial#: </label>
-  <input bind:checked={hasSerial} type="checkbox" id="has-serial-edit" />
-  {#if hasSerial}
-    <p>serial: {serial}</p>
-    <label for="serial-edit">Serial No#*: </label>
-    <input
-      bind:value={serial}
-      on:input={test}
-      type="number"
-      inputmode="numeric"
-      min="0"
-      id="serial-edit"
-      placeholder="0"
+  {#if !editFieldName && !editSerial}
+    <EditFieldButton
+      bind:editSerial
+      bind:editFieldName
+      {fieldClone}
+      fieldId="Serial"
+      value="serial"
     />
+  {/if}
+  {#if editSerial}
+    <SetHasSerial bind:hasSerial />
+    {#if hasSerial}
+      <SetSerial bind:serial bind:validSerial {hasSerial} />
+    {/if}
+    <UpdateValuesButtons
+      bind:fieldClone
+      bind:field
+      bind:editSerial
+      bind:editFieldName
+      bind:changeMade
+      {hasSerial}
+      value={serial}
+      validCheck={validSerial}
+      fieldToEditName="serial"
+    />
+  {/if}
+  {#if hasSerial}
     <p>incrementValue: {incrementValue}</p>
     <p>recordsPerIncrement: {recordsPerIncrement}</p>
     <p>padded: {padded}</p>
@@ -110,8 +131,8 @@
   <p>prefix: {prefix}</p>
   <p>suffix: {suffix}</p>
   <p>type: {type}</p>
-  <button on:click={hideEditPanel}>CANCEL & CLOSE</button>
-  {#if !editFieldName}
+  {#if !editFieldName && !editSerial}
+    <button on:click={hideEditPanel}>CANCEL & CLOSE</button>
     <button disabled={saveButtonDisabled} on:click={saveAndUpdate}
       >SAVE & UPDATE</button
     >

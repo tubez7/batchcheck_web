@@ -8,7 +8,7 @@
   export let validSerial;
 
   // VARIABLES
-  $: serial = hasSerial ? 0 : null;
+  $: serial = hasSerial ? serial : null;
   $: validSerial = hasSerial
     ? serial === null || (serial >= 0 && Number.isInteger(serial))
     : true;
@@ -24,6 +24,7 @@
   id="serial"
   placeholder="0"
 />
+<span>Will default to 0 if not specified</span>
 {#if !validSerial}
   <p>Serial serial by must be an integer of 0 or greater</p>
 {/if}

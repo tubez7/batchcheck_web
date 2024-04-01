@@ -135,7 +135,7 @@
   <br />
   <SetHasSerial bind:hasSerial />
   {#if hasSerial}
-    <SetSerial bind:hasSerial bind:serial bind:validSerial />
+    <SetSerial {hasSerial} bind:serial bind:validSerial />
     <br />
     <br />
     <SetIncrement bind:incrementValue {validIncrement} />
