@@ -1,5 +1,6 @@
 <script>
-    export let hasSerial;
+  // PROPS
+  export let hasSerial;
 </script>
 
 <label for="has-serial">Field has Serial#: </label>

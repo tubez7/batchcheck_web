@@ -94,9 +94,9 @@
       bind:field
       bind:editFieldName
       bind:editSerial
-      bind:hasSerial
       bind:editIncrement
       bind:changeMade
+      {hasSerial}
       value={fieldName}
       validCheck={validFieldName}
       fieldToEditName="name"
@@ -150,9 +150,9 @@
         bind:field
         bind:editFieldName
         bind:editSerial
-        bind:hasSerial
         bind:editIncrement
         bind:changeMade
+        {hasSerial}
         value={incrementValue}
         validCheck={validIncrement}
         fieldToEditName="incrementValue"
@@ -167,7 +167,7 @@
   <p>prefix: {prefix}</p>
   <p>suffix: {suffix}</p>
   <p>type: {type}</p>
-  {#if !editFieldName && !editSerial}
+  {#if !editFieldName && !editSerial && !editIncrement}
     <button on:click={hideEditPanel}>CANCEL & CLOSE</button>
     <button disabled={saveButtonDisabled} on:click={saveAndUpdate}
       >SAVE & UPDATE</button

@@ -1,5 +1,6 @@
 <script>
-    export let serialPadded;
+  // PROPS
+  export let serialPadded;
 </script>
 
 <label for="pad">Pad serial: </label>

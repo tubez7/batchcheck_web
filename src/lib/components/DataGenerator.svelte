@@ -10,11 +10,9 @@
   $: formValidated = fields.length > 0 && records > 0;
 
   // FUNCTIONS
-  function resetFields(e) {
+  function resetData(e) {
     // trigger warning here before executing
-    if (e) {
-      e.preventDefault();
-    }
+    e.preventDefault();
     records = 1;
     fields = [];
   }
@@ -37,6 +35,6 @@
   <FieldsEdit bind:fields {records} />
   <button disabled={!formValidated}>GENERATE BATCH_CHECK TABLE</button>
   {#if fields.length > 0}
-    <button on:click={resetFields} type="reset">RESET ALL</button>
+    <button on:click={resetData} type="reset">RESET ALL</button>
   {/if}
 </fieldset>

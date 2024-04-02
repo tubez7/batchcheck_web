@@ -32,7 +32,6 @@
 
   //Set Increment
   let incrementValue = 0;
-  // $: validIncrement = Number.isInteger(incrementValue) || !hasSerial;
   let validIncrement = true;
 
   // Set Records Per Increment

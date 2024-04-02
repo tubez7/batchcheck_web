@@ -1,4 +1,5 @@
 <script>
+  // PROPS
   export let padLeading;
   export let padTrailing;
 </script>

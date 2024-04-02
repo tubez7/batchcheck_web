@@ -20,6 +20,7 @@
     displayValueText = fieldClone[value];
   }
 
+  // FUNCTIONS
   function viewEditField(fieldToEdit) {
     if (fieldToEdit === "name") {
       editFieldName = true;

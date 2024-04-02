@@ -1,4 +1,5 @@
 <script>
+  // PROPS
   export let suffix;
 </script>
 

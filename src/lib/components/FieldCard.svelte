@@ -24,20 +24,22 @@
   <br />
   FIELD HAS SERIAL: {field.hasSerial}
   <br />
-  FIELD SERIAL: {field.serial}
-  <br />
-  SERIAL INCREMENT VAL: {field.incrementValue}
-  <br />
-  SERIAL RECORDS PER INCREMENT: {field.recordsPerIncrement}
-  <br />
-  SERIAL HAS PAD: {field.padded}
-  <br />
-  SERIAL PAD LENGTH: {field.padLength}
-  <br />
-  SERIAL PAD LEAD CHAR: {field.padLead}
-  <br />
-  SERIAL PAD TRAIL CHAR: {field.padTrail}
-  <br />
+  {#if field.hasSerial}
+    FIELD SERIAL: {field.serial}
+    <br />
+    SERIAL INCREMENT VAL: {field.incrementValue}
+    <br />
+    SERIAL RECORDS PER INCREMENT: {field.recordsPerIncrement}
+    <br />
+    SERIAL HAS PAD: {field.padded}
+    <br />
+    SERIAL PAD LENGTH: {field.padLength}
+    <br />
+    SERIAL PAD LEAD CHAR: {field.padLead}
+    <br />
+    SERIAL PAD TRAIL CHAR: {field.padTrail}
+    <br />
+  {/if}
   FIELD PREFIX: {field.prefix}
   <br />
   FIELD SUFFIX: {field.suffix}
