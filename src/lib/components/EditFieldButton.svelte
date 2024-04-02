@@ -1,10 +1,13 @@
 <script>
+  // PROPS
   export let fieldClone;
   export let fieldId;
   export let value;
   export let editFieldName;
   export let editSerial;
+  export let editIncrement;
 
+  // VARIABLES
   let displayValueText;
 
   if (fieldId === "Serial") {
@@ -21,14 +24,22 @@
     if (fieldToEdit === "name") {
       editFieldName = true;
       editSerial = false;
-    }
-    if (fieldToEdit === "serial") {
+      editIncrement = false;
+    } else if (fieldToEdit === "serial") {
       editSerial = true;
+      editFieldName = false;
+      editIncrement = false;
+    } else if (fieldToEdit === "incrementValue") {
+      editIncrement = true;
+      editSerial = false;
       editFieldName = false;
     }
   }
+
+  function handleClick(e) {
+    e.preventDefault();
+    viewEditField(value);
+  }
 </script>
 
-<button on:click={() => viewEditField(value)}
-  >{fieldId}: {displayValueText}</button
->
+<button on:click={handleClick}>{fieldId}: {displayValueText}</button>

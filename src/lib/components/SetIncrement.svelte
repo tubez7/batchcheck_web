@@ -2,7 +2,10 @@
   // PROPS
   export let incrementValue;
   export let validIncrement;
+  export let hasSerial;
 
+  // VARIABLES
+  $: validIncrement = Number.isInteger(incrementValue) || !hasSerial;
 </script>
 
 <label for="increment">Increment each batch/record by*: </label>
@@ -19,5 +22,3 @@
     are accepted)
   </p>
 {/if}
-
-

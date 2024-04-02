@@ -32,7 +32,8 @@
 
   //Set Increment
   let incrementValue = 0;
-  $: validIncrement = Number.isInteger(incrementValue) || !hasSerial;
+  // $: validIncrement = Number.isInteger(incrementValue) || !hasSerial;
+  let validIncrement = true;
 
   // Set Records Per Increment
   let recordsPerIncrement = 1;
@@ -68,7 +69,7 @@
     fields = [...fields, field];
   }
 
-  function resetValues(e) {
+  function handleReset(e) {
     if (e) {
       e.preventDefault();
     }
@@ -85,7 +86,7 @@
     type = "data";
   }
 
-  function handleClick(e) {
+  function handleSubmit(e) {
     e.preventDefault();
     padLength = serialPadded ? padLength || minimumPadLength : null;
     serial = hasSerial ? serial || 0 : null;
@@ -111,12 +112,12 @@
       fieldNumber
     );
     addField(field);
-    resetValues();
+    handleReset();
   }
 
   // DEBUG WATCHERS
-  $: console.log("fieldName = ", fieldName);
-  $: console.log("validFieldName = ", validFieldName);
+  //$: console.log("fieldName = ", fieldName);
+  //$: console.log("validFieldName = ", validFieldName);
   //$: console.log("hasSerial = ", hasSerial);
   //$: console.log("serial = ", serial, "validSerial = ", validSerial);
   // $: console.log("incrementValue changed to = ", incrementValue);
@@ -138,7 +139,7 @@
     <SetSerial {hasSerial} bind:serial bind:validSerial />
     <br />
     <br />
-    <SetIncrement bind:incrementValue {validIncrement} />
+    <SetIncrement bind:incrementValue bind:validIncrement {hasSerial} />
     <SetRecordsPerIncrement
       bind:recordsPerIncrement
       {validRecordPerIncrement}
@@ -164,8 +165,8 @@
   <SetFieldType bind:type />
   <br />
   <br />
-  <button on:click={handleClick} type="submit" disabled={buttonDisable}
+  <button on:click={handleSubmit} type="submit" disabled={buttonDisable}
     >Add Field</button
   >
-  <button on:click={resetValues} type="reset">Reset Field Values</button>
+  <button on:click={handleReset} type="reset">Reset Field Values</button>
 </fieldset>
