@@ -4,7 +4,13 @@
 
   // PROPS
   export let recordsPerIncrement;
-  export let validRecordPerIncrement;
+  export let validRecordsPerIncrement;
+  export let hasSerial;
+
+  // VARIABLES
+  $: validRecordsPerIncrement = hasSerial
+    ? recordsPerIncrement > 0 && Number.isInteger(recordsPerIncrement)
+    : true;
 </script>
 
 <label for="records-per-increment">Records per increment*: </label>
@@ -17,6 +23,6 @@
   id="records-per-increment"
   placeholder="Number increments every 'x' records"
 />
-{#if !validRecordPerIncrement}
+{#if !validRecordsPerIncrement}
   <p>Record per increment value must be an integer of 1 or greater</p>
 {/if}

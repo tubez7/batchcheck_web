@@ -36,9 +36,7 @@
 
   // Set Records Per Increment
   let recordsPerIncrement = 1;
-  $: validRecordPerIncrement = hasSerial
-    ? recordsPerIncrement > 0 && Number.isInteger(recordsPerIncrement)
-    : true;
+  let validRecordsPerIncrement = true;
 
   //Set Pad
   let serialPadded = false;
@@ -60,7 +58,7 @@
     !validFieldName ||
     !validSerial ||
     !validIncrement ||
-    !validRecordPerIncrement ||
+    !validRecordsPerIncrement ||
     !validPadLength;
 
   // FUNCTIONS
@@ -141,7 +139,8 @@
     <SetIncrement bind:incrementValue bind:validIncrement {hasSerial} />
     <SetRecordsPerIncrement
       bind:recordsPerIncrement
-      {validRecordPerIncrement}
+      bind:validRecordsPerIncrement
+      {hasSerial}
     />
     <br />
     <br />

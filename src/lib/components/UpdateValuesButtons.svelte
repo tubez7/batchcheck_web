@@ -9,6 +9,7 @@
   export let hasSerial;
   export let editSerial;
   export let editIncrement;
+  export let editRecordsPerIncrement;
   export let validCheck;
 
   // FUNCTIONS
@@ -19,6 +20,8 @@
       editSerial = false;
     } else if (fieldToCancel === "incrementValue") {
       editIncrement = false;
+    } else if (fieldToCancel === "recordsPerIncrement") {
+      editRecordsPerIncrement = false;
     }
   }
 

@@ -6,6 +6,7 @@
   export let editFieldName;
   export let editSerial;
   export let editIncrement;
+  export let editRecordsPerIncrement;
 
   // VARIABLES
   let displayValueText;
@@ -26,14 +27,22 @@
       editFieldName = true;
       editSerial = false;
       editIncrement = false;
+      editRecordsPerIncrement = false;
     } else if (fieldToEdit === "serial") {
       editSerial = true;
       editFieldName = false;
       editIncrement = false;
+      editRecordsPerIncrement = false;
     } else if (fieldToEdit === "incrementValue") {
       editIncrement = true;
-      editSerial = false;
       editFieldName = false;
+      editSerial = false;
+      editRecordsPerIncrement = false;
+    } else if (fieldToEdit === "recordsPerIncrement") {
+      editRecordsPerIncrement = true;
+      editFieldName = false;
+      editSerial = false;
+      editIncrement = false;
     }
   }
 

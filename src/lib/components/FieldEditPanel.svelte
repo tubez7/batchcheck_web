@@ -4,6 +4,7 @@
   import SetFieldName from "$lib/components/SetFieldName.svelte";
   import SetHasSerial from "$lib/components/SetHasSerial.svelte";
   import SetIncrement from "$lib/components/SetIncrement.svelte";
+  import SetRecordsPerIncrement from "$lib/components/SetRecordsPerIncrement.svelte";
   import SetSerial from "$lib/components/SetSerial.svelte";
   import UpdateValuesButtons from "$lib/components/UpdateValuesButtons.svelte";
 
@@ -16,7 +17,6 @@
   // VARIABLES
   let fieldClone = { ...field };
   let {
-    recordsPerIncrement,
     padded,
     padLength,
     padLead,
@@ -37,15 +37,27 @@
   let editSerial = false;
   $: serial = !editSerial ? fieldClone.serial : serial;
   $: hasSerial = !editSerial ? fieldClone.hasSerial : hasSerial;
-  // CONTINUE FROM HERE
   let validIncrement = true;
   let editIncrement = false;
   $: incrementValue = !editIncrement
     ? fieldClone.incrementValue
     : incrementValue;
+  let editRecordsPerIncrement = false;
+  let validRecordsPerIncrement = true;
+  $: recordsPerIncrement = !editRecordsPerIncrement
+    ? fieldClone.recordsPerIncrement
+    : recordsPerIncrement;
+  // CONTINUE FROM HERE
+
+  $: editMode =
+    editFieldName || editSerial || editIncrement || editRecordsPerIncrement;
 
   $: saveButtonDisabled =
-    !changeMade || !validFieldName || !validSerial || !validIncrement;
+    !changeMade ||
+    !validFieldName ||
+    !validSerial ||
+    !validIncrement ||
+    !validRecordsPerIncrement;
 
   // function test() {
   //   console.log(
@@ -76,11 +88,12 @@
 <br />
 <div id="field-edit-popup">
   <p>THIS IS GOING TO BE A POP-UP OVERLAY WITH A Z-INDEX</p>
-  {#if !editFieldName && !editSerial && !editIncrement}
+  {#if !editMode}
     <EditFieldButton
       bind:editFieldName
       bind:editSerial
       bind:editIncrement
+      bind:editRecordsPerIncrement
       {fieldClone}
       fieldId="Field Name"
       value="name"
@@ -95,6 +108,7 @@
       bind:editFieldName
       bind:editSerial
       bind:editIncrement
+      bind:editRecordsPerIncrement
       bind:changeMade
       {hasSerial}
       value={fieldName}
@@ -102,11 +116,12 @@
       fieldToEditName="name"
     />
   {/if}
-  {#if !editFieldName && !editSerial && !editIncrement}
+  {#if !editMode}
     <EditFieldButton
       bind:editSerial
       bind:editFieldName
       bind:editIncrement
+      bind:editRecordsPerIncrement
       {fieldClone}
       fieldId="Serial"
       value="serial"
@@ -124,6 +139,7 @@
       bind:editSerial
       bind:editFieldName
       bind:editIncrement
+      bind:editRecordsPerIncrement
       bind:changeMade
       {hasSerial}
       value={serial}
@@ -132,11 +148,12 @@
     />
   {/if}
   {#if hasSerial}
-    {#if !editFieldName && !editSerial && !editIncrement}
+    {#if !editMode}
       <EditFieldButton
         bind:editSerial
         bind:editFieldName
         bind:editIncrement
+        bind:editRecordsPerIncrement
         {fieldClone}
         fieldId="Increment serial by"
         value="incrementValue"
@@ -151,6 +168,7 @@
         bind:editFieldName
         bind:editSerial
         bind:editIncrement
+        bind:editRecordsPerIncrement
         bind:changeMade
         {hasSerial}
         value={incrementValue}
@@ -158,7 +176,38 @@
         fieldToEditName="incrementValue"
       />
     {/if}
-    <p>recordsPerIncrement: {recordsPerIncrement}</p>
+    {#if !editMode}
+      <EditFieldButton
+        bind:editFieldName
+        bind:editSerial
+        bind:editIncrement
+        bind:editRecordsPerIncrement
+        {fieldClone}
+        fieldId="Records Per Increment"
+        value="recordsPerIncrement"
+      />
+    {/if}
+    {#if editRecordsPerIncrement}
+      <!-- EACH OF THESE WILL BE A POP UP -->
+      <SetRecordsPerIncrement
+        bind:recordsPerIncrement
+        bind:validRecordsPerIncrement
+        {hasSerial}
+      />
+      <UpdateValuesButtons
+        bind:fieldClone
+        bind:field
+        bind:editFieldName
+        bind:editSerial
+        bind:editIncrement
+        bind:editRecordsPerIncrement
+        bind:changeMade
+        {hasSerial}
+        value={recordsPerIncrement}
+        validCheck={validRecordsPerIncrement}
+        fieldToEditName="recordsPerIncrement"
+      />
+    {/if}
     <p>padded: {padded}</p>
     <p>padLength: {padLength}</p>
     <p>padLead: {padLead}</p>
