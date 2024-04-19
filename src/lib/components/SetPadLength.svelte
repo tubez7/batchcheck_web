@@ -1,11 +1,20 @@
 <script>
   // IMPORTS
-  import { handleKeyDown } from "$lib/utils.js";
+  import { globalNumericRegex, handleKeyDown } from "$lib/utils.js";
 
   // PROPS
   export let padLength;
   export let validPadLength;
-  export let minimumPadLength;
+  export let serialPadded;
+  export let serial;
+
+  // VARIABLES
+  $: minimumPadLength = serialPadded
+    ? serial
+      ? serial.toString().match(globalNumericRegex)?.length || 1
+      : 1
+    : null;
+  $: validPadLength = padLength === null || padLength >= minimumPadLength;
 </script>
 
 <label for="pad-length">Pad length*: </label>

@@ -13,7 +13,6 @@
   import SetSuffix from "$lib/components/SetSuffix.svelte";
   // IMPORTS
   import Field from "$lib/field";
-  import { globalNumericRegex } from "$lib/utils.js";
 
   // PROPS
   export let fields;
@@ -40,13 +39,8 @@
 
   //Set Pad
   let serialPadded = false;
-  $: minimumPadLength = serialPadded
-    ? serial
-      ? serial.toString().match(globalNumericRegex)?.length || 1
-      : 1
-    : null;
   let padLength = null;
-  $: validPadLength = padLength === null || padLength >= minimumPadLength;
+  let validPadLength = true;
   let padLeading = "";
   let padTrailing = "";
 
@@ -146,7 +140,7 @@
     <br />
     <SetSerialPadded bind:serialPadded />
     {#if serialPadded}
-      <SetPadLength bind:padLength {validPadLength} {minimumPadLength} />
+      <SetPadLength bind:padLength bind:validPadLength {serialPadded} {serial} />
       <br />
       <br />
       <SetPadCharacter bind:padLeading bind:padTrailing />

@@ -4,6 +4,7 @@
   import SetFieldName from "$lib/components/SetFieldName.svelte";
   import SetHasSerial from "$lib/components/SetHasSerial.svelte";
   import SetIncrement from "$lib/components/SetIncrement.svelte";
+  import SetPadLength from "$lib/components/SetPadLength.svelte";
   import SetRecordsPerIncrement from "$lib/components/SetRecordsPerIncrement.svelte";
   import SetSerial from "$lib/components/SetSerial.svelte";
   import SetSerialPadded from "$lib/components/SetSerialPadded.svelte";
@@ -17,15 +18,14 @@
 
   // VARIABLES
   let fieldClone = { ...field };
-  let { serialPadded, padLength, padLead, padTrail, prefix, suffix, type } =
-    fieldClone;
-
+  let { padLead, padTrail, prefix, suffix, type } = fieldClone;
   let changeMade = false;
 
   //FIELD NAME VARIABLES
   let validFieldName = true;
   let editFieldName = false;
   $: fieldName = !editFieldName ? fieldClone.name : fieldName;
+
   // SERIAL VARIABLES
   let validSerial = true;
   let editSerial = false;
@@ -41,9 +41,11 @@
   $: recordsPerIncrement = !editRecordsPerIncrement
     ? fieldClone.recordsPerIncrement
     : recordsPerIncrement;
-  // CONTINUE FROM HERE
-
   let editPad = false;
+  $: serialPadded = !editPad ? fieldClone.serialPadded : serialPadded;
+  // CONTINUE FROM HERE
+  let validPadLength = true;
+  $: padLength = !editPad ? fieldClone.padLength : padLength;
 
   $: editMode =
     editFieldName ||
@@ -57,7 +59,8 @@
     !validFieldName ||
     !validSerial ||
     !validIncrement ||
-    !validRecordsPerIncrement;
+    !validRecordsPerIncrement ||
+    !validPadLength;
 
   // function test() {
   //   console.log(
@@ -139,7 +142,7 @@
     {#if hasSerial}
       <SetSerial bind:serial bind:validSerial {hasSerial} />
     {/if}
-    
+
     <UpdateValuesButtons
       bind:fieldClone
       bind:field
@@ -223,7 +226,6 @@
     {/if}
 
     {#if !editMode}
-      <!-- <p>padded: {serialPadded}</p> -->
       <EditFieldButton
         bind:editFieldName
         bind:editSerial
@@ -238,12 +240,17 @@
 
     {#if editPad}
       <SetSerialPadded bind:serialPadded />
-    {/if}
-
-    {#if serialPadded}
-      <p>padLength: {padLength}</p>
-      <p>padLead: {padLead}</p>
-      <p>padTrail: {padTrail}</p>
+      {#if serialPadded}
+        <!-- <p>padLength: {padLength}</p> -->
+        <SetPadLength
+          bind:padLength
+          bind:validPadLength
+          {serialPadded}
+          {serial}
+        />
+        <p>padLead: {padLead}</p>
+        <p>padTrail: {padTrail}</p>
+      {/if}
     {/if}
   {/if}
   <p>prefix: {prefix}</p>
