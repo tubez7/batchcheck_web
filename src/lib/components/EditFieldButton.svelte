@@ -7,6 +7,7 @@
   export let editSerial;
   export let editIncrement;
   export let editRecordsPerIncrement;
+  export let editPad;
 
   // VARIABLES
   let displayValueText;
@@ -28,22 +29,32 @@
       editSerial = false;
       editIncrement = false;
       editRecordsPerIncrement = false;
+      editPad = false;
     } else if (fieldToEdit === "serial") {
       editSerial = true;
       editFieldName = false;
       editIncrement = false;
       editRecordsPerIncrement = false;
+      editPad = false;
     } else if (fieldToEdit === "incrementValue") {
       editIncrement = true;
       editFieldName = false;
       editSerial = false;
       editRecordsPerIncrement = false;
+      editPad = false;
     } else if (fieldToEdit === "recordsPerIncrement") {
       editRecordsPerIncrement = true;
       editFieldName = false;
       editSerial = false;
       editIncrement = false;
-    }
+      editPad = false;
+    } else if (fieldToEdit === "serialPadded") {
+      editPad = true;
+      editRecordsPerIncrement = false;
+      editFieldName = false;
+      editSerial = false;
+      editIncrement = false;
+    } 
   }
 
   function handleClick(e) {

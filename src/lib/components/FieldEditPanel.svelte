@@ -6,6 +6,7 @@
   import SetIncrement from "$lib/components/SetIncrement.svelte";
   import SetRecordsPerIncrement from "$lib/components/SetRecordsPerIncrement.svelte";
   import SetSerial from "$lib/components/SetSerial.svelte";
+  import SetSerialPadded from "$lib/components/SetSerialPadded.svelte";
   import UpdateValuesButtons from "$lib/components/UpdateValuesButtons.svelte";
 
   // PROPS
@@ -16,15 +17,8 @@
 
   // VARIABLES
   let fieldClone = { ...field };
-  let {
-    padded,
-    padLength,
-    padLead,
-    padTrail,
-    prefix,
-    suffix,
-    type,
-  } = fieldClone;
+  let { serialPadded, padLength, padLead, padTrail, prefix, suffix, type } =
+    fieldClone;
 
   let changeMade = false;
 
@@ -49,8 +43,14 @@
     : recordsPerIncrement;
   // CONTINUE FROM HERE
 
+  let editPad = false;
+
   $: editMode =
-    editFieldName || editSerial || editIncrement || editRecordsPerIncrement;
+    editFieldName ||
+    editSerial ||
+    editIncrement ||
+    editRecordsPerIncrement ||
+    editPad;
 
   $: saveButtonDisabled =
     !changeMade ||
@@ -94,11 +94,13 @@
       bind:editSerial
       bind:editIncrement
       bind:editRecordsPerIncrement
+      bind:editPad
       {fieldClone}
       fieldId="Field Name"
       value="name"
     />
   {/if}
+
   {#if editFieldName}
     <!-- EACH OF THESE WILL BE A POP UP -->
     <SetFieldName bind:fieldName bind:validFieldName />
@@ -116,23 +118,28 @@
       fieldToEditName="name"
     />
   {/if}
+
   {#if !editMode}
     <EditFieldButton
       bind:editSerial
       bind:editFieldName
       bind:editIncrement
       bind:editRecordsPerIncrement
+      bind:editPad
       {fieldClone}
       fieldId="Serial"
       value="serial"
     />
   {/if}
+
   {#if editSerial}
     <!-- EACH OF THESE WILL BE A POP UP -->
     <SetHasSerial bind:hasSerial />
+
     {#if hasSerial}
       <SetSerial bind:serial bind:validSerial {hasSerial} />
     {/if}
+    
     <UpdateValuesButtons
       bind:fieldClone
       bind:field
@@ -147,6 +154,7 @@
       fieldToEditName="serial"
     />
   {/if}
+
   {#if hasSerial}
     {#if !editMode}
       <EditFieldButton
@@ -154,11 +162,13 @@
         bind:editFieldName
         bind:editIncrement
         bind:editRecordsPerIncrement
+        bind:editPad
         {fieldClone}
         fieldId="Increment serial by"
         value="incrementValue"
       />
     {/if}
+
     {#if editIncrement}
       <!-- EACH OF THESE WILL BE A POP UP -->
       <SetIncrement bind:incrementValue bind:validIncrement {hasSerial} />
@@ -176,17 +186,20 @@
         fieldToEditName="incrementValue"
       />
     {/if}
+
     {#if !editMode}
       <EditFieldButton
         bind:editFieldName
         bind:editSerial
         bind:editIncrement
         bind:editRecordsPerIncrement
+        bind:editPad
         {fieldClone}
         fieldId="Records Per Increment"
         value="recordsPerIncrement"
       />
     {/if}
+
     {#if editRecordsPerIncrement}
       <!-- EACH OF THESE WILL BE A POP UP -->
       <SetRecordsPerIncrement
@@ -208,10 +221,30 @@
         fieldToEditName="recordsPerIncrement"
       />
     {/if}
-    <p>padded: {padded}</p>
-    <p>padLength: {padLength}</p>
-    <p>padLead: {padLead}</p>
-    <p>padTrail: {padTrail}</p>
+
+    {#if !editMode}
+      <!-- <p>padded: {serialPadded}</p> -->
+      <EditFieldButton
+        bind:editFieldName
+        bind:editSerial
+        bind:editIncrement
+        bind:editRecordsPerIncrement
+        bind:editPad
+        {fieldClone}
+        fieldId="Serial Padded"
+        value="serialPadded"
+      />
+    {/if}
+
+    {#if editPad}
+      <SetSerialPadded bind:serialPadded />
+    {/if}
+
+    {#if serialPadded}
+      <p>padLength: {padLength}</p>
+      <p>padLead: {padLead}</p>
+      <p>padTrail: {padTrail}</p>
+    {/if}
   {/if}
   <p>prefix: {prefix}</p>
   <p>suffix: {suffix}</p>

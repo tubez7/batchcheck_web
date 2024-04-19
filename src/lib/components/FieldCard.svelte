@@ -31,7 +31,7 @@
     <br />
     SERIAL RECORDS PER INCREMENT: {field.recordsPerIncrement}
     <br />
-    SERIAL HAS PAD: {field.padded}
+    SERIAL HAS PAD: {field.serialPadded}
     <br />
     SERIAL PAD LENGTH: {field.padLength}
     <br />

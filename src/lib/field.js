@@ -5,7 +5,7 @@ class Field {
     serial,
     incrementValue,
     recordsPerIncrement,
-    padded,
+    serialPadded,
     padLength,
     padLead,
     padTrail,
@@ -19,7 +19,7 @@ class Field {
     this.serial = serial;
     this.incrementValue = incrementValue;
     this.recordsPerIncrement = recordsPerIncrement;
-    this.padded = padded;
+    this.serialPadded = serialPadded;
     this.padLength = padLength;
     this.padLead = padLead;
     this.padTrail = padTrail;
