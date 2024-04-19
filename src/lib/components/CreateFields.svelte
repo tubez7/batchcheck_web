@@ -41,8 +41,8 @@
   let serialPadded = false;
   let padLength = null;
   let validPadLength = true;
-  let padLeading = "";
-  let padTrailing = "";
+  let padLead = "";
+  let padTrail = "";
 
   // Set prefix/Suffix
   let prefix = "";
@@ -70,8 +70,8 @@
     recordsPerIncrement = 1;
     serialPadded = false;
     padLength = null;
-    padLeading = "";
-    padTrailing = "";
+    padLead = "";
+    padTrail = "";
     prefix = "";
     suffix = "";
     type = "data";
@@ -81,10 +81,10 @@
     e.preventDefault();
     padLength = serialPadded ? padLength || minimumPadLength : null;
     serial = hasSerial ? serial || 0 : null;
-    padLeading = serialPadded
-      ? padTrailing.length < 1 && padLeading.length < 1
+    padLead = serialPadded
+      ? padTrail.length < 1 && padLead.length < 1
         ? "0"
-        : padLeading
+        : padLead
       : "";
     incrementValue = incrementValue || 0;
     const field = new Field(
@@ -95,8 +95,8 @@
       recordsPerIncrement,
       serialPadded,
       padLength,
-      padLeading,
-      padTrailing,
+      padLead,
+      padTrail,
       prefix,
       suffix,
       type,
@@ -140,10 +140,15 @@
     <br />
     <SetSerialPadded bind:serialPadded />
     {#if serialPadded}
-      <SetPadLength bind:padLength bind:validPadLength {serialPadded} {serial} />
+      <SetPadLength
+        bind:padLength
+        bind:validPadLength
+        {serialPadded}
+        {serial}
+      />
       <br />
       <br />
-      <SetPadCharacter bind:padLeading bind:padTrailing />
+      <SetPadCharacter bind:padLead bind:padTrail />
     {/if}
   {/if}
   <br />

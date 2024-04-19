@@ -1,7 +1,7 @@
 <script>
   // PROPS
-  export let padLeading;
-  export let padTrailing;
+  export let padLead;
+  export let padTrail;
 </script>
 
 <fieldset>
@@ -10,20 +10,20 @@
   </p>
   <label for="pad-leading">Leading pad character: </label>
   <input
-    bind:value={padLeading}
+    bind:value={padLead}
     type="text"
-    id="pad-leading"
+    id="pad-lead"
     maxLength="1"
     placeholder="Enter a single pad character"
-    disabled={padTrailing.length > 0}
+    disabled={padTrail.length > 0}
   />
   <label for="pad-trailing">Trailing pad character: </label>
   <input
-    bind:value={padTrailing}
+    bind:value={padTrail}
     type="text"
-    id="pad-trailing"
+    id="pad-trail"
     maxLength="1"
     placeholder="Enter a single pad character"
-    disabled={padLeading.length > 0}
+    disabled={padLead.length > 0}
   />
 </fieldset>

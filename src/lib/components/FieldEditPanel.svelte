@@ -4,6 +4,7 @@
   import SetFieldName from "$lib/components/SetFieldName.svelte";
   import SetHasSerial from "$lib/components/SetHasSerial.svelte";
   import SetIncrement from "$lib/components/SetIncrement.svelte";
+  import SetPadCharacter from "$lib/components/SetPadCharacter.svelte";
   import SetPadLength from "$lib/components/SetPadLength.svelte";
   import SetRecordsPerIncrement from "$lib/components/SetRecordsPerIncrement.svelte";
   import SetSerial from "$lib/components/SetSerial.svelte";
@@ -18,7 +19,7 @@
 
   // VARIABLES
   let fieldClone = { ...field };
-  let { padLead, padTrail, prefix, suffix, type } = fieldClone;
+  let { prefix, suffix, type } = fieldClone;
   let changeMade = false;
 
   //FIELD NAME VARIABLES
@@ -41,11 +42,15 @@
   $: recordsPerIncrement = !editRecordsPerIncrement
     ? fieldClone.recordsPerIncrement
     : recordsPerIncrement;
+
+  // PAD VARIABLES
+  let validPadLength = true;
   let editPad = false;
   $: serialPadded = !editPad ? fieldClone.serialPadded : serialPadded;
-  // CONTINUE FROM HERE
-  let validPadLength = true;
   $: padLength = !editPad ? fieldClone.padLength : padLength;
+  // CONTINUE FROM HERE
+  $: padLead = !editPad ? fieldClone.padLead : padLead;
+  $: padTrail = !editPad ? fieldClone.padTrail : padTrail;
 
   $: editMode =
     editFieldName ||
@@ -53,6 +58,8 @@
     editIncrement ||
     editRecordsPerIncrement ||
     editPad;
+
+  // $: viewButtons = !editFieldName && !editSerial && !editIncrement && !editPad;
 
   $: saveButtonDisabled =
     !changeMade ||
@@ -114,8 +121,12 @@
       bind:editSerial
       bind:editIncrement
       bind:editRecordsPerIncrement
+      bind:editPad
       bind:changeMade
       {hasSerial}
+      {serialPadded}
+      {padLead}
+      {padTrail}
       value={fieldName}
       validCheck={validFieldName}
       fieldToEditName="name"
@@ -146,12 +157,16 @@
     <UpdateValuesButtons
       bind:fieldClone
       bind:field
-      bind:editSerial
       bind:editFieldName
+      bind:editSerial
       bind:editIncrement
       bind:editRecordsPerIncrement
+      bind:editPad
       bind:changeMade
       {hasSerial}
+      {serialPadded}
+      {padLead}
+      {padTrail}
       value={serial}
       validCheck={validSerial}
       fieldToEditName="serial"
@@ -182,8 +197,12 @@
         bind:editSerial
         bind:editIncrement
         bind:editRecordsPerIncrement
+        bind:editPad
         bind:changeMade
         {hasSerial}
+        {serialPadded}
+        {padLead}
+        {padTrail}
         value={incrementValue}
         validCheck={validIncrement}
         fieldToEditName="incrementValue"
@@ -217,8 +236,12 @@
         bind:editSerial
         bind:editIncrement
         bind:editRecordsPerIncrement
+        bind:editPad
         bind:changeMade
         {hasSerial}
+        {serialPadded}
+        {padLead}
+        {padTrail}
         value={recordsPerIncrement}
         validCheck={validRecordsPerIncrement}
         fieldToEditName="recordsPerIncrement"
@@ -239,24 +262,40 @@
     {/if}
 
     {#if editPad}
+      <!-- EACH OF THESE WILL BE A POP UP -->
       <SetSerialPadded bind:serialPadded />
       {#if serialPadded}
-        <!-- <p>padLength: {padLength}</p> -->
         <SetPadLength
           bind:padLength
           bind:validPadLength
           {serialPadded}
           {serial}
         />
-        <p>padLead: {padLead}</p>
-        <p>padTrail: {padTrail}</p>
+        <SetPadCharacter bind:padLead bind:padTrail />
       {/if}
+      <UpdateValuesButtons
+        bind:fieldClone
+        bind:field
+        bind:editFieldName
+        bind:editSerial
+        bind:editIncrement
+        bind:editRecordsPerIncrement
+        bind:editPad
+        bind:changeMade
+        {hasSerial}
+        {serialPadded}
+        {padLead}
+        {padTrail}
+        value={padLength}
+        validCheck={validPadLength}
+        fieldToEditName="padLength"
+      />
     {/if}
   {/if}
   <p>prefix: {prefix}</p>
   <p>suffix: {suffix}</p>
   <p>type: {type}</p>
-  {#if !editFieldName && !editSerial && !editIncrement}
+  {#if !editMode}
     <button on:click={hideEditPanel}>CANCEL & CLOSE</button>
     <button disabled={saveButtonDisabled} on:click={saveAndUpdate}
       >SAVE & UPDATE</button

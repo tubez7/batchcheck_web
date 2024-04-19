@@ -10,6 +10,10 @@
   export let editSerial;
   export let editIncrement;
   export let editRecordsPerIncrement;
+  export let editPad;
+  export let serialPadded;
+  export let padLead;
+  export let padTrail;
   export let validCheck;
 
   // FUNCTIONS
@@ -22,6 +26,8 @@
       editIncrement = false;
     } else if (fieldToCancel === "recordsPerIncrement") {
       editRecordsPerIncrement = false;
+    } else if (fieldToCancel === "padLength") {
+      editPad = false;
     }
   }
 
@@ -32,6 +38,10 @@
       if (!hasSerial) {
         fieldClone.serial = null;
       }
+    } else if (fieldToSave === "padLength") {
+      fieldClone.serialPadded = serialPadded;
+      fieldClone.padLead = padLead;
+      fieldClone.padTrail = padTrail;
     }
     changeMade = true;
     cancelChange(fieldToSave);
@@ -41,6 +51,10 @@
     fieldClone[fieldToReset] = field[fieldToReset];
     if (fieldToReset === "serial") {
       fieldClone.hasSerial = field.hasSerial;
+    } else if (fieldToReset === "padLength") {
+      fieldClone.serialPadded = field.serialPadded;
+      fieldClone.padLead = field.padLead;
+      fieldClone.padTrail = field.padTrail;
     }
     cancelChange(fieldToReset);
   }
