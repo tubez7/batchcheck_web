@@ -1,4 +1,7 @@
 <script>
+  // IMPORTS
+  import Field from "$lib/field";
+
   // COMPONENTS
   import SetFieldName from "$lib/components/SetFieldName.svelte";
   import SetFieldType from "$lib/components/SetFieldType.svelte";
@@ -11,8 +14,6 @@
   import SetSerial from "$lib/components/SetSerial.svelte";
   import SetSerialPadded from "$lib/components/SetSerialPadded.svelte";
   import SetSuffix from "$lib/components/SetSuffix.svelte";
-  // IMPORTS
-  import Field from "$lib/field";
 
   // PROPS
   export let fields;
@@ -29,7 +30,7 @@
   let serial = null;
   let validSerial = true;
 
-  //Set Increment
+  // Set Increment
   let incrementValue = 0;
   let validIncrement = true;
 
@@ -47,7 +48,11 @@
   // Set prefix/Suffix
   let prefix = "";
   let suffix = "";
-  let type = "data";
+
+  // Set Type
+  let type = "Data";
+
+  // Reactive
   $: buttonDisable =
     !validFieldName ||
     !validSerial ||
@@ -74,7 +79,7 @@
     padTrail = "";
     prefix = "";
     suffix = "";
-    type = "data";
+    type = "Data";
   }
 
   function handleSubmit(e) {
@@ -108,6 +113,9 @@
 </script>
 
 <fieldset>
+  <h2>Field Type</h2>
+  <SetFieldType bind:type />
+
   <h2>Field Creation</h2>
   <SetFieldName bind:fieldName bind:validFieldName />
   <br />
@@ -145,8 +153,6 @@
   <br />
   <SetSuffix bind:suffix />
 
-  <h2>Field Type</h2>
-  <SetFieldType bind:type />
   <br />
   <br />
   <button on:click={handleSubmit} type="submit" disabled={buttonDisable}

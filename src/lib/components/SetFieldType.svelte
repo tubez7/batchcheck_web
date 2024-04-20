@@ -7,7 +7,7 @@
   type="radio"
   id="fieldType1"
   name="field-type"
-  value="data"
+  value="Data"
   bind:group={type}
   checked
 />
@@ -24,15 +24,31 @@
   type="radio"
   id="fieldType3"
   name="field-type"
-  value="visible-scan"
+  value="Composite QR"
   bind:group={type}
 />
-<label for="fieldType3">Visible Scan Check</label>
+<label for="fieldType3">Composite QR</label>
 <input
   type="radio"
   id="fieldType4"
   name="field-type"
-  value="invisible-scan"
+  value="Visible-scan"
   bind:group={type}
 />
-<label for="fieldType4">Invisible Scan Check</label>
+<label for="fieldType4">Visible Scan Check</label>
+<input
+  type="radio"
+  id="fieldType5"
+  name="field-type"
+  value="Invisible-scan"
+  bind:group={type}
+/>
+<label for="fieldType5">Invisible Scan Check</label>
+<input
+  type="radio"
+  id="fieldType6"
+  name="field-type"
+  value="Composite-scan"
+  bind:group={type}
+/>
+<label for="fieldType6">Composite-Field Scan Check</label>

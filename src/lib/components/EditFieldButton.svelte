@@ -10,6 +10,7 @@
   export let editPad;
   export let editPrefix;
   export let editSuffix;
+  export let editType;
 
   // VARIABLES
   let displayValueText;
@@ -36,6 +37,7 @@
       editPad = false;
       editPrefix = false;
       editSuffix = false;
+      editType = false;
     } else if (fieldToEdit === "serial") {
       editSerial = true;
       editFieldName = false;
@@ -44,6 +46,7 @@
       editPad = false;
       editPrefix = false;
       editSuffix = false;
+      editType = false;
     } else if (fieldToEdit === "incrementValue") {
       editIncrement = true;
       editFieldName = false;
@@ -52,6 +55,7 @@
       editPad = false;
       editPrefix = false;
       editSuffix = false;
+      editType = false;
     } else if (fieldToEdit === "recordsPerIncrement") {
       editRecordsPerIncrement = true;
       editFieldName = false;
@@ -60,6 +64,7 @@
       editPad = false;
       editPrefix = false;
       editSuffix = false;
+      editType = false;
     } else if (fieldToEdit === "serialPadded") {
       editPad = true;
       editRecordsPerIncrement = false;
@@ -68,6 +73,7 @@
       editIncrement = false;
       editPrefix = false;
       editSuffix = false;
+      editType = false;
     } else if (fieldToEdit === "prefix") {
       editPrefix = true;
       editRecordsPerIncrement = false;
@@ -76,6 +82,7 @@
       editIncrement = false;
       editPad = false;
       editSuffix = false;
+      editType = false;
     } else if (fieldToEdit === "suffix") {
       editSuffix = true;
       editRecordsPerIncrement = false;
@@ -84,6 +91,16 @@
       editIncrement = false;
       editPad = false;
       editPrefix = false;
+      editType = false;
+    } else if (fieldToEdit === "type") {
+      editType = true;
+      editRecordsPerIncrement = false;
+      editFieldName = false;
+      editSerial = false;
+      editIncrement = false;
+      editPad = false;
+      editPrefix = false;
+      editSuffix = false;
     }
   }
 

@@ -17,6 +17,7 @@
   export let validCheck;
   export let editPrefix;
   export let editSuffix;
+  export let editType;
 
   // FUNCTIONS
   function terminateEditMode(fieldToCancel) {
@@ -34,6 +35,8 @@
       editPrefix = false;
     } else if (fieldToCancel === "suffix") {
       editSuffix = false;
+    } else if (fieldToCancel === "type") {
+      editType = false;
     }
   }
 
