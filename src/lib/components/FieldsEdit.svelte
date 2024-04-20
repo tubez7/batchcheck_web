@@ -1,51 +1,19 @@
 <script>
+  // COMPONENTS
+  import FieldCard from "$lib/components/FieldCard.svelte";
+
+  // PROPS
   export let fields;
   export let records;
-
-  function resetFields(e) {
-    if (e) {
-      e.preventDefault();
-    }
-    records = 1;
-    fields = [];
-  }
 </script>
 
 {#if fields.length > 0}
   <div>
     <h2>EDIT BATCH-CHECK TABLE</h2>
-    <h3>NUMBER OF BATCHES/RECORDS TO CHECK: {records}</h3>
-    <ul>
-      {#each fields as field}
-        <li>
-          FIELD NAME: {field.name}
-          <br />
-          FIELD HAS SERIAL: {field.hasSerial}
-          <br />
-          FIELD SERIAL: {field.serial}
-          <br />
-          SERIAL INCREMENT VAL: {field.incrementValue}
-          <br />
-          SERIAL RECORDS PER INCREMENT: {field.recordsPerIncrement}
-          <br />
-          SERIAL HAS PAD: {field.padded}
-          <br />
-          SERIAL PAD LENGTH: {field.padLength}
-          <br />
-          SERIAL PAD LEAD CHAR: {field.padLead}
-          <br />
-          SERIAL PAD TRAIL CHAR: {field.padTrail}
-          <br />
-          FIELD PREFIX: {field.prefix}
-          <br />
-          FIELD SUFFIX: {field.suffix}
-          <br />
-          FIELD TYPE: {field.type}
-        </li>
-        <br />
-        <br />
-      {/each}
-    </ul>
-    <button on:click={resetFields} type="reset">RESET ALL FIELDS</button>
+    <h3>NUMBER OF BATCHES/RECORDS: {records}</h3>
+
+    {#each fields as field, i}
+      <FieldCard bind:fields {field} index={i} />
+    {/each}
   </div>
 {/if}
