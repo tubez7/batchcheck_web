@@ -9,6 +9,7 @@
 
   // VARIABLES
   let editPanelVisible = false;
+  $: standardField = field.type !== "Composite QR" && field.type !== "Composite-scan";
 
   // FUNCTIONS
   function showEditPanel(e) {
@@ -22,28 +23,30 @@
   <br />
   FIELD NAME: {field.name}
   <br />
-  FIELD HAS SERIAL: {field.hasSerial}
-  <br />
-  {#if field.hasSerial}
-    FIELD SERIAL: {field.serial}
+  {#if standardField}
+    FIELD HAS SERIAL: {field.hasSerial}
     <br />
-    SERIAL INCREMENT VAL: {field.incrementValue}
+    {#if field.hasSerial}
+      FIELD SERIAL: {field.serial}
+      <br />
+      SERIAL INCREMENT VAL: {field.incrementValue}
+      <br />
+      SERIAL RECORDS PER INCREMENT: {field.recordsPerIncrement}
+      <br />
+      SERIAL HAS PAD: {field.serialPadded}
+      <br />
+      SERIAL PAD LENGTH: {field.padLength}
+      <br />
+      SERIAL PAD LEAD CHAR: {field.padLead}
+      <br />
+      SERIAL PAD TRAIL CHAR: {field.padTrail}
+      <br />
+    {/if}
+    FIELD PREFIX: {field.prefix}
     <br />
-    SERIAL RECORDS PER INCREMENT: {field.recordsPerIncrement}
-    <br />
-    SERIAL HAS PAD: {field.serialPadded}
-    <br />
-    SERIAL PAD LENGTH: {field.padLength}
-    <br />
-    SERIAL PAD LEAD CHAR: {field.padLead}
-    <br />
-    SERIAL PAD TRAIL CHAR: {field.padTrail}
+    FIELD SUFFIX: {field.suffix}
     <br />
   {/if}
-  FIELD PREFIX: {field.prefix}
-  <br />
-  FIELD SUFFIX: {field.suffix}
-  <br />
   FIELD TYPE: {field.type}
   <br />
   <br />

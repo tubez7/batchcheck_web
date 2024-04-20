@@ -51,6 +51,7 @@
 
   // Set Type
   let type = "Data";
+  $: standardField = type !== "Composite QR" && type !== "Composite-scan";
 
   // Reactive
   $: buttonDisable =
@@ -63,6 +64,24 @@
   // FUNCTIONS
   function addField(field) {
     fields = [...fields, field];
+  }
+
+  function setDefaults() {
+    hasSerial = false;
+    incrementValue = 0;
+    recordsPerIncrement = 1;
+    serialPadded = false;
+    padLength = null;
+    padLead = "";
+    padTrail = "";
+    prefix = "";
+    suffix = "";
+  }
+
+  $: {
+    if (standardField || !standardField) {
+      setDefaults();
+    }
   }
 
   function handleReset(e) {
@@ -115,44 +134,49 @@
 <fieldset>
   <h2>Field Type</h2>
   <SetFieldType bind:type />
+  <p>
+    Nb - Composite fields are special fields that only require a name. Their
+    value is set from the Edit Field Menu
+  </p>
 
   <h2>Field Creation</h2>
   <SetFieldName bind:fieldName bind:validFieldName />
   <br />
   <br />
-  <SetHasSerial bind:hasSerial />
-  {#if hasSerial}
-    <SetSerial {hasSerial} bind:serial bind:validSerial />
-    <br />
-    <br />
-    <SetIncrement bind:incrementValue bind:validIncrement {hasSerial} />
-    <SetRecordsPerIncrement
-      bind:recordsPerIncrement
-      bind:validRecordsPerIncrement
-      {hasSerial}
-    />
-    <br />
-    <br />
-    <SetSerialPadded bind:serialPadded />
-    {#if serialPadded}
-      <SetPadLength
-        bind:padLength
-        bind:validPadLength
-        {serialPadded}
-        {serial}
+  {#if standardField}
+    <SetHasSerial bind:hasSerial />
+    {#if hasSerial}
+      <SetSerial {hasSerial} bind:serial bind:validSerial />
+      <br />
+      <br />
+      <SetIncrement bind:incrementValue bind:validIncrement {hasSerial} />
+      <SetRecordsPerIncrement
+        bind:recordsPerIncrement
+        bind:validRecordsPerIncrement
+        {hasSerial}
       />
       <br />
       <br />
-      <SetPadCharacter bind:padLead bind:padTrail />
+      <SetSerialPadded bind:serialPadded />
+      {#if serialPadded}
+        <SetPadLength
+          bind:padLength
+          bind:validPadLength
+          {serialPadded}
+          {serial}
+        />
+        <br />
+        <br />
+        <SetPadCharacter bind:padLead bind:padTrail />
+      {/if}
     {/if}
+    <br />
+    <br />
+    <SetPrefix bind:prefix />
+    <br />
+    <br />
+    <SetSuffix bind:suffix />
   {/if}
-  <br />
-  <br />
-  <SetPrefix bind:prefix />
-  <br />
-  <br />
-  <SetSuffix bind:suffix />
-
   <br />
   <br />
   <button on:click={handleSubmit} type="submit" disabled={buttonDisable}

@@ -10,6 +10,7 @@
 </script>
 
 <h2>Records</h2>
+<p>Set the total number of records or batches for the job</p>
 <label for="batch-quantity">Batch/Record Qty*: </label>
 <input
   bind:value={records}

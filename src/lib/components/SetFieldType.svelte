@@ -21,34 +21,35 @@
 />
 <label for="fieldType2">QR Code</label>
 <input
-  type="radio"
-  id="fieldType3"
-  name="field-type"
-  value="Composite QR"
-  bind:group={type}
+type="radio"
+id="fieldType3"
+name="field-type"
+value="Visible-scan"
+bind:group={type}
 />
-<label for="fieldType3">Composite QR</label>
+<label for="fieldType3">Visible Scan Check</label>
 <input
-  type="radio"
+type="radio"
   id="fieldType4"
-  name="field-type"
-  value="Visible-scan"
-  bind:group={type}
-/>
-<label for="fieldType4">Visible Scan Check</label>
-<input
-  type="radio"
-  id="fieldType5"
   name="field-type"
   value="Invisible-scan"
   bind:group={type}
 />
-<label for="fieldType5">Invisible Scan Check</label>
+<label for="fieldType4">Invisible Scan Check</label>
 <input
   type="radio"
-  id="fieldType6"
+  id="fieldType5"
   name="field-type"
   value="Composite-scan"
   bind:group={type}
-/>
-<label for="fieldType6">Composite-Field Scan Check</label>
+  />
+  <label for="fieldType5">Composite-Field Scan Check</label>
+  <input
+    type="radio"
+    id="fieldType6"
+    name="field-type"
+    value="Composite QR"
+    bind:group={type}
+  />
+  <label for="fieldType6">Composite QR</label>
+  

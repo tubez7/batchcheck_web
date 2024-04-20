@@ -58,7 +58,6 @@
   $: prefix = !editPrefix ? fieldClone.prefix : prefix;
   let editSuffix = false;
   $: suffix = !editSuffix ? fieldClone.suffix : suffix;
-  // CONTINUE FROM HERE
 
   // FIELD-TYPE VARIABLES
   let editType = false;
