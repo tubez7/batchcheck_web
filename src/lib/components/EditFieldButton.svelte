@@ -9,6 +9,7 @@
   export let editRecordsPerIncrement;
   export let editPad;
   export let editPrefix;
+  export let editSuffix;
 
   // VARIABLES
   let displayValueText;
@@ -19,7 +20,7 @@
     } else {
       displayValueText = fieldClone[value]?.toString() || "0";
     }
-  } else if (fieldId === "Prefix") {
+  } else if (fieldId === "Prefix" || fieldId === "Suffix") {
     displayValueText = fieldClone[value] === "" ? "None" : fieldClone[value];
   } else {
     displayValueText = fieldClone[value];
@@ -34,6 +35,7 @@
       editRecordsPerIncrement = false;
       editPad = false;
       editPrefix = false;
+      editSuffix = false;
     } else if (fieldToEdit === "serial") {
       editSerial = true;
       editFieldName = false;
@@ -41,6 +43,7 @@
       editRecordsPerIncrement = false;
       editPad = false;
       editPrefix = false;
+      editSuffix = false;
     } else if (fieldToEdit === "incrementValue") {
       editIncrement = true;
       editFieldName = false;
@@ -48,6 +51,7 @@
       editRecordsPerIncrement = false;
       editPad = false;
       editPrefix = false;
+      editSuffix = false;
     } else if (fieldToEdit === "recordsPerIncrement") {
       editRecordsPerIncrement = true;
       editFieldName = false;
@@ -55,6 +59,7 @@
       editIncrement = false;
       editPad = false;
       editPrefix = false;
+      editSuffix = false;
     } else if (fieldToEdit === "serialPadded") {
       editPad = true;
       editRecordsPerIncrement = false;
@@ -62,6 +67,7 @@
       editSerial = false;
       editIncrement = false;
       editPrefix = false;
+      editSuffix = false;
     } else if (fieldToEdit === "prefix") {
       editPrefix = true;
       editRecordsPerIncrement = false;
@@ -69,6 +75,15 @@
       editSerial = false;
       editIncrement = false;
       editPad = false;
+      editSuffix = false;
+    } else if (fieldToEdit === "suffix") {
+      editSuffix = true;
+      editRecordsPerIncrement = false;
+      editFieldName = false;
+      editSerial = false;
+      editIncrement = false;
+      editPad = false;
+      editPrefix = false;
     }
   }
 

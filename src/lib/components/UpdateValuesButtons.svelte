@@ -16,9 +16,10 @@
   export let padTrail;
   export let validCheck;
   export let editPrefix;
+  export let editSuffix;
 
   // FUNCTIONS
-  function cancelChange(fieldToCancel) {
+  function terminateEditMode(fieldToCancel) {
     if (fieldToCancel === "name") {
       editFieldName = false;
     } else if (fieldToCancel === "serial") {
@@ -31,6 +32,8 @@
       editPad = false;
     } else if (fieldToCancel === "prefix") {
       editPrefix = false;
+    } else if (fieldToCancel === "suffix") {
+      editSuffix = false;
     }
   }
 
@@ -47,7 +50,7 @@
       fieldClone.padTrail = padTrail;
     }
     changeMade = true;
-    cancelChange(fieldToSave);
+    terminateEditMode(fieldToSave);
   }
 
   function resetField(fieldToReset) {
@@ -59,7 +62,7 @@
       fieldClone.padLead = field.padLead;
       fieldClone.padTrail = field.padTrail;
     }
-    cancelChange(fieldToReset);
+    terminateEditMode(fieldToReset);
   }
 
   function handleSave(e) {
@@ -69,7 +72,7 @@
 
   function handleCancel(e) {
     e.preventDefault();
-    cancelChange(fieldToEditName);
+    terminateEditMode(fieldToEditName);
   }
 
   function handleReset(e) {

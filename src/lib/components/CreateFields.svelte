@@ -105,19 +105,6 @@
     addField(field);
     handleReset();
   }
-
-  // DEBUG WATCHERS
-  //$: console.log("fieldName = ", fieldName);
-  //$: console.log("validFieldName = ", validFieldName);
-  //$: console.log("hasSerial = ", hasSerial);
-  //$: console.log("serial = ", serial, "validSerial = ", validSerial);
-  // $: console.log("incrementValue changed to = ", incrementValue);
-  // $: console.log("validIncrement changed to = ", validIncrement);
-  // $: console.log("recordsPerIncrement changed to = ", recordsPerIncrement);
-  // $: console.log(
-  //   "validRecordPerIncrement changed to = ",
-  //   validRecordPerIncrement
-  // );
 </script>
 
 <fieldset>

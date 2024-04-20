@@ -1,5 +1,5 @@
 <script>
-  // IMPORTS
+  // COMPONENTS
   import EditFieldButton from "$lib/components/EditFieldButton.svelte";
   import SetFieldName from "$lib/components/SetFieldName.svelte";
   import SetHasSerial from "$lib/components/SetHasSerial.svelte";
@@ -10,6 +10,7 @@
   import SetRecordsPerIncrement from "$lib/components/SetRecordsPerIncrement.svelte";
   import SetSerial from "$lib/components/SetSerial.svelte";
   import SetSerialPadded from "$lib/components/SetSerialPadded.svelte";
+  import SetSuffix from "$lib/components/SetSuffix.svelte";
   import UpdateValuesButtons from "$lib/components/UpdateValuesButtons.svelte";
 
   // PROPS
@@ -20,7 +21,7 @@
 
   // VARIABLES
   let fieldClone = { ...field };
-  let { prefix, suffix, type } = fieldClone;
+  let { type } = fieldClone;
   let changeMade = false;
 
   //FIELD NAME VARIABLES
@@ -55,6 +56,8 @@
   // PREFIX/SUFFIX VARIABLES
   let editPrefix = false;
   $: prefix = !editPrefix ? fieldClone.prefix : prefix;
+  let editSuffix = false;
+  $: suffix = !editSuffix ? fieldClone.suffix : suffix;
   // CONTINUE FROM HERE
 
   $: editMode =
@@ -63,7 +66,8 @@
     editIncrement ||
     editRecordsPerIncrement ||
     editPad ||
-    editPrefix;
+    editPrefix ||
+    editSuffix;
 
   $: saveButtonDisabled =
     !changeMade ||
@@ -110,6 +114,7 @@
       bind:editRecordsPerIncrement
       bind:editPad
       bind:editPrefix
+      bind:editSuffix
       {fieldClone}
       fieldId="Field Name"
       value="name"
@@ -128,6 +133,7 @@
       bind:editRecordsPerIncrement
       bind:editPad
       bind:editPrefix
+      bind:editSuffix
       bind:changeMade
       {hasSerial}
       {serialPadded}
@@ -141,12 +147,13 @@
 
   {#if !editMode}
     <EditFieldButton
-      bind:editSerial
       bind:editFieldName
+      bind:editSerial
       bind:editIncrement
       bind:editRecordsPerIncrement
       bind:editPad
       bind:editPrefix
+      bind:editSuffix
       {fieldClone}
       fieldId="Serial"
       value="serial"
@@ -170,6 +177,7 @@
       bind:editRecordsPerIncrement
       bind:editPad
       bind:editPrefix
+      bind:editSuffix
       bind:changeMade
       {hasSerial}
       {serialPadded}
@@ -184,12 +192,13 @@
   {#if hasSerial}
     {#if !editMode}
       <EditFieldButton
-        bind:editSerial
         bind:editFieldName
+        bind:editSerial
         bind:editIncrement
         bind:editRecordsPerIncrement
         bind:editPad
         bind:editPrefix
+        bind:editSuffix
         {fieldClone}
         fieldId="Increment serial by"
         value="incrementValue"
@@ -208,6 +217,7 @@
         bind:editRecordsPerIncrement
         bind:editPad
         bind:editPrefix
+        bind:editSuffix
         bind:changeMade
         {hasSerial}
         {serialPadded}
@@ -227,6 +237,7 @@
         bind:editRecordsPerIncrement
         bind:editPad
         bind:editPrefix
+        bind:editSuffix
         {fieldClone}
         fieldId="Records Per Increment"
         value="recordsPerIncrement"
@@ -249,6 +260,7 @@
         bind:editRecordsPerIncrement
         bind:editPad
         bind:editPrefix
+        bind:editSuffix
         bind:changeMade
         {hasSerial}
         {serialPadded}
@@ -268,6 +280,7 @@
         bind:editRecordsPerIncrement
         bind:editPad
         bind:editPrefix
+        bind:editSuffix
         {fieldClone}
         fieldId="Serial Padded"
         value="serialPadded"
@@ -295,6 +308,7 @@
         bind:editRecordsPerIncrement
         bind:editPad
         bind:editPrefix
+        bind:editSuffix
         bind:changeMade
         {hasSerial}
         {serialPadded}
@@ -315,6 +329,7 @@
       bind:editRecordsPerIncrement
       bind:editPad
       bind:editPrefix
+      bind:editSuffix
       {fieldClone}
       fieldId="Prefix"
       value="prefix"
@@ -332,6 +347,7 @@
       bind:editRecordsPerIncrement
       bind:editPad
       bind:editPrefix
+      bind:editSuffix
       bind:changeMade
       {hasSerial}
       {serialPadded}
@@ -343,7 +359,43 @@
     />
   {/if}
 
-  <p>suffix: {suffix}</p>
+  {#if !editMode}
+    <EditFieldButton
+      bind:editFieldName
+      bind:editSerial
+      bind:editIncrement
+      bind:editRecordsPerIncrement
+      bind:editPad
+      bind:editPrefix
+      bind:editSuffix
+      {fieldClone}
+      fieldId="Suffix"
+      value="suffix"
+    />
+  {/if}
+
+  {#if editSuffix}
+    <SetSuffix bind:suffix />
+    <UpdateValuesButtons
+      bind:fieldClone
+      bind:field
+      bind:editFieldName
+      bind:editSerial
+      bind:editIncrement
+      bind:editRecordsPerIncrement
+      bind:editPad
+      bind:editPrefix
+      bind:editSuffix
+      bind:changeMade
+      {hasSerial}
+      {serialPadded}
+      {padLead}
+      {padTrail}
+      value={suffix}
+      validCheck={true}
+      fieldToEditName="suffix"
+    />
+  {/if}
   <p>type: {type}</p>
   {#if !editMode}
     <button on:click={hideEditPanel}>CANCEL & CLOSE</button>
