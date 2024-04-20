@@ -6,6 +6,7 @@
   import SetIncrement from "$lib/components/SetIncrement.svelte";
   import SetPadCharacter from "$lib/components/SetPadCharacter.svelte";
   import SetPadLength from "$lib/components/SetPadLength.svelte";
+  import SetPrefix from "$lib/components/SetPrefix.svelte";
   import SetRecordsPerIncrement from "$lib/components/SetRecordsPerIncrement.svelte";
   import SetSerial from "$lib/components/SetSerial.svelte";
   import SetSerialPadded from "$lib/components/SetSerialPadded.svelte";
@@ -48,18 +49,21 @@
   let editPad = false;
   $: serialPadded = !editPad ? fieldClone.serialPadded : serialPadded;
   $: padLength = !editPad ? fieldClone.padLength : padLength;
-  // CONTINUE FROM HERE
   $: padLead = !editPad ? fieldClone.padLead : padLead;
   $: padTrail = !editPad ? fieldClone.padTrail : padTrail;
+
+  // PREFIX/SUFFIX VARIABLES
+  let editPrefix = false;
+  $: prefix = !editPrefix ? fieldClone.prefix : prefix;
+  // CONTINUE FROM HERE
 
   $: editMode =
     editFieldName ||
     editSerial ||
     editIncrement ||
     editRecordsPerIncrement ||
-    editPad;
-
-  // $: viewButtons = !editFieldName && !editSerial && !editIncrement && !editPad;
+    editPad ||
+    editPrefix;
 
   $: saveButtonDisabled =
     !changeMade ||
@@ -105,6 +109,7 @@
       bind:editIncrement
       bind:editRecordsPerIncrement
       bind:editPad
+      bind:editPrefix
       {fieldClone}
       fieldId="Field Name"
       value="name"
@@ -122,6 +127,7 @@
       bind:editIncrement
       bind:editRecordsPerIncrement
       bind:editPad
+      bind:editPrefix
       bind:changeMade
       {hasSerial}
       {serialPadded}
@@ -140,6 +146,7 @@
       bind:editIncrement
       bind:editRecordsPerIncrement
       bind:editPad
+      bind:editPrefix
       {fieldClone}
       fieldId="Serial"
       value="serial"
@@ -162,6 +169,7 @@
       bind:editIncrement
       bind:editRecordsPerIncrement
       bind:editPad
+      bind:editPrefix
       bind:changeMade
       {hasSerial}
       {serialPadded}
@@ -181,6 +189,7 @@
         bind:editIncrement
         bind:editRecordsPerIncrement
         bind:editPad
+        bind:editPrefix
         {fieldClone}
         fieldId="Increment serial by"
         value="incrementValue"
@@ -198,6 +207,7 @@
         bind:editIncrement
         bind:editRecordsPerIncrement
         bind:editPad
+        bind:editPrefix
         bind:changeMade
         {hasSerial}
         {serialPadded}
@@ -216,6 +226,7 @@
         bind:editIncrement
         bind:editRecordsPerIncrement
         bind:editPad
+        bind:editPrefix
         {fieldClone}
         fieldId="Records Per Increment"
         value="recordsPerIncrement"
@@ -237,6 +248,7 @@
         bind:editIncrement
         bind:editRecordsPerIncrement
         bind:editPad
+        bind:editPrefix
         bind:changeMade
         {hasSerial}
         {serialPadded}
@@ -255,6 +267,7 @@
         bind:editIncrement
         bind:editRecordsPerIncrement
         bind:editPad
+        bind:editPrefix
         {fieldClone}
         fieldId="Serial Padded"
         value="serialPadded"
@@ -281,18 +294,55 @@
         bind:editIncrement
         bind:editRecordsPerIncrement
         bind:editPad
+        bind:editPrefix
         bind:changeMade
         {hasSerial}
         {serialPadded}
         {padLead}
         {padTrail}
-        value={padLength}
+        value={prefix}
         validCheck={validPadLength}
-        fieldToEditName="padLength"
+        fieldToEditName="prefix"
       />
     {/if}
   {/if}
-  <p>prefix: {prefix}</p>
+
+  {#if !editMode}
+    <EditFieldButton
+      bind:editFieldName
+      bind:editSerial
+      bind:editIncrement
+      bind:editRecordsPerIncrement
+      bind:editPad
+      bind:editPrefix
+      {fieldClone}
+      fieldId="Prefix"
+      value="prefix"
+    />
+  {/if}
+
+  {#if editPrefix}
+    <SetPrefix bind:prefix />
+    <UpdateValuesButtons
+      bind:fieldClone
+      bind:field
+      bind:editFieldName
+      bind:editSerial
+      bind:editIncrement
+      bind:editRecordsPerIncrement
+      bind:editPad
+      bind:editPrefix
+      bind:changeMade
+      {hasSerial}
+      {serialPadded}
+      {padLead}
+      {padTrail}
+      value={prefix}
+      validCheck={true}
+      fieldToEditName="prefix"
+    />
+  {/if}
+
   <p>suffix: {suffix}</p>
   <p>type: {type}</p>
   {#if !editMode}

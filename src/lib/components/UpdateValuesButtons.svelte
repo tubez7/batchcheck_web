@@ -15,6 +15,7 @@
   export let padLead;
   export let padTrail;
   export let validCheck;
+  export let editPrefix;
 
   // FUNCTIONS
   function cancelChange(fieldToCancel) {
@@ -28,6 +29,8 @@
       editRecordsPerIncrement = false;
     } else if (fieldToCancel === "padLength") {
       editPad = false;
+    } else if (fieldToCancel === "prefix") {
+      editPrefix = false;
     }
   }
 
