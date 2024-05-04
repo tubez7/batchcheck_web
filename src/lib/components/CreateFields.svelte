@@ -1,7 +1,7 @@
 <script>
   // IMPORTS
   import Field from "$lib/field";
-
+  import { onMount } from "svelte";
   // COMPONENTS
   import SetFieldName from "$lib/components/SetFieldName.svelte";
   import SetFieldType from "$lib/components/SetFieldType.svelte";
@@ -19,6 +19,13 @@
   export let fields;
 
   // VARIABLES
+  let initialised = false;
+
+  onMount(() => {
+    initialised = true;
+    //let standardField = true;
+    console.log("Mounted");
+  });
 
   // Set FieldName
   $: fieldNumber = fields.length + 1;
@@ -41,6 +48,7 @@
   //Set Pad
   let serialPadded = false;
   let padLength = null;
+  let minimumPadLength = null;
   let validPadLength = true;
   let padLead = "";
   let padTrail = "";
@@ -67,22 +75,24 @@
   }
 
   function setDefaults() {
-    hasSerial = false;
-    incrementValue = 0;
-    recordsPerIncrement = 1;
-    serialPadded = false;
-    padLength = null;
-    padLead = "";
-    padTrail = "";
-    prefix = "";
-    suffix = "";
-  }
-
-  $: {
-    if (standardField || !standardField) {
-      setDefaults();
+    if (initialised) {
+      console.log("setDefaults called DEBUGGING ONLY. Pls remove");
+      hasSerial = false;
+      serial = null;
+      incrementValue = 0;
+      recordsPerIncrement = 1;
+      serialPadded = false;
+      padLength = null;
+      padLead = "";
+      padTrail = "";
+      prefix = "";
+      suffix = "";
     }
   }
+
+  // $: standardField, initialised && setDefaults();
+
+  $: standardField, setDefaults();
 
   function handleReset(e) {
     if (e) {
@@ -90,6 +100,7 @@
     }
     fieldName = "";
     hasSerial = false;
+    serial = null;
     incrementValue = 0;
     recordsPerIncrement = 1;
     serialPadded = false;
@@ -162,6 +173,7 @@
         <SetPadLength
           bind:padLength
           bind:validPadLength
+          bind:minimumPadLength
           {serialPadded}
           {serial}
         />

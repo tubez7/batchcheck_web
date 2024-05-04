@@ -1,6 +1,7 @@
 <script>
   // COMPONENTS
   import EditFieldButton from "$lib/components/EditFieldButton.svelte";
+  import PopUp from "$lib/components/PopUp.svelte";
   import SetFieldName from "$lib/components/SetFieldName.svelte";
   import SetFieldType from "$lib/components/SetFieldType.svelte";
   import SetHasSerial from "$lib/components/SetHasSerial.svelte";
@@ -62,6 +63,7 @@
   // FIELD-TYPE VARIABLES
   let editType = false;
   $: type = !editType ? fieldClone.type : type;
+  $: standardField = type !== "Composite QR" && type !== "Composite-scan";
 
   $: editMode =
     editFieldName ||
@@ -97,7 +99,7 @@
 
 <br />
 <br />
-<div id="field-edit-popup">
+<PopUp>
   <p>THIS IS GOING TO BE A POP-UP OVERLAY WITH A Z-INDEX</p>
   {#if !editMode}
     <EditFieldButton
@@ -116,194 +118,228 @@
   {/if}
 
   {#if editFieldName}
-    <!-- EACH OF THESE WILL BE A POP UP -->
-    <SetFieldName bind:fieldName bind:validFieldName />
-    <UpdateValuesButtons
-      bind:fieldClone
-      bind:field
-      bind:editFieldName
-      bind:editSerial
-      bind:editIncrement
-      bind:editRecordsPerIncrement
-      bind:editPad
-      bind:editPrefix
-      bind:editSuffix
-      bind:editType
-      bind:changeMade
-      {hasSerial}
-      {serialPadded}
-      {padLead}
-      {padTrail}
-      value={fieldName}
-      validCheck={validFieldName}
-      fieldToEditName="name"
-    />
+    <PopUp class="editPopUp">
+      <!-- EACH OF THESE WILL BE A POP UP -->
+      <SetFieldName bind:fieldName bind:validFieldName />
+      <UpdateValuesButtons
+        bind:fieldClone
+        bind:field
+        bind:editFieldName
+        bind:editSerial
+        bind:editIncrement
+        bind:editRecordsPerIncrement
+        bind:editPad
+        bind:editPrefix
+        bind:editSuffix
+        bind:editType
+        bind:changeMade
+        {hasSerial}
+        {serialPadded}
+        {padLead}
+        {padTrail}
+        value={fieldName}
+        validCheck={validFieldName}
+        fieldToEditName="name"
+      />
+    </PopUp>
   {/if}
 
-  {#if !editMode}
-    <EditFieldButton
-      bind:editFieldName
-      bind:editSerial
-      bind:editIncrement
-      bind:editRecordsPerIncrement
-      bind:editPad
-      bind:editPrefix
-      bind:editSuffix
-      bind:editType
-      {fieldClone}
-      fieldId="Serial"
-      value="serial"
-    />
-  {/if}
+  {#if standardField}
+    {#if !editMode}
+      <EditFieldButton
+        bind:editFieldName
+        bind:editSerial
+        bind:editIncrement
+        bind:editRecordsPerIncrement
+        bind:editPad
+        bind:editPrefix
+        bind:editSuffix
+        bind:editType
+        {fieldClone}
+        fieldId="Serial"
+        value="serial"
+      />
+    {/if}
 
-  {#if editSerial}
-    <!-- EACH OF THESE WILL BE A POP UP -->
-    <SetHasSerial bind:hasSerial />
+    {#if editSerial}
+      <PopUp>
+        <!-- EACH OF THESE WILL BE A POP UP -->
+        <SetHasSerial bind:hasSerial />
+
+        {#if hasSerial}
+          <SetSerial bind:serial bind:validSerial {hasSerial} />
+        {/if}
+
+        <UpdateValuesButtons
+          bind:fieldClone
+          bind:field
+          bind:editFieldName
+          bind:editSerial
+          bind:editIncrement
+          bind:editRecordsPerIncrement
+          bind:editPad
+          bind:editPrefix
+          bind:editSuffix
+          bind:editType
+          bind:changeMade
+          {hasSerial}
+          {serialPadded}
+          {padLead}
+          {padTrail}
+          value={serial}
+          validCheck={validSerial}
+          fieldToEditName="serial"
+        />
+      </PopUp>
+    {/if}
 
     {#if hasSerial}
-      <SetSerial bind:serial bind:validSerial {hasSerial} />
-    {/if}
-
-    <UpdateValuesButtons
-      bind:fieldClone
-      bind:field
-      bind:editFieldName
-      bind:editSerial
-      bind:editIncrement
-      bind:editRecordsPerIncrement
-      bind:editPad
-      bind:editPrefix
-      bind:editSuffix
-      bind:editType
-      bind:changeMade
-      {hasSerial}
-      {serialPadded}
-      {padLead}
-      {padTrail}
-      value={serial}
-      validCheck={validSerial}
-      fieldToEditName="serial"
-    />
-  {/if}
-
-  {#if hasSerial}
-    {#if !editMode}
-      <EditFieldButton
-        bind:editFieldName
-        bind:editSerial
-        bind:editIncrement
-        bind:editRecordsPerIncrement
-        bind:editPad
-        bind:editPrefix
-        bind:editSuffix
-        bind:editType
-        {fieldClone}
-        fieldId="Increment serial by"
-        value="incrementValue"
-      />
-    {/if}
-
-    {#if editIncrement}
-      <!-- EACH OF THESE WILL BE A POP UP -->
-      <SetIncrement bind:incrementValue bind:validIncrement {hasSerial} />
-      <UpdateValuesButtons
-        bind:fieldClone
-        bind:field
-        bind:editFieldName
-        bind:editSerial
-        bind:editIncrement
-        bind:editRecordsPerIncrement
-        bind:editPad
-        bind:editPrefix
-        bind:editSuffix
-        bind:editType
-        bind:changeMade
-        {hasSerial}
-        {serialPadded}
-        {padLead}
-        {padTrail}
-        value={incrementValue}
-        validCheck={validIncrement}
-        fieldToEditName="incrementValue"
-      />
-    {/if}
-
-    {#if !editMode}
-      <EditFieldButton
-        bind:editFieldName
-        bind:editSerial
-        bind:editIncrement
-        bind:editRecordsPerIncrement
-        bind:editPad
-        bind:editPrefix
-        bind:editSuffix
-        bind:editType
-        {fieldClone}
-        fieldId="Records Per Increment"
-        value="recordsPerIncrement"
-      />
-    {/if}
-
-    {#if editRecordsPerIncrement}
-      <!-- EACH OF THESE WILL BE A POP UP -->
-      <SetRecordsPerIncrement
-        bind:recordsPerIncrement
-        bind:validRecordsPerIncrement
-        {hasSerial}
-      />
-      <UpdateValuesButtons
-        bind:fieldClone
-        bind:field
-        bind:editFieldName
-        bind:editSerial
-        bind:editIncrement
-        bind:editRecordsPerIncrement
-        bind:editPad
-        bind:editPrefix
-        bind:editSuffix
-        bind:editType
-        bind:changeMade
-        {hasSerial}
-        {serialPadded}
-        {padLead}
-        {padTrail}
-        value={recordsPerIncrement}
-        validCheck={validRecordsPerIncrement}
-        fieldToEditName="recordsPerIncrement"
-      />
-    {/if}
-
-    {#if !editMode}
-      <EditFieldButton
-        bind:editFieldName
-        bind:editSerial
-        bind:editIncrement
-        bind:editRecordsPerIncrement
-        bind:editPad
-        bind:editPrefix
-        bind:editSuffix
-        bind:editType
-        {fieldClone}
-        fieldId="Serial Padded"
-        value="serialPadded"
-      />
-    {/if}
-
-    {#if editPad}
-      <!-- EACH OF THESE WILL BE A POP UP -->
-      <SetSerialPadded bind:serialPadded />
-      {#if serialPadded}
-        <SetPadLength
-          bind:padLength
-          bind:validPadLength
-          {serialPadded}
-          {serial}
+      {#if !editMode}
+        <EditFieldButton
+          bind:editFieldName
+          bind:editSerial
+          bind:editIncrement
+          bind:editRecordsPerIncrement
+          bind:editPad
+          bind:editPrefix
+          bind:editSuffix
+          bind:editType
+          {fieldClone}
+          fieldId="Increment serial by"
+          value="incrementValue"
         />
-        <SetPadCharacter bind:padLead bind:padTrail />
       {/if}
-      <UpdateValuesButtons
-        bind:fieldClone
-        bind:field
+
+      {#if editIncrement}
+        <!-- EACH OF THESE WILL BE A POP UP -->
+        <PopUp>
+          <SetIncrement bind:incrementValue bind:validIncrement {hasSerial} />
+          <UpdateValuesButtons
+            bind:fieldClone
+            bind:field
+            bind:editFieldName
+            bind:editSerial
+            bind:editIncrement
+            bind:editRecordsPerIncrement
+            bind:editPad
+            bind:editPrefix
+            bind:editSuffix
+            bind:editType
+            bind:changeMade
+            {hasSerial}
+            {serialPadded}
+            {padLead}
+            {padTrail}
+            value={incrementValue}
+            validCheck={validIncrement}
+            fieldToEditName="incrementValue"
+          />
+        </PopUp>
+      {/if}
+
+      {#if !editMode}
+        <EditFieldButton
+          bind:editFieldName
+          bind:editSerial
+          bind:editIncrement
+          bind:editRecordsPerIncrement
+          bind:editPad
+          bind:editPrefix
+          bind:editSuffix
+          bind:editType
+          {fieldClone}
+          fieldId="Records Per Increment"
+          value="recordsPerIncrement"
+        />
+      {/if}
+
+      {#if editRecordsPerIncrement}
+        <!-- EACH OF THESE WILL BE A POP UP -->
+        <PopUp>
+          <SetRecordsPerIncrement
+            bind:recordsPerIncrement
+            bind:validRecordsPerIncrement
+            {hasSerial}
+          />
+          <UpdateValuesButtons
+            bind:fieldClone
+            bind:field
+            bind:editFieldName
+            bind:editSerial
+            bind:editIncrement
+            bind:editRecordsPerIncrement
+            bind:editPad
+            bind:editPrefix
+            bind:editSuffix
+            bind:editType
+            bind:changeMade
+            {hasSerial}
+            {serialPadded}
+            {padLead}
+            {padTrail}
+            value={recordsPerIncrement}
+            validCheck={validRecordsPerIncrement}
+            fieldToEditName="recordsPerIncrement"
+          />
+        </PopUp>
+      {/if}
+
+      {#if !editMode}
+        <EditFieldButton
+          bind:editFieldName
+          bind:editSerial
+          bind:editIncrement
+          bind:editRecordsPerIncrement
+          bind:editPad
+          bind:editPrefix
+          bind:editSuffix
+          bind:editType
+          {fieldClone}
+          fieldId="Serial Padded"
+          value="serialPadded"
+        />
+      {/if}
+
+      {#if editPad}
+        <!-- EACH OF THESE WILL BE A POP UP -->
+        <PopUp>
+          <SetSerialPadded bind:serialPadded />
+          {#if serialPadded}
+            <SetPadLength
+              bind:padLength
+              bind:validPadLength
+              minimumPadLength={null}
+              {serialPadded}
+              {serial}
+            />
+            <SetPadCharacter bind:padLead bind:padTrail />
+          {/if}
+          <UpdateValuesButtons
+            bind:fieldClone
+            bind:field
+            bind:editFieldName
+            bind:editSerial
+            bind:editIncrement
+            bind:editRecordsPerIncrement
+            bind:editPad
+            bind:editPrefix
+            bind:editSuffix
+            bind:editType
+            bind:changeMade
+            {hasSerial}
+            {serialPadded}
+            {padLead}
+            {padTrail}
+            value={padLength}
+            validCheck={validPadLength}
+            fieldToEditName="padLength"
+          />
+        </PopUp>
+      {/if}
+    {/if}
+
+    {#if !editMode}
+      <EditFieldButton
         bind:editFieldName
         bind:editSerial
         bind:editIncrement
@@ -312,100 +348,82 @@
         bind:editPrefix
         bind:editSuffix
         bind:editType
-        bind:changeMade
-        {hasSerial}
-        {serialPadded}
-        {padLead}
-        {padTrail}
-        value={prefix}
-        validCheck={validPadLength}
-        fieldToEditName="prefix"
+        {fieldClone}
+        fieldId="Prefix"
+        value="prefix"
       />
     {/if}
-  {/if}
 
-  {#if !editMode}
-    <EditFieldButton
-      bind:editFieldName
-      bind:editSerial
-      bind:editIncrement
-      bind:editRecordsPerIncrement
-      bind:editPad
-      bind:editPrefix
-      bind:editSuffix
-      bind:editType
-      {fieldClone}
-      fieldId="Prefix"
-      value="prefix"
-    />
-  {/if}
+    {#if editPrefix}
+      <!-- EACH OF THESE WILL BE A POP UP -->
+      <PopUp>
+        <SetPrefix bind:prefix />
+        <UpdateValuesButtons
+          bind:fieldClone
+          bind:field
+          bind:editFieldName
+          bind:editSerial
+          bind:editIncrement
+          bind:editRecordsPerIncrement
+          bind:editPad
+          bind:editPrefix
+          bind:editSuffix
+          bind:editType
+          bind:changeMade
+          {hasSerial}
+          {serialPadded}
+          {padLead}
+          {padTrail}
+          value={prefix}
+          validCheck={true}
+          fieldToEditName="prefix"
+        />
+      </PopUp>
+    {/if}
 
-  {#if editPrefix}
-    <!-- EACH OF THESE WILL BE A POP UP -->
-    <SetPrefix bind:prefix />
-    <UpdateValuesButtons
-      bind:fieldClone
-      bind:field
-      bind:editFieldName
-      bind:editSerial
-      bind:editIncrement
-      bind:editRecordsPerIncrement
-      bind:editPad
-      bind:editPrefix
-      bind:editSuffix
-      bind:editType
-      bind:changeMade
-      {hasSerial}
-      {serialPadded}
-      {padLead}
-      {padTrail}
-      value={prefix}
-      validCheck={true}
-      fieldToEditName="prefix"
-    />
-  {/if}
+    {#if !editMode}
+      <EditFieldButton
+        bind:editFieldName
+        bind:editSerial
+        bind:editIncrement
+        bind:editRecordsPerIncrement
+        bind:editPad
+        bind:editPrefix
+        bind:editSuffix
+        bind:editType
+        {fieldClone}
+        fieldId="Suffix"
+        value="suffix"
+      />
+    {/if}
 
-  {#if !editMode}
-    <EditFieldButton
-      bind:editFieldName
-      bind:editSerial
-      bind:editIncrement
-      bind:editRecordsPerIncrement
-      bind:editPad
-      bind:editPrefix
-      bind:editSuffix
-      bind:editType
-      {fieldClone}
-      fieldId="Suffix"
-      value="suffix"
-    />
+    {#if editSuffix}
+      <PopUp>
+        <!-- EACH OF THESE WILL BE A POP UP -->
+        <SetSuffix bind:suffix />
+        <UpdateValuesButtons
+          bind:fieldClone
+          bind:field
+          bind:editFieldName
+          bind:editSerial
+          bind:editIncrement
+          bind:editRecordsPerIncrement
+          bind:editPad
+          bind:editPrefix
+          bind:editSuffix
+          bind:editType
+          bind:changeMade
+          {hasSerial}
+          {serialPadded}
+          {padLead}
+          {padTrail}
+          value={suffix}
+          validCheck={true}
+          fieldToEditName="suffix"
+        />
+      </PopUp>
+    {/if}
   {/if}
-
-  {#if editSuffix}
-    <!-- EACH OF THESE WILL BE A POP UP -->
-    <SetSuffix bind:suffix />
-    <UpdateValuesButtons
-      bind:fieldClone
-      bind:field
-      bind:editFieldName
-      bind:editSerial
-      bind:editIncrement
-      bind:editRecordsPerIncrement
-      bind:editPad
-      bind:editPrefix
-      bind:editSuffix
-      bind:editType
-      bind:changeMade
-      {hasSerial}
-      {serialPadded}
-      {padLead}
-      {padTrail}
-      value={suffix}
-      validCheck={true}
-      fieldToEditName="suffix"
-    />
-  {/if}
-
   {#if !editMode}
     <EditFieldButton
       bind:editFieldName
@@ -423,28 +441,30 @@
   {/if}
 
   {#if editType}
-    <!-- EACH OF THESE WILL BE A POP UP -->
-    <SetFieldType bind:type />
-    <UpdateValuesButtons
-      bind:fieldClone
-      bind:field
-      bind:editFieldName
-      bind:editSerial
-      bind:editIncrement
-      bind:editRecordsPerIncrement
-      bind:editPad
-      bind:editPrefix
-      bind:editSuffix
-      bind:editType
-      bind:changeMade
-      {hasSerial}
-      {serialPadded}
-      {padLead}
-      {padTrail}
-      value={type}
-      validCheck={true}
-      fieldToEditName="type"
-    />
+    <PopUp>
+      <!-- EACH OF THESE WILL BE A POP UP -->
+      <SetFieldType bind:type />
+      <UpdateValuesButtons
+        bind:fieldClone
+        bind:field
+        bind:editFieldName
+        bind:editSerial
+        bind:editIncrement
+        bind:editRecordsPerIncrement
+        bind:editPad
+        bind:editPrefix
+        bind:editSuffix
+        bind:editType
+        bind:changeMade
+        {hasSerial}
+        {serialPadded}
+        {padLead}
+        {padTrail}
+        value={type}
+        validCheck={true}
+        fieldToEditName="type"
+      />
+    </PopUp>
   {/if}
 
   {#if !editMode}
@@ -453,12 +473,11 @@
       >SAVE & UPDATE</button
     >
   {/if}
-</div>
-<br />
-<br />
+</PopUp>
 
 <style>
-  #field-edit-popup {
-    border-style: solid;
+  .editPopUp {
+    color:red;
+    --colour: aquamarine;
   }
 </style>

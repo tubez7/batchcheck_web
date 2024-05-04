@@ -26,15 +26,39 @@
 <fieldset>
   <legend>Batch-Check Constructor</legend>
   <p>NB - * denotes a mandatory field</p>
-  <form>
-    <fieldset>
-      <SetRecords bind:records />
-    </fieldset>
-    <CreateFields bind:fields />
-  </form>
-  <FieldsEdit bind:fields {records} />
+
+  <div id="container">
+    <div id="left">
+      <form>
+        <SetRecords bind:records />
+        <CreateFields bind:fields />
+      </form>
+    </div>
+
+    <div id="right">
+      <FieldsEdit bind:fields {records} />
+    </div>
+  </div>
+
   <button disabled={!formValidated}>GENERATE BATCH_CHECK TABLE</button>
   {#if fields.length > 0}
     <button on:click={resetData} type="reset">RESET ALL</button>
   {/if}
 </fieldset>
+
+<style>
+  #container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  #left {
+    flex: 1;
+    max-width: 50%;
+  }
+
+  #right {
+    flex: 1;
+    max-width: 50%;
+  }
+</style>

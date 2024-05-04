@@ -7,6 +7,7 @@
   export let validPadLength;
   export let serialPadded;
   export let serial;
+  export let minimumPadLength;
 
   // VARIABLES
   $: minimumPadLength = serialPadded

@@ -7,13 +7,17 @@
   export let records;
 </script>
 
-{#if fields.length > 0}
-  <div>
-    <h2>EDIT BATCH-CHECK TABLE</h2>
+<div>
+  <fieldset>
+    <h2>EDIT FIELDS</h2>
     <h3>NUMBER OF BATCHES/RECORDS: {records}</h3>
 
-    {#each fields as field, i}
-      <FieldCard bind:fields {field} index={i} />
-    {/each}
-  </div>
-{/if}
+    {#if fields.length > 0}
+      <fieldset>
+        {#each fields as field, i}
+          <FieldCard bind:fields {field} index={i} />
+        {/each}
+      </fieldset>
+    {/if}
+  </fieldset>
+</div>

@@ -14,6 +14,7 @@
 
   // VARIABLES
   let displayValueText;
+  let padText;
 
   if (fieldId === "Serial") {
     if (!fieldClone.hasSerial) {
@@ -21,6 +22,13 @@
     } else {
       displayValueText = fieldClone[value]?.toString() || "0";
     }
+  } else if (fieldId === "Serial Padded") {
+    padText = fieldClone.padTrail
+      ? `Trail char (${fieldClone.padTrail})`
+      : fieldClone.padLead
+        ? `Lead char (${fieldClone.padLead})`
+        : "";
+    displayValueText = fieldClone[value] + ": " + padText;
   } else if (fieldId === "Prefix" || fieldId === "Suffix") {
     displayValueText = fieldClone[value] === "" ? "None" : fieldClone[value];
   } else {
