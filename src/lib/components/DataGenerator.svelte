@@ -29,7 +29,7 @@
   $: console.log("fieldToEdit = ", fieldToEdit);
 </script>
 
-<fieldset>
+<fieldset id="data-generator-box">
   <legend>Batch-Check Constructor</legend>
   <p>NB - * denotes a mandatory field</p>
 
@@ -81,5 +81,9 @@
   #right {
     flex: 1;
     max-width: 50%;
+  }
+
+  #data-generator-box {
+    background-color: lightsalmon;
   }
 </style>

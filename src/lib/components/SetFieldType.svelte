@@ -3,6 +3,11 @@
   export let type;
 </script>
 
+<p>
+  Nb - Composite fields are special fields that only require a name. Their value
+  is set from the Edit Field Menu
+</p>
+
 <input
   type="radio"
   id="fieldType1"
@@ -21,15 +26,15 @@
 />
 <label for="fieldType2">QR Code</label>
 <input
-type="radio"
-id="fieldType3"
-name="field-type"
-value="Visible-scan"
-bind:group={type}
+  type="radio"
+  id="fieldType3"
+  name="field-type"
+  value="Visible-scan"
+  bind:group={type}
 />
 <label for="fieldType3">Visible Scan Check</label>
 <input
-type="radio"
+  type="radio"
   id="fieldType4"
   name="field-type"
   value="Invisible-scan"
@@ -42,14 +47,13 @@ type="radio"
   name="field-type"
   value="Composite-scan"
   bind:group={type}
-  />
-  <label for="fieldType5">Composite-Field Scan Check</label>
-  <input
-    type="radio"
-    id="fieldType6"
-    name="field-type"
-    value="Composite QR"
-    bind:group={type}
-  />
-  <label for="fieldType6">Composite QR</label>
-  
+/>
+<label for="fieldType5">Composite-Field Scan Check</label>
+<input
+  type="radio"
+  id="fieldType6"
+  name="field-type"
+  value="Composite QR"
+  bind:group={type}
+/>
+<label for="fieldType6">Composite QR</label>

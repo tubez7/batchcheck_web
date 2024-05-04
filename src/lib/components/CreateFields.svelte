@@ -142,14 +142,10 @@
   }
 </script>
 
-<fieldset>
+<fieldset id="create-field-box">
   <h2>Field Type</h2>
   <SetFieldType bind:type />
-  <p>
-    Nb - Composite fields are special fields that only require a name. Their
-    value is set from the Edit Field Menu
-  </p>
-
+ 
   <h2>Field Creation</h2>
   <SetFieldName bind:fieldName bind:validFieldName />
   <br />
@@ -196,3 +192,9 @@
   >
   <button on:click={handleReset} type="reset">Reset Field Values</button>
 </fieldset>
+
+<style>
+  #create-field-box {
+    background-color: lightgreen;
+  }
+</style>

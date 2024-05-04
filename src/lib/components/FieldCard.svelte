@@ -26,7 +26,7 @@
   );
 </script>
 
-<div>
+<div id="card">
   FIELD NUMBER: {field.fieldNumber}
   <br />
   INDEX IN FIELDS: {index}
@@ -67,3 +67,11 @@
   <br />
   <button>MOVE DOWN</button>
 </div>
+
+<style>
+  #card {
+    border-style: dotted;
+    background-color: pink;
+    margin: 0.5em;
+  }
+</style>

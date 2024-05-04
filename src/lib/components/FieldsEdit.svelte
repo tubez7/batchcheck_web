@@ -11,7 +11,7 @@
 </script>
 
 <div>
-  <fieldset>
+  <fieldset id="edit-field-box">
     <h2>EDIT FIELDS</h2>
     <h3>NUMBER OF BATCHES/RECORDS: {records}</h3>
 
@@ -31,3 +31,9 @@
     {/if}
   </fieldset>
 </div>
+
+<style>
+  #edit-field-box {
+    background-color: beige;
+  }
+</style>

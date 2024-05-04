@@ -9,7 +9,7 @@
   $: records = records === "" ? 0 : parseInt(records);
 </script>
 
-<fieldset>
+<fieldset id="set-records-box">
   <h2>Records</h2>
   <p>Set the total number of records or batches for the job</p>
   <label for="batch-quantity">Batch/Record Qty*: </label>
@@ -25,3 +25,9 @@
     <p>(Values below 1 are not valid)</p>
   {/if}
 </fieldset>
+
+<style>
+  #set-records-box {
+    background-color: lightblue;
+  }
+</style>
