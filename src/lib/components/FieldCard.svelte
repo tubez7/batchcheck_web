@@ -1,25 +1,35 @@
 <script>
-  // COMPONENTS
-  import FieldEditPanel from "$lib/components/FieldEditPanel.svelte";
-
   // PROPS
   export let fields;
   export let field;
   export let index;
+  export let indexToEdit;
+  export let editPanelVisible;
+  export let fieldToEdit;
 
   // VARIABLES
-  let editPanelVisible = false;
-  $: standardField = field.type !== "Composite QR" && field.type !== "Composite-scan";
+  $: standardField =
+    field.type !== "Composite QR" && field.type !== "Composite-scan";
 
   // FUNCTIONS
   function showEditPanel(e) {
     e.preventDefault();
     editPanelVisible = true;
+    indexToEdit = index;
+    fieldToEdit = field;
   }
+  console.log(
+    "USING VARIABLE HERE TO PREVENT ERRORING UNTIL NEEDED",
+    fields,
+    indexToEdit,
+    fieldToEdit
+  );
 </script>
 
 <div>
   FIELD NUMBER: {field.fieldNumber}
+  <br />
+  INDEX IN FIELDS: {index}
   <br />
   FIELD NAME: {field.name}
   <br />
@@ -57,6 +67,3 @@
   <br />
   <button>MOVE DOWN</button>
 </div>
-{#if editPanelVisible}
-  <FieldEditPanel bind:fields bind:editPanelVisible bind:field {index} />
-{/if}

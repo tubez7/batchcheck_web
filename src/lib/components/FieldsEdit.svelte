@@ -5,6 +5,9 @@
   // PROPS
   export let fields;
   export let records;
+  export let indexToEdit;
+  export let fieldToEdit;
+  export let editPanelVisible;
 </script>
 
 <div>
@@ -15,7 +18,14 @@
     {#if fields.length > 0}
       <fieldset>
         {#each fields as field, i}
-          <FieldCard bind:fields {field} index={i} />
+          <FieldCard
+            bind:fields
+            bind:indexToEdit
+            bind:fieldToEdit
+            bind:editPanelVisible
+            {field}
+            index={i}
+          />
         {/each}
       </fieldset>
     {/if}

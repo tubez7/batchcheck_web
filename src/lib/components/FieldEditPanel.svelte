@@ -118,7 +118,7 @@
   {/if}
 
   {#if editFieldName}
-    <PopUp class="editPopUp">
+    <PopUp --colour="aquamarine">
       <!-- EACH OF THESE WILL BE A POP UP -->
       <SetFieldName bind:fieldName bind:validFieldName />
       <UpdateValuesButtons
@@ -162,7 +162,7 @@
     {/if}
 
     {#if editSerial}
-      <PopUp>
+      <PopUp --colour="aquamarine">
         <!-- EACH OF THESE WILL BE A POP UP -->
         <SetHasSerial bind:hasSerial />
 
@@ -212,7 +212,7 @@
 
       {#if editIncrement}
         <!-- EACH OF THESE WILL BE A POP UP -->
-        <PopUp>
+        <PopUp --colour="aquamarine">
           <SetIncrement bind:incrementValue bind:validIncrement {hasSerial} />
           <UpdateValuesButtons
             bind:fieldClone
@@ -255,7 +255,7 @@
 
       {#if editRecordsPerIncrement}
         <!-- EACH OF THESE WILL BE A POP UP -->
-        <PopUp>
+        <PopUp --colour="aquamarine">
           <SetRecordsPerIncrement
             bind:recordsPerIncrement
             bind:validRecordsPerIncrement
@@ -302,7 +302,7 @@
 
       {#if editPad}
         <!-- EACH OF THESE WILL BE A POP UP -->
-        <PopUp>
+        <PopUp --colour="aquamarine">
           <SetSerialPadded bind:serialPadded />
           {#if serialPadded}
             <SetPadLength
@@ -356,7 +356,7 @@
 
     {#if editPrefix}
       <!-- EACH OF THESE WILL BE A POP UP -->
-      <PopUp>
+      <PopUp --colour="aquamarine">
         <SetPrefix bind:prefix />
         <UpdateValuesButtons
           bind:fieldClone
@@ -398,7 +398,7 @@
     {/if}
 
     {#if editSuffix}
-      <PopUp>
+      <PopUp --colour="aquamarine">
         <!-- EACH OF THESE WILL BE A POP UP -->
         <SetSuffix bind:suffix />
         <UpdateValuesButtons
@@ -441,7 +441,7 @@
   {/if}
 
   {#if editType}
-    <PopUp>
+    <PopUp --colour="aquamarine">
       <!-- EACH OF THESE WILL BE A POP UP -->
       <SetFieldType bind:type />
       <UpdateValuesButtons
@@ -474,10 +474,3 @@
     >
   {/if}
 </PopUp>
-
-<style>
-  .editPopUp {
-    color:red;
-    --colour: aquamarine;
-  }
-</style>

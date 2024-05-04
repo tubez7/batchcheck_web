@@ -1,6 +1,7 @@
 <script>
   // COMPONENTS
   import CreateFields from "$lib/components/CreateFields.svelte";
+  import FieldEditPanel from "$lib/components/FieldEditPanel.svelte";
   import FieldsEdit from "$lib/components/FieldsEdit.svelte";
   import SetRecords from "$lib/components/SetRecords.svelte";
 
@@ -8,6 +9,9 @@
   let fields = [];
   let records = 1;
   $: formValidated = fields.length > 0 && records > 0;
+  let editPanelVisible = false;
+  let indexToEdit = 0;
+  let fieldToEdit = {};
 
   // FUNCTIONS
   function resetData(e) {
@@ -18,9 +22,11 @@
   }
 
   // DEBUG WATCHERS
-  $: console.log("Records = ", records);
-  $: console.log("Fields = ", fields);
-  $: console.log("formValidated = ", formValidated);
+  // $: console.log("Records = ", records);
+  // $: console.log("Fields = ", fields);
+  // $: console.log("formValidated = ", formValidated);
+  $: console.log("indexToEdit = ", indexToEdit);
+  $: console.log("fieldToEdit = ", fieldToEdit);
 </script>
 
 <fieldset>
@@ -36,7 +42,13 @@
     </div>
 
     <div id="right">
-      <FieldsEdit bind:fields {records} />
+      <FieldsEdit
+        bind:fields
+        bind:indexToEdit
+        bind:fieldToEdit
+        bind:editPanelVisible
+        {records}
+      />
     </div>
   </div>
 
@@ -45,6 +57,15 @@
     <button on:click={resetData} type="reset">RESET ALL</button>
   {/if}
 </fieldset>
+
+{#if editPanelVisible}
+  <FieldEditPanel
+    bind:fields
+    bind:editPanelVisible
+    field={fieldToEdit}
+    index={indexToEdit}
+  />
+{/if}
 
 <style>
   #container {
