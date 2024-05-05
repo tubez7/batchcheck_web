@@ -24,11 +24,13 @@
     }
   } else if (fieldId === "Serial Padded") {
     padText = fieldClone.padTrail
-      ? `Trail char (${fieldClone.padTrail})`
+      ? `Trail pad char (${fieldClone.padTrail})`
       : fieldClone.padLead
-        ? `Lead char (${fieldClone.padLead})`
+        ? `Lead pad char (${fieldClone.padLead})`
         : "";
-    displayValueText = fieldClone[value] + ": " + padText;
+    displayValueText = fieldClone.serialPadded
+      ? "Pad Length = " + fieldClone.padLength + ": " + padText
+      : "N/A";
   } else if (fieldId === "Prefix" || fieldId === "Suffix") {
     displayValueText = fieldClone[value] === "" ? "None" : fieldClone[value];
   } else {
@@ -37,14 +39,14 @@
 
   // FUNCTIONS
   function setValuesToFalse() {
-      editFieldName = false;
-      editSerial = false;
-      editIncrement = false;
-      editRecordsPerIncrement = false;
-      editPad = false;
-      editPrefix = false;
-      editSuffix = false;
-      editType = false;
+    editFieldName = false;
+    editSerial = false;
+    editIncrement = false;
+    editRecordsPerIncrement = false;
+    editPad = false;
+    editPrefix = false;
+    editSuffix = false;
+    editType = false;
   }
 
   function viewEditField(fieldToEdit) {

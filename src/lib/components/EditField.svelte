@@ -65,29 +65,29 @@
 
   // FIELD-TYPE VARIABLES
   $: type = !editType ? fieldClone.type : type;
-  $: standardField = type !== "Composite QR" && type !== "Composite-scan";
+  $: standardField = fieldClone.type !== "Composite QR" && fieldClone.type !== "Composite-scan";
 
   // FUNCTIONS
   function setDefaults() {
     if (initialised) {
       console.log("setDefaults called IN EDIT FIELD");
-      hasSerial = false;
-      serial = null;
-      incrementValue = 0;
-      recordsPerIncrement = 1;
-      serialPadded = false;
-      padLength = null;
-      padLead = "";
-      padTrail = "";
-      prefix = "";
-      suffix = "";
+      fieldClone.hasSerial = false;
+      fieldClone.serial = null;
+      fieldClone.incrementValue = 0;
+      fieldClone.recordsPerIncrement = 1;
+      fieldClone.serialPadded = false;
+      fieldClone.padLength = null;
+      fieldClone.padLead = "";
+      fieldClone.padTrail = "";
+      fieldClone.prefix = "";
+      fieldClone.suffix = "";
     }
   }
   $: standardField, setDefaults();
+  $: console.log("A CHANGE HAS BEEN MADE!!", changeMade);
 
   onMount(() => {
     initialised = true;
-    //let standardField = true;
     console.log("Mounted EDIT FIELD");
   });
 </script>
