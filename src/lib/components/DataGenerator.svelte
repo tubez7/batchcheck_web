@@ -2,7 +2,7 @@
   // COMPONENTS
   import CreateFields from "$lib/components/CreateFields.svelte";
   import FieldEditPanel from "$lib/components/FieldEditPanel.svelte";
-  import FieldsEdit from "$lib/components/FieldsEdit.svelte";
+  import EditFields from "$lib/components/EditFields.svelte";
   import SetRecords from "$lib/components/SetRecords.svelte";
 
   // VARIABLES
@@ -25,8 +25,8 @@
   // $: console.log("Records = ", records);
   // $: console.log("Fields = ", fields);
   // $: console.log("formValidated = ", formValidated);
-  $: console.log("indexToEdit = ", indexToEdit);
-  $: console.log("fieldToEdit = ", fieldToEdit);
+  // $: console.log("indexToEdit = ", indexToEdit);
+  //$: console.log("fieldToEdit = ", fieldToEdit);
 </script>
 
 <fieldset id="data-generator-box">
@@ -39,10 +39,14 @@
         <SetRecords bind:records />
         <CreateFields bind:fields />
       </form>
+      <button disabled={!formValidated}>GENERATE BATCH_CHECK TABLE</button>
+      {#if fields.length > 0}
+        <button on:click={resetData} type="reset">RESET ALL</button>
+      {/if}
     </div>
 
     <div id="right">
-      <FieldsEdit
+      <EditFields
         bind:fields
         bind:indexToEdit
         bind:fieldToEdit
@@ -51,11 +55,6 @@
       />
     </div>
   </div>
-
-  <button disabled={!formValidated}>GENERATE BATCH_CHECK TABLE</button>
-  {#if fields.length > 0}
-    <button on:click={resetData} type="reset">RESET ALL</button>
-  {/if}
 </fieldset>
 
 {#if editPanelVisible}

@@ -63,6 +63,9 @@
   <button>MOVE UP</button>
   <br />
   <button on:click={showEditPanel}>EDIT FIELD</button>
+  {#if field.type === "Composite-scan" || field.type === "Composite QR"}
+    <button>CREATE COMPOSITE FIELD</button>
+  {/if}
   <button>DELETE FIELD</button>
   <br />
   <button>MOVE DOWN</button>

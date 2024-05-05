@@ -90,8 +90,6 @@
     }
   }
 
-  // $: standardField, initialised && setDefaults();
-
   $: standardField, setDefaults();
 
   function handleReset(e) {
