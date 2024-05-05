@@ -65,7 +65,8 @@
 
   // FIELD-TYPE VARIABLES
   $: type = !editType ? fieldClone.type : type;
-  $: standardField = fieldClone.type !== "Composite QR" && fieldClone.type !== "Composite-scan";
+  $: standardField =
+    fieldClone.type !== "Composite QR" && fieldClone.type !== "Composite-scan";
 
   // FUNCTIONS
   function setDefaults() {
@@ -110,6 +111,104 @@
     fieldId="Field Name"
     value="name"
   />
+  {#if standardField}
+    <EditFieldButton
+      bind:editFieldName
+      bind:editSerial
+      bind:editIncrement
+      bind:editRecordsPerIncrement
+      bind:editPad
+      bind:editPrefix
+      bind:editSuffix
+      bind:editType
+      {fieldClone}
+      fieldId="Serial"
+      value="serial"
+    />
+    {#if hasSerial}
+      <EditFieldButton
+        bind:editFieldName
+        bind:editSerial
+        bind:editIncrement
+        bind:editRecordsPerIncrement
+        bind:editPad
+        bind:editPrefix
+        bind:editSuffix
+        bind:editType
+        {fieldClone}
+        fieldId="Increment serial by"
+        value="incrementValue"
+      />
+
+      <EditFieldButton
+        bind:editFieldName
+        bind:editSerial
+        bind:editIncrement
+        bind:editRecordsPerIncrement
+        bind:editPad
+        bind:editPrefix
+        bind:editSuffix
+        bind:editType
+        {fieldClone}
+        fieldId="Records Per Increment"
+        value="recordsPerIncrement"
+      />
+
+      <EditFieldButton
+        bind:editFieldName
+        bind:editSerial
+        bind:editIncrement
+        bind:editRecordsPerIncrement
+        bind:editPad
+        bind:editPrefix
+        bind:editSuffix
+        bind:editType
+        {fieldClone}
+        fieldId="Serial Padded"
+        value="serialPadded"
+      />
+    {/if}
+    <EditFieldButton
+      bind:editFieldName
+      bind:editSerial
+      bind:editIncrement
+      bind:editRecordsPerIncrement
+      bind:editPad
+      bind:editPrefix
+      bind:editSuffix
+      bind:editType
+      {fieldClone}
+      fieldId="Prefix"
+      value="prefix"
+    />
+
+    <EditFieldButton
+      bind:editFieldName
+      bind:editSerial
+      bind:editIncrement
+      bind:editRecordsPerIncrement
+      bind:editPad
+      bind:editPrefix
+      bind:editSuffix
+      bind:editType
+      {fieldClone}
+      fieldId="Suffix"
+      value="suffix"
+    />
+  {/if}
+  <EditFieldButton
+    bind:editFieldName
+    bind:editSerial
+    bind:editIncrement
+    bind:editRecordsPerIncrement
+    bind:editPad
+    bind:editPrefix
+    bind:editSuffix
+    bind:editType
+    {fieldClone}
+    fieldId="Field Type"
+    value="type"
+  />
 {/if}
 
 {#if editFieldName}
@@ -139,22 +238,6 @@
 {/if}
 
 {#if standardField}
-  {#if !editMode}
-    <EditFieldButton
-      bind:editFieldName
-      bind:editSerial
-      bind:editIncrement
-      bind:editRecordsPerIncrement
-      bind:editPad
-      bind:editPrefix
-      bind:editSuffix
-      bind:editType
-      {fieldClone}
-      fieldId="Serial"
-      value="serial"
-    />
-  {/if}
-
   {#if editSerial}
     <PopUp --colour="aquamarine">
       <SetHasSerial bind:hasSerial />
@@ -187,22 +270,6 @@
   {/if}
 
   {#if hasSerial}
-    {#if !editMode}
-      <EditFieldButton
-        bind:editFieldName
-        bind:editSerial
-        bind:editIncrement
-        bind:editRecordsPerIncrement
-        bind:editPad
-        bind:editPrefix
-        bind:editSuffix
-        bind:editType
-        {fieldClone}
-        fieldId="Increment serial by"
-        value="incrementValue"
-      />
-    {/if}
-
     {#if editIncrement}
       <PopUp --colour="aquamarine">
         <SetIncrement bind:incrementValue bind:validIncrement {hasSerial} />
@@ -227,22 +294,6 @@
           fieldToEditName="incrementValue"
         />
       </PopUp>
-    {/if}
-
-    {#if !editMode}
-      <EditFieldButton
-        bind:editFieldName
-        bind:editSerial
-        bind:editIncrement
-        bind:editRecordsPerIncrement
-        bind:editPad
-        bind:editPrefix
-        bind:editSuffix
-        bind:editType
-        {fieldClone}
-        fieldId="Records Per Increment"
-        value="recordsPerIncrement"
-      />
     {/if}
 
     {#if editRecordsPerIncrement}
@@ -273,22 +324,6 @@
           fieldToEditName="recordsPerIncrement"
         />
       </PopUp>
-    {/if}
-
-    {#if !editMode}
-      <EditFieldButton
-        bind:editFieldName
-        bind:editSerial
-        bind:editIncrement
-        bind:editRecordsPerIncrement
-        bind:editPad
-        bind:editPrefix
-        bind:editSuffix
-        bind:editType
-        {fieldClone}
-        fieldId="Serial Padded"
-        value="serialPadded"
-      />
     {/if}
 
     {#if editPad}
@@ -328,22 +363,6 @@
     {/if}
   {/if}
 
-  {#if !editMode}
-    <EditFieldButton
-      bind:editFieldName
-      bind:editSerial
-      bind:editIncrement
-      bind:editRecordsPerIncrement
-      bind:editPad
-      bind:editPrefix
-      bind:editSuffix
-      bind:editType
-      {fieldClone}
-      fieldId="Prefix"
-      value="prefix"
-    />
-  {/if}
-
   {#if editPrefix}
     <PopUp --colour="aquamarine">
       <SetPrefix bind:prefix />
@@ -368,22 +387,6 @@
         fieldToEditName="prefix"
       />
     </PopUp>
-  {/if}
-
-  {#if !editMode}
-    <EditFieldButton
-      bind:editFieldName
-      bind:editSerial
-      bind:editIncrement
-      bind:editRecordsPerIncrement
-      bind:editPad
-      bind:editPrefix
-      bind:editSuffix
-      bind:editType
-      {fieldClone}
-      fieldId="Suffix"
-      value="suffix"
-    />
   {/if}
 
   {#if editSuffix}
@@ -411,21 +414,6 @@
       />
     </PopUp>
   {/if}
-{/if}
-{#if !editMode}
-  <EditFieldButton
-    bind:editFieldName
-    bind:editSerial
-    bind:editIncrement
-    bind:editRecordsPerIncrement
-    bind:editPad
-    bind:editPrefix
-    bind:editSuffix
-    bind:editType
-    {fieldClone}
-    fieldId="Field Type"
-    value="type"
-  />
 {/if}
 
 {#if editType}
