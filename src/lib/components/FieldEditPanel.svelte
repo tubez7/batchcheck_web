@@ -1,6 +1,6 @@
 <script>
   // COMPONENTS
-  import EditField from "$lib/components/EditField.svelte";
+  import EditFieldButtons from "$lib/components/EditFieldButtons.svelte";
   import PopUp from "$lib/components/PopUp.svelte";
 
   // PROPS
@@ -69,7 +69,7 @@
 </script>
 
 <PopUp>
-  <EditField
+  <EditFieldButtons
     bind:fieldClone
     bind:field
     bind:changeMade
