@@ -143,48 +143,50 @@
 <fieldset id="create-field-box">
   <h2>Field Type</h2>
   <SetFieldType bind:type />
- 
+
   <h2>Field Creation</h2>
-  <SetFieldName bind:fieldName bind:validFieldName />
-  <br />
-  <br />
-  {#if standardField}
-    <SetHasSerial bind:hasSerial />
-    {#if hasSerial}
-      <SetSerial {hasSerial} bind:serial bind:validSerial />
-      <br />
-      <br />
-      <SetIncrement bind:incrementValue bind:validIncrement {hasSerial} />
-      <SetRecordsPerIncrement
-        bind:recordsPerIncrement
-        bind:validRecordsPerIncrement
-        {hasSerial}
-      />
-      <br />
-      <br />
-      <SetSerialPadded bind:serialPadded />
-      {#if serialPadded}
-        <SetPadLength
-          bind:padLength
-          bind:validPadLength
-          bind:minimumPadLength
-          {serialPadded}
-          {serial}
+  <fieldset>
+    <SetFieldName bind:fieldName bind:validFieldName />
+    <br />
+    <br />
+    {#if standardField}
+      <SetHasSerial bind:hasSerial />
+      {#if hasSerial}
+        <SetSerial {hasSerial} bind:serial bind:validSerial />
+        <br />
+        <br />
+        <SetIncrement bind:incrementValue bind:validIncrement {hasSerial} />
+        <SetRecordsPerIncrement
+          bind:recordsPerIncrement
+          bind:validRecordsPerIncrement
+          {hasSerial}
         />
         <br />
         <br />
-        <SetPadCharacter bind:padLead bind:padTrail />
+        <SetSerialPadded bind:serialPadded />
+        {#if serialPadded}
+          <SetPadLength
+            bind:padLength
+            bind:validPadLength
+            bind:minimumPadLength
+            {serialPadded}
+            {serial}
+          />
+          <br />
+          <br />
+          <SetPadCharacter bind:padLead bind:padTrail />
+        {/if}
       {/if}
+      <br />
+      <br />
+      <SetPrefix bind:prefix />
+      <br />
+      <br />
+      <SetSuffix bind:suffix />
     {/if}
     <br />
     <br />
-    <SetPrefix bind:prefix />
-    <br />
-    <br />
-    <SetSuffix bind:suffix />
-  {/if}
-  <br />
-  <br />
+  </fieldset>
   <button on:click={handleSubmit} type="submit" disabled={buttonDisable}
     >Add Field</button
   >

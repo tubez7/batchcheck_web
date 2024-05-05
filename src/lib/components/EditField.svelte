@@ -1,4 +1,7 @@
 <script>
+  // IMPORTS
+  import { onMount } from "svelte";
+
   // COMPONENTS
   import EditFieldButton from "$lib/components/EditFieldButton.svelte";
   import PopUp from "$lib/components/PopUp.svelte";
@@ -35,6 +38,7 @@
   export let editMode;
 
   // VARIABLES
+  let initialised = false;
 
   // FIELD NAME VARIABLES
   $: fieldName = !editFieldName ? fieldClone.name : fieldName;
@@ -62,6 +66,30 @@
   // FIELD-TYPE VARIABLES
   $: type = !editType ? fieldClone.type : type;
   $: standardField = type !== "Composite QR" && type !== "Composite-scan";
+
+  // FUNCTIONS
+  function setDefaults() {
+    if (initialised) {
+      console.log("setDefaults called IN EDIT FIELD");
+      hasSerial = false;
+      serial = null;
+      incrementValue = 0;
+      recordsPerIncrement = 1;
+      serialPadded = false;
+      padLength = null;
+      padLead = "";
+      padTrail = "";
+      prefix = "";
+      suffix = "";
+    }
+  }
+  $: standardField, setDefaults();
+
+  onMount(() => {
+    initialised = true;
+    //let standardField = true;
+    console.log("Mounted EDIT FIELD");
+  });
 </script>
 
 <br />

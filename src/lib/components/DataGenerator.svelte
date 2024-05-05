@@ -83,6 +83,6 @@
   }
 
   #data-generator-box {
-    background-color: lightsalmon;
+    background-color: beige;
   }
 </style>
