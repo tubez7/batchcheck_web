@@ -1,24 +1,32 @@
 <script>
   // COMPONENTS
   import CreateFields from "$lib/components/CreateFields.svelte";
-  import FieldEditPanel from "$lib/components/FieldEditPanel.svelte";
   import EditFields from "$lib/components/EditFields.svelte";
+  import FieldEditPanel from "$lib/components/FieldEditPanel.svelte";
   import SetRecords from "$lib/components/SetRecords.svelte";
 
   // VARIABLES
   let fields = [];
+  let fieldsClone = [];
   let records = 1;
   $: formValidated = fields.length > 0 && records > 0;
   let editPanelVisible = false;
   let indexToEdit = 0;
   let fieldToEdit = {};
+  let editMode = false;
 
   // FUNCTIONS
-  function resetData(e) {
-    // trigger warning here before executing
+  // function resetData(e) {
+  //   // trigger warning here before executing
+  //   e.preventDefault();
+  //   records = 1;
+  //   fields = [];
+  // }
+
+  function toggleEditMode(e) {
     e.preventDefault();
-    records = 1;
-    fields = [];
+    editMode = !editMode;
+    fieldsClone = [...fields];
   }
 
   // DEBUG WATCHERS
@@ -40,9 +48,9 @@
         <CreateFields bind:fields />
       </form>
       <button disabled={!formValidated}>GENERATE BATCH_CHECK TABLE</button>
-      {#if fields.length > 0}
-        <button on:click={resetData} type="reset">RESET ALL</button>
-      {/if}
+      <button on:click={toggleEditMode}
+        >{editMode ? "CREATE FIELD MODE" : "EDIT FIELD MODE"}</button
+      >
     </div>
 
     <div id="right">
@@ -51,19 +59,23 @@
         bind:indexToEdit
         bind:fieldToEdit
         bind:editPanelVisible
+        {fieldsClone}
         {records}
+        {editMode}
       />
     </div>
   </div>
 </fieldset>
 
-{#if editPanelVisible}
-  <FieldEditPanel
-    bind:fields
-    bind:editPanelVisible
-    field={fieldToEdit}
-    index={indexToEdit}
-  />
+{#if editMode}
+  {#if editPanelVisible}
+    <FieldEditPanel
+      bind:fields
+      bind:editPanelVisible
+      field={fieldToEdit}
+      index={indexToEdit}
+    />
+  {/if}
 {/if}
 
 <style>
