@@ -24,7 +24,7 @@
   id="serial"
   placeholder="0"
 />
-<span>Will default to 0 if not specified</span>
+<p>Will default to 0 if not specified</p>
 {#if !validSerial}
   <p>Serial serial by must be an integer of 0 or greater</p>
 {/if}

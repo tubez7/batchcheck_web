@@ -1,7 +1,7 @@
 <script>
   // IMPORTS
   import Field from "$lib/field";
-
+  import { onMount } from "svelte";
   // COMPONENTS
   import SetFieldName from "$lib/components/SetFieldName.svelte";
   import SetFieldType from "$lib/components/SetFieldType.svelte";
@@ -19,6 +19,12 @@
   export let fields;
 
   // VARIABLES
+  let initialised = false;
+
+  onMount(() => {
+    initialised = true;
+    console.log("CreateFields mounted");
+  });
 
   // Set FieldName
   $: fieldNumber = fields.length + 1;
@@ -41,6 +47,7 @@
   //Set Pad
   let serialPadded = false;
   let padLength = null;
+  let minimumPadLength = null;
   let validPadLength = true;
   let padLead = "";
   let padTrail = "";
@@ -51,6 +58,7 @@
 
   // Set Type
   let type = "Data";
+  $: standardField = type !== "Composite QR" && type !== "Composite-scan";
 
   // Reactive
   $: buttonDisable =
@@ -65,12 +73,31 @@
     fields = [...fields, field];
   }
 
+  function setDefaults() {
+    if (initialised) {
+      console.log(initialised, "setDefaults called DEBUGGING ONLY. Pls remove");
+      hasSerial = false;
+      serial = null;
+      incrementValue = 0;
+      recordsPerIncrement = 1;
+      serialPadded = false;
+      padLength = null;
+      padLead = "";
+      padTrail = "";
+      prefix = "";
+      suffix = "";
+    }
+  }
+
+  $: standardField, setDefaults();
+
   function handleReset(e) {
     if (e) {
       e.preventDefault();
     }
     fieldName = "";
     hasSerial = false;
+    serial = null;
     incrementValue = 0;
     recordsPerIncrement = 1;
     serialPadded = false;
@@ -112,51 +139,69 @@
   }
 </script>
 
-<fieldset>
+<fieldset id="create-field-box">
   <h2>Field Type</h2>
-  <SetFieldType bind:type />
+  <div class="field-seperators">
+    <SetFieldType bind:type />
+  </div>
 
   <h2>Field Creation</h2>
-  <SetFieldName bind:fieldName bind:validFieldName />
-  <br />
-  <br />
-  <SetHasSerial bind:hasSerial />
-  {#if hasSerial}
-    <SetSerial {hasSerial} bind:serial bind:validSerial />
-    <br />
-    <br />
-    <SetIncrement bind:incrementValue bind:validIncrement {hasSerial} />
-    <SetRecordsPerIncrement
-      bind:recordsPerIncrement
-      bind:validRecordsPerIncrement
-      {hasSerial}
-    />
-    <br />
-    <br />
-    <SetSerialPadded bind:serialPadded />
-    {#if serialPadded}
-      <SetPadLength
-        bind:padLength
-        bind:validPadLength
-        {serialPadded}
-        {serial}
-      />
-      <br />
-      <br />
-      <SetPadCharacter bind:padLead bind:padTrail />
+  <fieldset>
+    <div class="field-seperators">
+      <SetFieldName bind:fieldName bind:validFieldName />
+    </div>
+    {#if standardField}
+      <div class="field-seperators">
+        <SetHasSerial bind:hasSerial />
+      </div>
+      {#if hasSerial}
+        <div class="field-seperators">
+          <SetSerial {hasSerial} bind:serial bind:validSerial />
+        </div>
+        <div class="field-seperators">
+          <SetIncrement bind:incrementValue bind:validIncrement {hasSerial} />
+        </div>
+        <div class="field-seperators">
+          <SetRecordsPerIncrement
+            bind:recordsPerIncrement
+            bind:validRecordsPerIncrement
+            {hasSerial}
+          />
+        </div>
+        <div class="field-seperators">
+          <SetSerialPadded bind:serialPadded />
+        </div>
+        {#if serialPadded}
+          <div class="field-seperators">
+            <SetPadLength
+              bind:padLength
+              bind:validPadLength
+              bind:minimumPadLength
+              {serialPadded}
+              {serial}
+            />
+          </div>
+          <div class="field-seperators">
+            <SetPadCharacter bind:padLead bind:padTrail />
+          </div>
+        {/if}
+      {/if}
+      <div class="field-seperators">
+        <SetPrefix bind:prefix />
+      </div>
+      <div class="field-seperators">
+        <SetSuffix bind:suffix />
+      </div>
     {/if}
-  {/if}
-  <br />
-  <br />
-  <SetPrefix bind:prefix />
-  <br />
-  <br />
-  <SetSuffix bind:suffix />
-
-  <br />
-  <br />
+  </fieldset>
   <button on:click={handleSubmit} type="submit" disabled={buttonDisable}
     >Add Field</button
   >
   <button on:click={handleReset} type="reset">Reset Field Values</button>
 </fieldset>
+
+<style>
+  #create-field-box {
+    background-color: lightgreen;
+  }
+</style>

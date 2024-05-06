@@ -14,6 +14,7 @@
 
   // VARIABLES
   let displayValueText;
+  let padText;
 
   if (fieldId === "Serial") {
     if (!fieldClone.hasSerial) {
@@ -21,6 +22,15 @@
     } else {
       displayValueText = fieldClone[value]?.toString() || "0";
     }
+  } else if (fieldId === "Serial Padded") {
+    padText = fieldClone.padTrail
+      ? `Trail pad char (${fieldClone.padTrail})`
+      : fieldClone.padLead
+        ? `Lead pad char (${fieldClone.padLead})`
+        : "";
+    displayValueText = fieldClone.serialPadded
+      ? "Pad Length = " + fieldClone.padLength + ": " + padText
+      : "N/A";
   } else if (fieldId === "Prefix" || fieldId === "Suffix") {
     displayValueText = fieldClone[value] === "" ? "None" : fieldClone[value];
   } else {
@@ -28,79 +38,42 @@
   }
 
   // FUNCTIONS
+  function setValuesToFalse() {
+    editFieldName = false;
+    editSerial = false;
+    editIncrement = false;
+    editRecordsPerIncrement = false;
+    editPad = false;
+    editPrefix = false;
+    editSuffix = false;
+    editType = false;
+  }
+
   function viewEditField(fieldToEdit) {
     if (fieldToEdit === "name") {
+      setValuesToFalse();
       editFieldName = true;
-      editSerial = false;
-      editIncrement = false;
-      editRecordsPerIncrement = false;
-      editPad = false;
-      editPrefix = false;
-      editSuffix = false;
-      editType = false;
     } else if (fieldToEdit === "serial") {
+      setValuesToFalse();
       editSerial = true;
-      editFieldName = false;
-      editIncrement = false;
-      editRecordsPerIncrement = false;
-      editPad = false;
-      editPrefix = false;
-      editSuffix = false;
-      editType = false;
     } else if (fieldToEdit === "incrementValue") {
+      setValuesToFalse();
       editIncrement = true;
-      editFieldName = false;
-      editSerial = false;
-      editRecordsPerIncrement = false;
-      editPad = false;
-      editPrefix = false;
-      editSuffix = false;
-      editType = false;
     } else if (fieldToEdit === "recordsPerIncrement") {
+      setValuesToFalse();
       editRecordsPerIncrement = true;
-      editFieldName = false;
-      editSerial = false;
-      editIncrement = false;
-      editPad = false;
-      editPrefix = false;
-      editSuffix = false;
-      editType = false;
     } else if (fieldToEdit === "serialPadded") {
+      setValuesToFalse();
       editPad = true;
-      editRecordsPerIncrement = false;
-      editFieldName = false;
-      editSerial = false;
-      editIncrement = false;
-      editPrefix = false;
-      editSuffix = false;
-      editType = false;
     } else if (fieldToEdit === "prefix") {
+      setValuesToFalse();
       editPrefix = true;
-      editRecordsPerIncrement = false;
-      editFieldName = false;
-      editSerial = false;
-      editIncrement = false;
-      editPad = false;
-      editSuffix = false;
-      editType = false;
     } else if (fieldToEdit === "suffix") {
+      setValuesToFalse();
       editSuffix = true;
-      editRecordsPerIncrement = false;
-      editFieldName = false;
-      editSerial = false;
-      editIncrement = false;
-      editPad = false;
-      editPrefix = false;
-      editType = false;
     } else if (fieldToEdit === "type") {
+      setValuesToFalse();
       editType = true;
-      editRecordsPerIncrement = false;
-      editFieldName = false;
-      editSerial = false;
-      editIncrement = false;
-      editPad = false;
-      editPrefix = false;
-      editSuffix = false;
     }
   }
 

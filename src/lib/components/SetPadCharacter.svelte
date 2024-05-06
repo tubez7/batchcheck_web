@@ -8,7 +8,7 @@
   <p>
     Pad character*: {"(Will default to leading pad character of '0' if left unspecified"}
   </p>
-  <label for="pad-leading">Leading pad character: </label>
+  <label for="pad-lead">Leading pad character: </label>
   <input
     bind:value={padLead}
     type="text"
@@ -17,7 +17,7 @@
     placeholder="Enter a single pad character"
     disabled={padTrail.length > 0}
   />
-  <label for="pad-trailing">Trailing pad character: </label>
+  <label for="pad-trail">Trailing pad character: </label>
   <input
     bind:value={padTrail}
     type="text"

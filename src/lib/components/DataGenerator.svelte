@@ -1,13 +1,17 @@
 <script>
   // COMPONENTS
   import CreateFields from "$lib/components/CreateFields.svelte";
-  import FieldsEdit from "$lib/components/FieldsEdit.svelte";
+  import FieldEditPanel from "$lib/components/FieldEditPanel.svelte";
+  import EditFields from "$lib/components/EditFields.svelte";
   import SetRecords from "$lib/components/SetRecords.svelte";
 
   // VARIABLES
   let fields = [];
   let records = 1;
   $: formValidated = fields.length > 0 && records > 0;
+  let editPanelVisible = false;
+  let indexToEdit = 0;
+  let fieldToEdit = {};
 
   // FUNCTIONS
   function resetData(e) {
@@ -18,23 +22,67 @@
   }
 
   // DEBUG WATCHERS
-  $: console.log("Records = ", records);
-  $: console.log("Fields = ", fields);
-  $: console.log("formValidated = ", formValidated);
+  // $: console.log("Records = ", records);
+  // $: console.log("Fields = ", fields);
+  // $: console.log("formValidated = ", formValidated);
+  // $: console.log("indexToEdit = ", indexToEdit);
+  //$: console.log("fieldToEdit = ", fieldToEdit);
 </script>
 
-<fieldset>
+<fieldset id="data-generator-box">
   <legend>Batch-Check Constructor</legend>
   <p>NB - * denotes a mandatory field</p>
-  <form>
-    <fieldset>
-      <SetRecords bind:records />
-    </fieldset>
-    <CreateFields bind:fields />
-  </form>
-  <FieldsEdit bind:fields {records} />
-  <button disabled={!formValidated}>GENERATE BATCH_CHECK TABLE</button>
-  {#if fields.length > 0}
-    <button on:click={resetData} type="reset">RESET ALL</button>
-  {/if}
+
+  <div id="container">
+    <div id="left">
+      <form>
+        <SetRecords bind:records />
+        <CreateFields bind:fields />
+      </form>
+      <button disabled={!formValidated}>GENERATE BATCH_CHECK TABLE</button>
+      {#if fields.length > 0}
+        <button on:click={resetData} type="reset">RESET ALL</button>
+      {/if}
+    </div>
+
+    <div id="right">
+      <EditFields
+        bind:fields
+        bind:indexToEdit
+        bind:fieldToEdit
+        bind:editPanelVisible
+        {records}
+      />
+    </div>
+  </div>
 </fieldset>
+
+{#if editPanelVisible}
+  <FieldEditPanel
+    bind:fields
+    bind:editPanelVisible
+    field={fieldToEdit}
+    index={indexToEdit}
+  />
+{/if}
+
+<style>
+  #container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  #left {
+    flex: 1;
+    max-width: 50%;
+  }
+
+  #right {
+    flex: 1;
+    max-width: 50%;
+  }
+
+  #data-generator-box {
+    background-color: beige;
+  }
+</style>

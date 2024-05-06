@@ -1,59 +1,85 @@
 <script>
-  // COMPONENTS
-  import FieldEditPanel from "$lib/components/FieldEditPanel.svelte";
-
   // PROPS
   export let fields;
   export let field;
   export let index;
+  export let indexToEdit;
+  export let editPanelVisible;
+  export let fieldToEdit;
 
   // VARIABLES
-  let editPanelVisible = false;
+  $: standardField =
+    field.type !== "Composite QR" && field.type !== "Composite-scan";
 
   // FUNCTIONS
   function showEditPanel(e) {
     e.preventDefault();
     editPanelVisible = true;
+    indexToEdit = index;
+    fieldToEdit = field;
   }
+
+  function createCompositeData(e) {
+    e.preventDefault();
+    console.log(fields);
+  }
+  // console.log(
+  //   "USING VARIABLE HERE TO PREVENT ERRORING UNTIL NEEDED",
+  //   fields,
+  //   indexToEdit,
+  //   fieldToEdit
+  // );
 </script>
 
-<div>
+<div id="card">
   FIELD NUMBER: {field.fieldNumber}
+  <br />
+  INDEX IN FIELDS: {index}
   <br />
   FIELD NAME: {field.name}
   <br />
-  FIELD HAS SERIAL: {field.hasSerial}
-  <br />
-  {#if field.hasSerial}
-    FIELD SERIAL: {field.serial}
+  {#if standardField}
+    FIELD HAS SERIAL: {field.hasSerial}
     <br />
-    SERIAL INCREMENT VAL: {field.incrementValue}
+    {#if field.hasSerial}
+      FIELD SERIAL: {field.serial}
+      <br />
+      SERIAL INCREMENT VAL: {field.incrementValue}
+      <br />
+      SERIAL RECORDS PER INCREMENT: {field.recordsPerIncrement}
+      <br />
+      SERIAL HAS PAD: {field.serialPadded}
+      <br />
+      SERIAL PAD LENGTH: {field.padLength}
+      <br />
+      SERIAL PAD LEAD CHAR: {field.padLead}
+      <br />
+      SERIAL PAD TRAIL CHAR: {field.padTrail}
+      <br />
+    {/if}
+    FIELD PREFIX: {field.prefix}
     <br />
-    SERIAL RECORDS PER INCREMENT: {field.recordsPerIncrement}
-    <br />
-    SERIAL HAS PAD: {field.serialPadded}
-    <br />
-    SERIAL PAD LENGTH: {field.padLength}
-    <br />
-    SERIAL PAD LEAD CHAR: {field.padLead}
-    <br />
-    SERIAL PAD TRAIL CHAR: {field.padTrail}
+    FIELD SUFFIX: {field.suffix}
     <br />
   {/if}
-  FIELD PREFIX: {field.prefix}
-  <br />
-  FIELD SUFFIX: {field.suffix}
-  <br />
   FIELD TYPE: {field.type}
   <br />
   <br />
   <button>MOVE UP</button>
   <br />
   <button on:click={showEditPanel}>EDIT FIELD</button>
+  {#if !standardField}
+    <button on:click={createCompositeData}>CREATE COMPOSITE FIELD DATA</button>
+  {/if}
   <button>DELETE FIELD</button>
   <br />
   <button>MOVE DOWN</button>
 </div>
-{#if editPanelVisible}
-  <FieldEditPanel bind:fields bind:editPanelVisible bind:field {index} />
-{/if}
+
+<style>
+  #card {
+    border-style: dotted;
+    background-color: pink;
+    margin: 0.5em;
+  }
+</style>
