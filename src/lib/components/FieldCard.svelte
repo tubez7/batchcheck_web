@@ -1,4 +1,6 @@
 <script>
+  // IMPORTS
+  import { lowerArrayElement, raiseArrayElement } from "../../lib/utils";
   // PROPS
   export let fields;
   export let field;
@@ -10,6 +12,8 @@
   // VARIABLES
   $: standardField =
     field.type !== "Composite QR" && field.type !== "Composite-scan";
+  $: disableUp = index === 0;
+  $: disableDown = index === fields.length - 1;
 
   // FUNCTIONS
   function showEditPanel(e) {
@@ -27,11 +31,13 @@
   function moveFieldUp(e) {
     e.preventDefault();
     console.log("MOVE UP CLICKED");
+    fields = raiseArrayElement(fields, index);
   }
 
   function moveFieldDown(e) {
     e.preventDefault();
     console.log("MOVE DOWN CLICKED");
+    fields = lowerArrayElement(fields, index);
   }
   // console.log(
   //   "USING VARIABLE HERE TO PREVENT ERRORING UNTIL NEEDED",
@@ -75,7 +81,7 @@
   FIELD TYPE: {field.type}
   <br />
   <br />
-  <button on:click={moveFieldUp}>MOVE UP</button>
+  <button on:click={moveFieldUp} disabled={disableUp}>MOVE UP</button>
   <br />
   <button on:click={showEditPanel}>EDIT FIELD</button>
   {#if !standardField}
@@ -83,7 +89,7 @@
   {/if}
   <button>DELETE FIELD</button>
   <br />
-  <button on:click={moveFieldDown}>MOVE DOWN</button>
+  <button on:click={moveFieldDown} disabled={disableDown}>MOVE DOWN</button>
 </div>
 
 <style>

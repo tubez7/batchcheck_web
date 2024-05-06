@@ -1,6 +1,7 @@
 <script>
   // COMPONENTS
   import FieldCard from "$lib/components/FieldCard.svelte";
+  import FieldsSort from "$lib/components/FieldsSort.svelte";
 
   // PROPS
   export let fields;
@@ -14,6 +15,8 @@
   <fieldset id="edit-field-box">
     <h2>FIELD EDITOR</h2>
     <h3>NUMBER OF BATCHES/RECORDS: {records}</h3>
+
+    <FieldsSort bind:fields />
 
     {#if fields.length > 0}
       <fieldset id="card-box">
