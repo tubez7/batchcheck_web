@@ -19,5 +19,8 @@
   "type": "module",
   "jest": {
     "transform": {}
+  },
+  "dependencies": {
+    "lodash-es": "^4.17.21"
   }
 }

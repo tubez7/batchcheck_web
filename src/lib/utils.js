@@ -1,3 +1,5 @@
+import { isEqual } from "lodash-es";
+
 export const nonWhiteSpaceRegex = /\S/;
 export const globalNumericRegex = /\d/g;
 
@@ -51,4 +53,8 @@ export function reverseArrayOrder(array) {
   if (!array) return [];
   const arrayClone = [...array];
   return arrayClone.reverse();
+}
+
+export function compareEquality(value1, value2) {
+  return isEqual(value1, value2);
 }
