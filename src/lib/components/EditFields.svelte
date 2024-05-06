@@ -5,10 +5,12 @@
 
   // PROPS
   export let fields;
+  export let fieldsClone;
   export let records;
   export let indexToEdit;
   export let fieldToEdit;
   export let editPanelVisible;
+  export let editMode;
 </script>
 
 <div>
@@ -16,7 +18,7 @@
     <h2>FIELD EDITOR</h2>
     <h3>NUMBER OF BATCHES/RECORDS: {records}</h3>
 
-    <FieldsSort bind:fields />
+    <FieldsSort bind:fields {fieldsClone} {editMode} />
 
     {#if fields.length > 0}
       <fieldset id="card-box">
@@ -27,6 +29,7 @@
             bind:fieldToEdit
             bind:editPanelVisible
             {field}
+            {editMode}
             index={i}
           />
         {/each}
@@ -37,10 +40,10 @@
 
 <style>
   #edit-field-box {
-    background-color:rgb(225, 184, 251);
+    background-color: rgb(225, 184, 251);
   }
 
   #card-box {
-    background-color:rgb(194, 203, 244);
+    background-color: rgb(194, 203, 244);
   }
 </style>

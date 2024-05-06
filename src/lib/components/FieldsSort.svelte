@@ -1,10 +1,15 @@
 <script>
-    // IMPORTS
-  import { resetArrayOrder, reverseArrayOrder, compareEquality } from "../../lib/utils";
+  // IMPORTS
+  import {
+    compareEquality,
+    resetArrayOrder,
+    reverseArrayOrder,
+  } from "../../lib/utils";
   export let fields;
+  export let fieldsClone;
+  export let editMode;
 
   // VARIABLES
-  let fieldsClone = [...fields];
   $: disableReset = compareEquality(fields, fieldsClone);
 
   // FUNCTIONS
@@ -23,15 +28,18 @@
     e.preventDefault();
     fields = reverseArrayOrder(fields);
   }
-
 </script>
 
-<div id="container">
-  {#if fields.length > 0}
-    {#if fields.length > 1}
-      <button on:click={handleResetOrder} disabled={disableReset}>RESET ORDER</button>
-      <button on:click={handleReverse}>REVERSE ORDER</button>
+{#if editMode}
+  <div id="container">
+    {#if fields.length > 0}
+      {#if fields.length > 1}
+        <button on:click={handleResetOrder} disabled={disableReset}
+          >RESET ORDER</button
+        >
+        <button on:click={handleReverse}>REVERSE ORDER</button>
+      {/if}
+      <button on:click={handleDelete} type="reset">DELETE ALL</button>
     {/if}
-    <button on:click={handleDelete} type="reset">DELETE ALL</button>
-  {/if}
-</div>
+  </div>
+{/if}

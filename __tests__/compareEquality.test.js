@@ -16,4 +16,20 @@ describe("Testing behaviour of lodash isEqual()", () => {
 
     expect(result).toBe(false);
   });
+
+  test("testing objects true", () => {
+    const test1 = {"name": 1, "hasSerial": false, "serial": null};
+    const test2 = {"name": 1, "hasSerial": false, "serial": null};
+    const result = compareEquality(test1, test2);
+
+    expect(result).toBe(true);
+  });
+
+  test("testing objects false", () => {
+    const test1 = {"name": 1, "hasSerial": false, "serial": null};
+    const test2 = {"name": 2, "hasSerial": false, "serial": null};
+    const result = compareEquality(test1, test2);
+
+    expect(result).toBe(false);
+  });
 });

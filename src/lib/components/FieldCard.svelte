@@ -8,6 +8,7 @@
   export let indexToEdit;
   export let editPanelVisible;
   export let fieldToEdit;
+  export let editMode;
 
   // VARIABLES
   $: standardField =
@@ -81,15 +82,18 @@
   FIELD TYPE: {field.type}
   <br />
   <br />
-  <button on:click={moveFieldUp} disabled={disableUp}>MOVE UP</button>
-  <br />
-  <button on:click={showEditPanel}>EDIT FIELD</button>
-  {#if !standardField}
-    <button on:click={createCompositeData}>CREATE COMPOSITE FIELD DATA</button>
+  {#if editMode}
+    <button on:click={moveFieldUp} disabled={disableUp}>MOVE UP</button>
+    <br />
+    <button on:click={showEditPanel}>EDIT FIELD</button>
+    {#if !standardField}
+      <button on:click={createCompositeData}>CREATE COMPOSITE FIELD DATA</button
+      >
+    {/if}
+    <button>DELETE FIELD</button>
+    <br />
+    <button on:click={moveFieldDown} disabled={disableDown}>MOVE DOWN</button>
   {/if}
-  <button>DELETE FIELD</button>
-  <br />
-  <button on:click={moveFieldDown} disabled={disableDown}>MOVE DOWN</button>
 </div>
 
 <style>
