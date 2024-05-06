@@ -21,7 +21,17 @@
 
   function createCompositeData(e) {
     e.preventDefault();
-    console.log(fields);
+    console.log("CREATE COMPOSITE CLICKED", fields);
+  }
+
+  function moveFieldUp(e) {
+    e.preventDefault();
+    console.log("MOVE UP CLICKED");
+  }
+
+  function moveFieldDown(e) {
+    e.preventDefault();
+    console.log("MOVE DOWN CLICKED");
   }
   // console.log(
   //   "USING VARIABLE HERE TO PREVENT ERRORING UNTIL NEEDED",
@@ -65,7 +75,7 @@
   FIELD TYPE: {field.type}
   <br />
   <br />
-  <button>MOVE UP</button>
+  <button on:click={moveFieldUp}>MOVE UP</button>
   <br />
   <button on:click={showEditPanel}>EDIT FIELD</button>
   {#if !standardField}
@@ -73,7 +83,7 @@
   {/if}
   <button>DELETE FIELD</button>
   <br />
-  <button>MOVE DOWN</button>
+  <button on:click={moveFieldDown}>MOVE DOWN</button>
 </div>
 
 <style>
