@@ -39,3 +39,16 @@ export function lowerArrayElement(array, index) {
   }
   return arrayClone;
 }
+
+export function resetArrayOrder(array) {
+  if (!array) return [];
+
+  const arrayClone = [...array];
+  return arrayClone.sort((a, b) => a.fieldNumber - b.fieldNumber);
+}
+
+export function reverseArrayOrder(array) {
+  if (!array) return [];
+  const arrayClone = [...array];
+  return arrayClone.reverse();
+}
