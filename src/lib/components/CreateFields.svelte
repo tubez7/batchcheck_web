@@ -23,8 +23,7 @@
 
   onMount(() => {
     initialised = true;
-    //let standardField = true;
-    console.log("Mounted");
+    console.log("CreateFields mounted");
   });
 
   // Set FieldName
@@ -76,7 +75,7 @@
 
   function setDefaults() {
     if (initialised) {
-      console.log("setDefaults called DEBUGGING ONLY. Pls remove");
+      console.log(initialised, "setDefaults called DEBUGGING ONLY. Pls remove");
       hasSerial = false;
       serial = null;
       incrementValue = 0;
@@ -142,50 +141,58 @@
 
 <fieldset id="create-field-box">
   <h2>Field Type</h2>
-  <SetFieldType bind:type />
+  <div class="field-seperators">
+    <SetFieldType bind:type />
+  </div>
 
   <h2>Field Creation</h2>
   <fieldset>
-    <SetFieldName bind:fieldName bind:validFieldName />
-    <br />
-    <br />
+    <div class="field-seperators">
+      <SetFieldName bind:fieldName bind:validFieldName />
+    </div>
     {#if standardField}
-      <SetHasSerial bind:hasSerial />
+      <div class="field-seperators">
+        <SetHasSerial bind:hasSerial />
+      </div>
       {#if hasSerial}
-        <SetSerial {hasSerial} bind:serial bind:validSerial />
-        <br />
-        <br />
-        <SetIncrement bind:incrementValue bind:validIncrement {hasSerial} />
-        <SetRecordsPerIncrement
-          bind:recordsPerIncrement
-          bind:validRecordsPerIncrement
-          {hasSerial}
-        />
-        <br />
-        <br />
-        <SetSerialPadded bind:serialPadded />
-        {#if serialPadded}
-          <SetPadLength
-            bind:padLength
-            bind:validPadLength
-            bind:minimumPadLength
-            {serialPadded}
-            {serial}
+        <div class="field-seperators">
+          <SetSerial {hasSerial} bind:serial bind:validSerial />
+        </div>
+        <div class="field-seperators">
+          <SetIncrement bind:incrementValue bind:validIncrement {hasSerial} />
+        </div>
+        <div class="field-seperators">
+          <SetRecordsPerIncrement
+            bind:recordsPerIncrement
+            bind:validRecordsPerIncrement
+            {hasSerial}
           />
-          <br />
-          <br />
-          <SetPadCharacter bind:padLead bind:padTrail />
+        </div>
+        <div class="field-seperators">
+          <SetSerialPadded bind:serialPadded />
+        </div>
+        {#if serialPadded}
+          <div class="field-seperators">
+            <SetPadLength
+              bind:padLength
+              bind:validPadLength
+              bind:minimumPadLength
+              {serialPadded}
+              {serial}
+            />
+          </div>
+          <div class="field-seperators">
+            <SetPadCharacter bind:padLead bind:padTrail />
+          </div>
         {/if}
       {/if}
-      <br />
-      <br />
-      <SetPrefix bind:prefix />
-      <br />
-      <br />
-      <SetSuffix bind:suffix />
+      <div class="field-seperators">
+        <SetPrefix bind:prefix />
+      </div>
+      <div class="field-seperators">
+        <SetSuffix bind:suffix />
+      </div>
     {/if}
-    <br />
-    <br />
   </fieldset>
   <button on:click={handleSubmit} type="submit" disabled={buttonDisable}
     >Add Field</button

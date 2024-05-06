@@ -29,5 +29,5 @@
   placeholder="Enter field name"
 />
 {#if fieldNameError}
-  <span>Field Name is a mandatory field</span>
+  <p>Field Name is a mandatory field</p>
 {/if}

@@ -18,12 +18,17 @@
     indexToEdit = index;
     fieldToEdit = field;
   }
-  console.log(
-    "USING VARIABLE HERE TO PREVENT ERRORING UNTIL NEEDED",
-    fields,
-    indexToEdit,
-    fieldToEdit
-  );
+
+  function createCompositeData(e) {
+    e.preventDefault();
+    console.log(fields);
+  }
+  // console.log(
+  //   "USING VARIABLE HERE TO PREVENT ERRORING UNTIL NEEDED",
+  //   fields,
+  //   indexToEdit,
+  //   fieldToEdit
+  // );
 </script>
 
 <div id="card">
@@ -63,8 +68,8 @@
   <button>MOVE UP</button>
   <br />
   <button on:click={showEditPanel}>EDIT FIELD</button>
-  {#if field.type === "Composite-scan" || field.type === "Composite QR"}
-    <button>CREATE COMPOSITE FIELD</button>
+  {#if !standardField}
+    <button on:click={createCompositeData}>CREATE COMPOSITE FIELD DATA</button>
   {/if}
   <button>DELETE FIELD</button>
   <br />
