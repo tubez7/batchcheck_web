@@ -5,10 +5,12 @@
   // PROPS
   export let fieldName;
   export let validFieldName;
+  export let editMode;
 
   // VARIABLES
   let fieldNameError = false;
-  $: validFieldName = !fieldName.length < 1 && nonWhiteSpaceRegex.test(fieldName);
+  $: validFieldName =
+    !fieldName.length < 1 && nonWhiteSpaceRegex.test(fieldName);
 
   // FUNCTIONS
   function checkFieldName() {
@@ -27,6 +29,7 @@
   type="text"
   id="fieldName"
   placeholder="Enter field name"
+  disabled={editMode}
 />
 {#if fieldNameError}
   <p>Field Name is a mandatory field</p>

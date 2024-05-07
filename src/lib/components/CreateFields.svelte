@@ -17,6 +17,7 @@
 
   // PROPS
   export let fields;
+  export let editMode;
 
   // VARIABLES
   let initialised = false;
@@ -66,7 +67,10 @@
     !validSerial ||
     !validIncrement ||
     !validRecordsPerIncrement ||
-    !validPadLength;
+    !validPadLength ||
+    editMode;
+
+  $: opaqueOverlay = editMode ? "edit" : "create";
 
   // FUNCTIONS
   function addField(field) {
@@ -139,69 +143,85 @@
   }
 </script>
 
-<fieldset id="create-field-box">
-  <h2>Field Type</h2>
-  <div class="field-seperators">
-    <SetFieldType bind:type />
-  </div>
-
-  <h2>Field Creation</h2>
+<div id={`create-field-box-${opaqueOverlay}`}>
   <fieldset>
+    <h2>Field Type</h2>
     <div class="field-seperators">
-      <SetFieldName bind:fieldName bind:validFieldName />
+      <SetFieldType bind:type {editMode} />
     </div>
-    {#if standardField}
+
+    <h2>Field Creation</h2>
+    <fieldset>
       <div class="field-seperators">
-        <SetHasSerial bind:hasSerial />
+        <SetFieldName bind:fieldName bind:validFieldName {editMode} />
       </div>
-      {#if hasSerial}
+      {#if standardField}
         <div class="field-seperators">
-          <SetSerial {hasSerial} bind:serial bind:validSerial />
+          <SetHasSerial bind:hasSerial {editMode} />
         </div>
-        <div class="field-seperators">
-          <SetIncrement bind:incrementValue bind:validIncrement {hasSerial} />
-        </div>
-        <div class="field-seperators">
-          <SetRecordsPerIncrement
-            bind:recordsPerIncrement
-            bind:validRecordsPerIncrement
-            {hasSerial}
-          />
-        </div>
-        <div class="field-seperators">
-          <SetSerialPadded bind:serialPadded />
-        </div>
-        {#if serialPadded}
+        {#if hasSerial}
           <div class="field-seperators">
-            <SetPadLength
-              bind:padLength
-              bind:validPadLength
-              bind:minimumPadLength
-              {serialPadded}
-              {serial}
+            <SetSerial {hasSerial} bind:serial bind:validSerial {editMode} />
+          </div>
+          <div class="field-seperators">
+            <SetIncrement
+              bind:incrementValue
+              bind:validIncrement
+              {hasSerial}
+              {editMode}
             />
           </div>
           <div class="field-seperators">
-            <SetPadCharacter bind:padLead bind:padTrail />
+            <SetRecordsPerIncrement
+              bind:recordsPerIncrement
+              bind:validRecordsPerIncrement
+              {hasSerial}
+              {editMode}
+            />
           </div>
+          <div class="field-seperators">
+            <SetSerialPadded bind:serialPadded {editMode} />
+          </div>
+          {#if serialPadded}
+            <div class="field-seperators">
+              <SetPadLength
+                bind:padLength
+                bind:validPadLength
+                bind:minimumPadLength
+                {serialPadded}
+                {serial}
+                {editMode}
+              />
+            </div>
+            <div class="field-seperators">
+              <SetPadCharacter bind:padLead bind:padTrail {editMode} />
+            </div>
+          {/if}
         {/if}
+        <div class="field-seperators">
+          <SetPrefix bind:prefix {editMode} />
+        </div>
+        <div class="field-seperators">
+          <SetSuffix bind:suffix {editMode} />
+        </div>
       {/if}
-      <div class="field-seperators">
-        <SetPrefix bind:prefix />
-      </div>
-      <div class="field-seperators">
-        <SetSuffix bind:suffix />
-      </div>
-    {/if}
+    </fieldset>
+    <button on:click={handleSubmit} type="submit" disabled={buttonDisable}
+      >Add Field</button
+    >
+    <button on:click={handleReset} type="reset" disabled={editMode}
+      >Reset Field Values</button
+    >
   </fieldset>
-  <button on:click={handleSubmit} type="submit" disabled={buttonDisable}
-    >Add Field</button
-  >
-  <button on:click={handleReset} type="reset">Reset Field Values</button>
-</fieldset>
+</div>
 
 <style>
-  #create-field-box {
+  #create-field-box-create {
     background-color: lightgreen;
+  }
+
+  #create-field-box-edit {
+    background-color: rgb(66, 125, 66);
+    opacity: 0.5;
   }
 </style>

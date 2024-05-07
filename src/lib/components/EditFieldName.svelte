@@ -15,7 +15,6 @@
   export let editPrefix;
   export let editSuffix;
   export let editType;
-  export let changeMade;
   export let hasSerial;
   export let serialPadded;
   export let padLead;
@@ -26,7 +25,8 @@
   $: fieldName = !editFieldName ? fieldClone.name : fieldName;
 </script>
 
-<SetFieldName bind:fieldName bind:validFieldName />
+<SetFieldName bind:fieldName bind:validFieldName editMode={false} />
+
 <UpdateValuesButtons
   bind:fieldClone
   bind:field
@@ -38,7 +38,6 @@
   bind:editPrefix
   bind:editSuffix
   bind:editType
-  bind:changeMade
   {hasSerial}
   {serialPadded}
   {padLead}

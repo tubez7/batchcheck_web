@@ -6,6 +6,7 @@
   export let hasSerial;
   export let serial;
   export let validSerial;
+  export let editMode;
 
   // VARIABLES
   $: serial = hasSerial ? serial : null;
@@ -23,6 +24,7 @@
   min="0"
   id="serial"
   placeholder="0"
+  disabled={editMode}
 />
 <p>Will default to 0 if not specified</p>
 {#if !validSerial}

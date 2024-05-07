@@ -1,4 +1,6 @@
 <script>
+  // IMPORTS
+  import { compareEquality } from "$lib/utils.js";
   // COMPONENTS
   import EditFieldButtons from "$lib/components/EditFieldButtons.svelte";
   import PopUp from "$lib/components/PopUp.svelte";
@@ -11,7 +13,7 @@
 
   // VARIABLES
   let fieldClone = { ...field };
-  let changeMade = false;
+  $: changeMade = !compareEquality(field, fieldClone);
 
   // FIELD NAME VARIABLES
   let validFieldName = true;
@@ -72,7 +74,6 @@
   <EditFieldButtons
     bind:fieldClone
     bind:field
-    bind:changeMade
     bind:validFieldName
     bind:validSerial
     bind:validIncrement

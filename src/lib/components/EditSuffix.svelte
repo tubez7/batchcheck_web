@@ -14,7 +14,6 @@
   export let editPrefix;
   export let editSuffix;
   export let editType;
-  export let changeMade;
   export let hasSerial;
   export let serialPadded;
   export let padLead;
@@ -25,7 +24,7 @@
   $: suffix = !editSuffix ? fieldClone.suffix : suffix;
 </script>
 
-<SetSuffix bind:suffix />
+<SetSuffix bind:suffix editMode={false} />
 <UpdateValuesButtons
   bind:fieldClone
   bind:field
@@ -37,7 +36,6 @@
   bind:editPrefix
   bind:editSuffix
   bind:editType
-  bind:changeMade
   {hasSerial}
   {serialPadded}
   {padLead}

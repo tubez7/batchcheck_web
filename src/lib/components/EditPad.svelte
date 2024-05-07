@@ -17,7 +17,6 @@
   export let editPrefix;
   export let editSuffix;
   export let editType;
-  export let changeMade;
   export let hasSerial;
   export let serialPadded;
   export let padLead;
@@ -29,7 +28,7 @@
   $: padLength = !editPad ? fieldClone.padLength : padLength;
 </script>
 
-<SetSerialPadded bind:serialPadded />
+<SetSerialPadded bind:serialPadded editMode={false} />
 {#if serialPadded}
   <SetPadLength
     bind:padLength
@@ -37,8 +36,9 @@
     minimumPadLength={null}
     {serialPadded}
     {serial}
+    editMode={false}
   />
-  <SetPadCharacter bind:padLead bind:padTrail />
+  <SetPadCharacter bind:padLead bind:padTrail editMode={false} />
 {/if}
 <UpdateValuesButtons
   bind:fieldClone
@@ -51,7 +51,6 @@
   bind:editPrefix
   bind:editSuffix
   bind:editType
-  bind:changeMade
   {hasSerial}
   {serialPadded}
   {padLead}

@@ -6,6 +6,7 @@
   export let recordsPerIncrement;
   export let validRecordsPerIncrement;
   export let hasSerial;
+  export let editMode;
 
   // VARIABLES
   $: validRecordsPerIncrement = hasSerial
@@ -22,6 +23,7 @@
   inputmode="numeric"
   id="records-per-increment"
   placeholder="Number increments every 'x' records"
+  disabled={editMode}
 />
 {#if !validRecordsPerIncrement}
   <p>Record per increment value must be an integer of 1 or greater</p>

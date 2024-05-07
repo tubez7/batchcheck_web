@@ -21,7 +21,7 @@
     e.preventDefault();
     editPanelVisible = true;
     indexToEdit = index;
-    fieldToEdit = field;
+    fieldToEdit = { ...field };
   }
 
   function createCompositeData(e) {
@@ -31,21 +31,13 @@
 
   function moveFieldUp(e) {
     e.preventDefault();
-    console.log("MOVE UP CLICKED");
     fields = raiseArrayElement(fields, index);
   }
 
   function moveFieldDown(e) {
     e.preventDefault();
-    console.log("MOVE DOWN CLICKED");
     fields = lowerArrayElement(fields, index);
   }
-  // console.log(
-  //   "USING VARIABLE HERE TO PREVENT ERRORING UNTIL NEEDED",
-  //   fields,
-  //   indexToEdit,
-  //   fieldToEdit
-  // );
 </script>
 
 <div id="card">
@@ -102,4 +94,5 @@
     background-color: pink;
     margin: 0.5em;
   }
+
 </style>
