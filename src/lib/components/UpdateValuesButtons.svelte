@@ -4,7 +4,6 @@
   export let fieldClone;
   export let value;
   export let fieldToEditName;
-  export let changeMade;
   export let editFieldName;
   export let hasSerial;
   export let editSerial;
@@ -52,7 +51,6 @@
       fieldClone.padLead = padLead;
       fieldClone.padTrail = padTrail;
     }
-    changeMade = true;
     terminateEditMode(fieldToSave);
   }
 

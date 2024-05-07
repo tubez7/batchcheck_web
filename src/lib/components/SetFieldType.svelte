@@ -1,6 +1,7 @@
 <script>
   // PROPS
   export let type;
+  export let editMode;
 </script>
 
 <fieldset>
@@ -11,6 +12,7 @@
     value="Data"
     bind:group={type}
     checked
+    disabled={editMode}
   />
   <label for="fieldType1">Data Field</label>
   <input
@@ -19,6 +21,7 @@
     name="field-type"
     value="QR"
     bind:group={type}
+    disabled={editMode}
   />
   <label for="fieldType2">QR Code</label>
   <input
@@ -27,6 +30,7 @@
     name="field-type"
     value="Visible-scan"
     bind:group={type}
+    disabled={editMode}
   />
   <label for="fieldType3">Visible Scan Check</label>
   <input
@@ -35,6 +39,7 @@
     name="field-type"
     value="Invisible-scan"
     bind:group={type}
+    disabled={editMode}
   />
   <label for="fieldType4">Invisible Scan Check</label>
   <p>
@@ -47,6 +52,7 @@
     name="field-type"
     value="Composite-scan"
     bind:group={type}
+    disabled={editMode}
   />
   <label for="fieldType5">Composite-Field Scan Check</label>
   <input
@@ -55,6 +61,7 @@
     name="field-type"
     value="Composite QR"
     bind:group={type}
+    disabled={editMode}
   />
   <label for="fieldType6">Composite QR</label>
 </fieldset>

@@ -11,9 +11,12 @@
   export let fieldToEdit;
   export let editPanelVisible;
   export let editMode;
+
+  // VARIABLES
+  $: opaqueOverlay = editMode ? "edit" : "create";
 </script>
 
-<div>
+<div id={opaqueOverlay}>
   <fieldset id="edit-field-box">
     <h2>FIELD EDITOR</h2>
     <h3>NUMBER OF BATCHES/RECORDS: {records}</h3>
@@ -39,8 +42,13 @@
 </div>
 
 <style>
-  #edit-field-box {
+  #edit {
     background-color: rgb(225, 184, 251);
+  }
+
+  #create {
+    background-color: rgb(98, 83, 107);
+    opacity: 0.5;
   }
 
   #card-box {

@@ -37,23 +37,21 @@
   //$: console.log("fieldToEdit = ", fieldToEdit);
 </script>
 
+<!-- <div></div> THIS WILL BE AN OPAQUE BLACK FILTER WHEN POP-UP OPENS -->
+
 <fieldset id="data-generator-box">
   <legend>Batch-Check Constructor</legend>
   <p>NB - * denotes a mandatory field</p>
 
   <div id="container">
-    <div id="left">
+    <div class="divider">
       <form>
-        <SetRecords bind:records />
-        <CreateFields bind:fields />
+        <SetRecords bind:records {editMode} />
+        <CreateFields bind:fields {editMode} />
       </form>
-      <button disabled={!formValidated}>GENERATE BATCH_CHECK TABLE</button>
-      <button on:click={toggleEditMode}
-        >{editMode ? "CREATE FIELD MODE" : "EDIT FIELD MODE"}</button
-      >
     </div>
 
-    <div id="right">
+    <div class="divider">
       <EditFields
         bind:fields
         bind:indexToEdit
@@ -64,6 +62,12 @@
         {editMode}
       />
     </div>
+  </div>
+  <div id="button-block">
+    <button disabled={!formValidated}>GENERATE BATCH_CHECK TABLE</button>
+    <button on:click={toggleEditMode}
+      >{editMode ? "CREATE FIELD MODE" : "EDIT FIELD MODE"}</button
+    >
   </div>
 </fieldset>
 
@@ -84,15 +88,38 @@
     flex-direction: row;
   }
 
-  #left {
+  .divider {
     flex: 1;
     max-width: 50%;
   }
 
-  #right {
-    flex: 1;
+  /* #create {
+    position: fixed;
+    display: block;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background-color: black;
+    z-index: 2;
+    opacity: 0.7;
     max-width: 50%;
+    max-height: 50%;
   }
+
+  #edit {
+    position: fixed;
+    display: block;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background-color: black;
+    z-index: 2;
+    opacity: 0.7;
+    max-width: 50%;
+    max-height: 50%;
+  }  */
 
   #data-generator-box {
     background-color: beige;

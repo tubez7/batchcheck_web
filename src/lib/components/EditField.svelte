@@ -26,7 +26,6 @@
   export let editPrefix;
   export let editSuffix;
   export let editType;
-  export let changeMade;
   export let hasSerial;
   export let standardField;
 
@@ -55,7 +54,6 @@
       bind:editPrefix
       bind:editSuffix
       bind:editType
-      bind:changeMade
       {hasSerial}
       {serialPadded}
       {padLead}
@@ -78,7 +76,6 @@
         bind:editPrefix
         bind:editSuffix
         bind:editType
-        bind:changeMade
         {hasSerial}
         {serialPadded}
         {padLead}
@@ -100,7 +97,6 @@
           bind:editPrefix
           bind:editSuffix
           bind:editType
-          bind:changeMade
           {hasSerial}
           {serialPadded}
           {padLead}
@@ -120,7 +116,6 @@
           bind:editPrefix
           bind:editSuffix
           bind:editType
-          bind:changeMade
           {hasSerial}
           {serialPadded}
           {padLead}
@@ -140,7 +135,6 @@
           bind:editPrefix
           bind:editSuffix
           bind:editType
-          bind:changeMade
           {hasSerial}
           {serial}
           {serialPadded}
@@ -161,7 +155,6 @@
         bind:editPrefix
         bind:editSuffix
         bind:editType
-        bind:changeMade
         {hasSerial}
         {serialPadded}
         {padLead}
@@ -180,7 +173,6 @@
         bind:editPrefix
         bind:editSuffix
         bind:editType
-        bind:changeMade
         {hasSerial}
         {serialPadded}
         {padLead}
@@ -200,7 +192,6 @@
       bind:editPrefix
       bind:editSuffix
       bind:editType
-      bind:changeMade
       {hasSerial}
       {serialPadded}
       {padLead}

@@ -18,16 +18,15 @@
   export let editPrefix;
   export let editSuffix;
   export let editType;
-  export let changeMade;
   export let serialPadded;
   export let padLead;
   export let padTrail;
 </script>
 
-<SetHasSerial bind:hasSerial />
+<SetHasSerial bind:hasSerial editMode={false} />
 
 {#if hasSerial}
-  <SetSerial bind:serial bind:validSerial {hasSerial} />
+  <SetSerial bind:serial bind:validSerial {hasSerial} editMode={false} />
 {/if}
 
 <UpdateValuesButtons
@@ -41,7 +40,6 @@
   bind:editPrefix
   bind:editSuffix
   bind:editType
-  bind:changeMade
   {hasSerial}
   {serialPadded}
   {padLead}

@@ -15,7 +15,6 @@
   export let editPrefix;
   export let editSuffix;
   export let editType;
-  export let changeMade;
   export let hasSerial;
   export let serialPadded;
   export let padLead;
@@ -28,7 +27,13 @@
     : incrementValue;
 </script>
 
-<SetIncrement bind:incrementValue bind:validIncrement {hasSerial} />
+<SetIncrement
+  bind:incrementValue
+  bind:validIncrement
+  {hasSerial}
+  editMode={false}
+/>
+
 <UpdateValuesButtons
   bind:fieldClone
   bind:field
@@ -40,7 +45,6 @@
   bind:editPrefix
   bind:editSuffix
   bind:editType
-  bind:changeMade
   {hasSerial}
   {serialPadded}
   {padLead}

@@ -2,6 +2,7 @@
   // PROPS
   export let padLead;
   export let padTrail;
+  export let editMode;
 </script>
 
 <fieldset>
@@ -15,7 +16,7 @@
     id="pad-lead"
     maxLength="1"
     placeholder="Enter a single pad character"
-    disabled={padTrail.length > 0}
+    disabled={padTrail.length > 0 || editMode}
   />
   <label for="pad-trail">Trailing pad character: </label>
   <input
@@ -24,6 +25,6 @@
     id="pad-trail"
     maxLength="1"
     placeholder="Enter a single pad character"
-    disabled={padLead.length > 0}
+    disabled={padLead.length > 0 || editMode}
   />
 </fieldset>

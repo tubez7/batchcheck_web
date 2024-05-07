@@ -22,7 +22,6 @@
   export let editPrefix;
   export let editSuffix;
   export let editType;
-  export let changeMade;
   export let editMode;
 
   // VARIABLES
@@ -50,7 +49,6 @@
     }
   }
   $: standardField, setDefaults();
-  $: console.log("A CHANGE HAS BEEN MADE!!", changeMade);
 
   onMount(() => {
     initialised = true;
@@ -191,7 +189,6 @@
     bind:editPrefix
     bind:editSuffix
     bind:editType
-    bind:changeMade
     {hasSerial}
     {standardField}
   />

@@ -8,6 +8,7 @@
   export let serialPadded;
   export let serial;
   export let minimumPadLength;
+  export let editMode;
 
   // VARIABLES
   $: minimumPadLength = serialPadded
@@ -27,6 +28,7 @@
   min={minimumPadLength}
   placeholder={minimumPadLength}
   id="pad-length"
+  disabled={editMode}
 />
 {#if !validPadLength}
   <p>Pad length cannot be less than the length of the starting serial number</p>

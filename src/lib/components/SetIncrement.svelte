@@ -3,6 +3,7 @@
   export let incrementValue;
   export let validIncrement;
   export let hasSerial;
+  export let editMode;
 
   // VARIABLES
   $: validIncrement = Number.isInteger(incrementValue) || !hasSerial;
@@ -15,6 +16,7 @@
   inputmode="numeric"
   id="increment"
   placeholder="Enter a whole integer (including negative values) to increment or decrement each record by"
+  disabled={editMode}
 />
 {#if !validIncrement}
   <p>
