@@ -5,7 +5,6 @@
 
   // PROPS
   export let fields;
-  export let fieldsClone;
   export let records;
   export let indexToEdit;
   export let fieldToEdit;
@@ -21,7 +20,7 @@
     <h2>FIELD EDITOR</h2>
     <h3>NUMBER OF BATCHES/RECORDS: {records}</h3>
 
-    <FieldsSort bind:fields {fieldsClone} {editMode} />
+    <FieldsSort bind:fields {editMode} />
 
     {#if fields.length > 0}
       <fieldset id="card-box">
