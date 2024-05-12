@@ -1,16 +1,15 @@
 <script>
   // IMPORTS
   import {
-    compareEquality,
+    checkSortOrder,
     resetArrayOrder,
     reverseArrayOrder,
   } from "../../lib/utils";
   export let fields;
-  export let fieldsClone;
   export let editMode;
 
   // VARIABLES
-  $: disableReset = compareEquality(fields, fieldsClone);
+  $: disableReset = checkSortOrder(fields);
 
   // FUNCTIONS
   function handleDelete(e) {

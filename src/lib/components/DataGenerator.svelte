@@ -7,7 +7,6 @@
 
   // VARIABLES
   let fields = [];
-  let fieldsClone = [];
   let records = 1;
   $: formValidated = fields.length > 0 && records > 0;
   let editPanelVisible = false;
@@ -26,7 +25,6 @@
   function toggleEditMode(e) {
     e.preventDefault();
     editMode = !editMode;
-    fieldsClone = [...fields];
   }
 
   // DEBUG WATCHERS
@@ -57,7 +55,6 @@
         bind:indexToEdit
         bind:fieldToEdit
         bind:editPanelVisible
-        {fieldsClone}
         {records}
         {editMode}
       />

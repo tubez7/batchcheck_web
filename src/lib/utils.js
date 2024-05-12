@@ -75,3 +75,13 @@ export function deleteArrayElement(array, index) {
 
   return arrayClone;
 }
+
+export function checkSortOrder(array) {
+  if (!array) return true;
+  for (let i = 0; i < array.length; i++) {
+    if (array[i].fieldNumber > array[i + 1]?.fieldNumber) {
+      return false;
+    }
+  }
+  return true;
+}
