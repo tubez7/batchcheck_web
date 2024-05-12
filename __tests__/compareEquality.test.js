@@ -9,7 +9,7 @@ describe("Testing behaviour of lodash isEqual()", () => {
     expect(result).toBe(true);
   });
 
-  test("should return true for simple array equality", () => {
+  test("should return false for simple array inequality", () => {
     const test1 = [1, 2, 3];
     const test2 = [3, 2, 1];
     const result = compareEquality(test1, test2);

@@ -1,6 +1,10 @@
 <script>
   // IMPORTS
-  import { lowerArrayElement, raiseArrayElement } from "../../lib/utils";
+  import {
+    deleteArrayElement,
+    lowerArrayElement,
+    raiseArrayElement,
+  } from "../../lib/utils";
   // PROPS
   export let fields;
   export let field;
@@ -37,6 +41,11 @@
   function moveFieldDown(e) {
     e.preventDefault();
     fields = lowerArrayElement(fields, index);
+  }
+
+  function deleteField(e) {
+    e.preventDefault();
+    fields = deleteArrayElement(fields, index);
   }
 </script>
 
@@ -82,7 +91,7 @@
       <button on:click={createCompositeData}>CREATE COMPOSITE FIELD DATA</button
       >
     {/if}
-    <button>DELETE FIELD</button>
+    <button on:click={deleteField}>DELETE FIELD</button>
     <br />
     <button on:click={moveFieldDown} disabled={disableDown}>MOVE DOWN</button>
   {/if}
@@ -94,5 +103,4 @@
     background-color: pink;
     margin: 0.5em;
   }
-
 </style>
