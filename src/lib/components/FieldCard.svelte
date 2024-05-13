@@ -5,6 +5,7 @@
     lowerArrayElement,
     raiseArrayElement,
   } from "../../lib/utils";
+
   // PROPS
   export let fields;
   export let field;
@@ -13,6 +14,8 @@
   export let editPanelVisible;
   export let fieldToEdit;
   export let editMode;
+  export let createComposite;
+  export let compositeField;
 
   // VARIABLES
   $: standardField =
@@ -31,6 +34,8 @@
   function createCompositeData(e) {
     e.preventDefault();
     console.log("CREATE COMPOSITE CLICKED", fields);
+    createComposite = true;
+    compositeField = {...field};
   }
 
   function moveFieldUp(e) {
@@ -47,6 +52,7 @@
     e.preventDefault();
     fields = deleteArrayElement(fields, index);
   }
+
 </script>
 
 <div id="card">
@@ -96,6 +102,7 @@
     <button on:click={moveFieldDown} disabled={disableDown}>MOVE DOWN</button>
   {/if}
 </div>
+
 
 <style>
   #card {

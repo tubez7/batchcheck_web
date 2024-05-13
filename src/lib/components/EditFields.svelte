@@ -1,7 +1,9 @@
 <script>
   // COMPONENTS
+  import CreateCompositeData from "$lib/components/CreateCompositeData.svelte";
   import FieldCard from "$lib/components/FieldCard.svelte";
   import FieldsSort from "$lib/components/FieldsSort.svelte";
+  import PopUp from "$lib/components/PopUp.svelte";
 
   // PROPS
   export let fields;
@@ -13,6 +15,9 @@
 
   // VARIABLES
   $: opaqueOverlay = editMode ? "edit" : "create";
+
+  let createComposite = false;
+  let compositeField;
 </script>
 
 <div id={opaqueOverlay}>
@@ -30,6 +35,8 @@
             bind:indexToEdit
             bind:fieldToEdit
             bind:editPanelVisible
+            bind:createComposite
+            bind:compositeField
             {field}
             {editMode}
             index={i}
@@ -39,6 +46,12 @@
     {/if}
   </fieldset>
 </div>
+
+{#if createComposite}
+  <PopUp --colour="cyan">
+    <CreateCompositeData bind:createComposite {compositeField} />
+  </PopUp>
+{/if}
 
 <style>
   #edit {
