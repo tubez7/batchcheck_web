@@ -49,7 +49,12 @@
 
 {#if createComposite}
   <PopUp --colour="cyan">
-    <CreateCompositeData bind:createComposite {compositeField} />
+    <CreateCompositeData
+      bind:createComposite
+      bind:fields
+      {compositeField}
+      index={indexToEdit}
+    />
   </PopUp>
 {/if}
 

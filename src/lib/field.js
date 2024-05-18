@@ -12,7 +12,8 @@ class Field {
     prefix,
     suffix,
     type,
-    fieldNumber
+    fieldNumber,
+    id
   ) {
     this.name = name;
     this.hasSerial = hasSerial;
@@ -27,6 +28,9 @@ class Field {
     this.suffix = suffix;
     this.type = type;
     this.fieldNumber = fieldNumber;
+    this.id = id;
+    this.compositeData = [];
+    this.compositeSeparator = "";
   }
 }
 

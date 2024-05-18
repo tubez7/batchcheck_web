@@ -36,6 +36,7 @@
     console.log("CREATE COMPOSITE CLICKED", fields);
     createComposite = true;
     compositeField = {...field};
+    indexToEdit = index;
   }
 
   function moveFieldUp(e) {

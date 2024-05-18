@@ -27,6 +27,8 @@
     console.log("CreateFields mounted");
   });
 
+  let fieldId = 1;
+
   // Set FieldName
   $: fieldNumber = fields.length + 1;
   let fieldName = "";
@@ -136,9 +138,11 @@
       prefix,
       suffix,
       type,
-      fieldNumber
+      fieldNumber,
+      fieldId
     );
     addField(field);
+    fieldId++;
     handleReset();
   }
 </script>
