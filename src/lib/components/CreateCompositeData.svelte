@@ -1,9 +1,13 @@
 <script>
+  // IMPORTS
+  import { compareEquality } from "$lib/utils.js";
+
   // COMPONENTS
   import FieldItem from "$lib/components/FieldItem.svelte";
+  import FieldsSort from "$lib/components/FieldsSort.svelte";
   import SetSeparator from "$lib/components/SetSeparator.svelte";
   import ValueCard from "$lib/components/ValueCard.svelte";
-  //import FieldsSort from "$lib/components/FieldsSort.svelte";
+
   // PROPS
   export let createComposite;
   export let compositeField;
@@ -15,21 +19,28 @@
     (field) => !field.type.includes("Composite")
   );
 
+  let editSeparator = false;
   let compositeData = compositeField.compositeData;
   let separator = compositeField.compositeSeparator;
+  let separatorReference = separator;
+  let compositeDataClone = [...compositeData];
+  $: changeMade =
+    !compareEquality(compositeData, compositeDataClone) ||
+    separator !== separatorReference;
 
   // FUNCTIONS
-  function handleClick(e) {
+  function handleClose(e) {
     e.preventDefault();
     createComposite = false;
   }
 
   function handleSave(e) {
     e.preventDefault();
-    compositeField.compositeData = compositeData;
+    // CALL setNewSortOrder() HERE -> compositeData = setNewSortOrder(compositeData)
+    compositeField.compositeData = compositeData; // USE METHOD IF POSSIBLE
+    compositeField.compositeSeparator = separator;
     fields[index] = compositeField;
     createComposite = false;
-    console.log("fields after saving comp...", fields);
   }
 </script>
 
@@ -37,7 +48,7 @@
   <h3>COMPOSITE DATA CREATOR</h3>
   <p>Field Name: {compositeField.name}</p>
 
-  <SetSeparator bind:separator />
+  <SetSeparator bind:separator bind:editSeparator />
 
   <div id="left">
     <h4>CONCATENATE FIELD DATA</h4>
@@ -50,20 +61,19 @@
 
   <div id="right">
     <h4>COMPOSITE DATA VALUE</h4>
-    <!-- <FieldsSort bind:fields={compositeData} editMode={true} /> -->
+    {#if compositeData.length > 0}
+      <FieldsSort bind:compositeData editMode={true} fields={null} />
+    {/if}
     <div class="box">
       {#each compositeData as value, i}
-        <ValueCard
-          {...value}
-          bind:compositeField
-          bind:compositeData
-          index={i}
-        />
+        <ValueCard {...value} bind:compositeData index={i} />
       {/each}
     </div>
   </div>
-  <button on:click={handleClick}>CLOSE POP UP</button>
-  <button on:click={handleSave}>SAVE CHANGES</button>
+  {#if !editSeparator}
+    <button on:click={handleClose}>CANCEL & CLOSE</button>
+    <button on:click={handleSave} disabled={!changeMade}>SAVE CHANGES</button>
+  {/if}
 </div>
 
 <style>

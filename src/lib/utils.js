@@ -85,3 +85,7 @@ export function checkSortOrder(array) {
   }
   return true;
 }
+
+// export function setNewSortOrder() {
+
+// } WORK FROM HERE

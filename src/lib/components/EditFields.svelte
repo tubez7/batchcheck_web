@@ -15,8 +15,6 @@
 
   // VARIABLES
   $: opaqueOverlay = editMode ? "edit" : "create";
-  //$: arrayToSort = fields;
-
   let createComposite = false;
   let compositeField;
 </script>
@@ -31,7 +29,7 @@
     {/if}
 
     {#if fields.length > 0}
-      <FieldsSort bind:fields {editMode} />
+      <FieldsSort bind:fields {editMode} compositeData={null} />
 
       <fieldset id="card-box">
         {#each fields as field, i}

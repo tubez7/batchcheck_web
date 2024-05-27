@@ -1,16 +1,17 @@
 <script>
   // PROPS
   export let separator;
+  export let editSeparator;
 
   // VARIABLES
-  let editSeparator = false;
-  let placeholder = separator ? separator : "Enter field separator value";
   let savedValue = separator;
+  $: placeholder = separator ? separator : "Enter field separator value";
   $: changeMade = separator !== savedValue;
 
   // FUNCTIONS
   function handleSave(e) {
     e.preventDefault();
+    savedValue = separator;
     editSeparator = false;
   }
 

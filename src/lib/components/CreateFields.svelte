@@ -21,16 +21,10 @@
 
   // VARIABLES
   let initialised = false;
-
-  onMount(() => {
-    initialised = true;
-    console.log("CreateFields mounted");
-  });
-
-  let fieldId = 1;
+  $: fieldId = fields.length < 1 ? 1 : fieldId;
+  $: fieldNumber = fields.length + 1;
 
   // Set FieldName
-  $: fieldNumber = fields.length + 1;
   let fieldName = "";
   let validFieldName;
 
@@ -145,6 +139,11 @@
     fieldId++;
     handleReset();
   }
+
+  onMount(() => {
+    initialised = true;
+    console.log("CreateFields mounted");
+  });
 </script>
 
 <div id={`create-field-box-${opaqueOverlay}`}>

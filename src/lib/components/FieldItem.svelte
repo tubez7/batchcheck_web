@@ -3,15 +3,21 @@
   export let field;
   export let compositeData;
 
+  // VARIABLES
+  $: fieldNumber = compositeData.length + 1;
+
   // FUNCTIONS
   function addFieldValues(fieldValues) {
     compositeData = [...compositeData, fieldValues];
-    console.log("COMP VALUES", compositeData);
   }
 
   function handleClick(e) {
     e.preventDefault();
-    addFieldValues({ name: field.name, id: field.id });
+    addFieldValues({
+      name: field.name,
+      id: field.id,
+      fieldNumber: fieldNumber,
+    });
   }
 </script>
 
