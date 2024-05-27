@@ -15,6 +15,7 @@
 
   // VARIABLES
   $: opaqueOverlay = editMode ? "edit" : "create";
+  //$: arrayToSort = fields;
 
   let createComposite = false;
   let compositeField;
@@ -25,9 +26,13 @@
     <h2>FIELD EDITOR</h2>
     <h3>NUMBER OF BATCHES/RECORDS: {records}</h3>
 
-    <FieldsSort bind:fields {editMode} />
+    {#if fields.length < 1 && editMode}
+      <p>NO FIELD DATA TO EDIT</p>
+    {/if}
 
     {#if fields.length > 0}
+      <FieldsSort bind:fields {editMode} />
+
       <fieldset id="card-box">
         {#each fields as field, i}
           <FieldCard

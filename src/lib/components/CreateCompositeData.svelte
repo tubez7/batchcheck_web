@@ -1,7 +1,9 @@
 <script>
   // COMPONENTS
   import FieldItem from "$lib/components/FieldItem.svelte";
+  import SetSeparator from "$lib/components/SetSeparator.svelte";
   import ValueCard from "$lib/components/ValueCard.svelte";
+  //import FieldsSort from "$lib/components/FieldsSort.svelte";
   // PROPS
   export let createComposite;
   export let compositeField;
@@ -13,8 +15,8 @@
     (field) => !field.type.includes("Composite")
   );
 
-  let compositeValues = compositeField.compositeData;
-  let separator = compositeField.compositeSeparator ? `"${compositeField.compositeSeparator}"` : "N/A";
+  let compositeData = compositeField.compositeData;
+  let separator = compositeField.compositeSeparator;
 
   // FUNCTIONS
   function handleClick(e) {
@@ -22,32 +24,46 @@
     createComposite = false;
   }
 
-  console.log("PLACEHOLDER FOR COMP DATA CODE", fields, index);
+  function handleSave(e) {
+    e.preventDefault();
+    compositeField.compositeData = compositeData;
+    fields[index] = compositeField;
+    createComposite = false;
+    console.log("fields after saving comp...", fields);
+  }
 </script>
 
 <div id="composite-field-edit">
   <h3>COMPOSITE DATA CREATOR</h3>
   <p>Field Name: {compositeField.name}</p>
-  <p>Field Separator: {separator}</p>
+
+  <SetSeparator bind:separator />
+
   <div id="left">
     <h4>CONCATENATE FIELD DATA</h4>
     <div class="box">
       {#each regularFields as regularField}
-        <FieldItem bind:compositeValues field={regularField} />
+        <FieldItem bind:compositeData field={regularField} />
       {/each}
     </div>
   </div>
 
   <div id="right">
     <h4>COMPOSITE DATA VALUE</h4>
+    <!-- <FieldsSort bind:fields={compositeData} editMode={true} /> -->
     <div class="box">
-      {#each compositeValues as value, i}
-        <ValueCard {...value} bind:compositeField index={i} />
+      {#each compositeData as value, i}
+        <ValueCard
+          {...value}
+          bind:compositeField
+          bind:compositeData
+          index={i}
+        />
       {/each}
     </div>
   </div>
   <button on:click={handleClick}>CLOSE POP UP</button>
-  <button>SAVE CHANGES</button>
+  <button on:click={handleSave}>SAVE CHANGES</button>
 </div>
 
 <style>

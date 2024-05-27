@@ -31,14 +31,12 @@
 
 {#if editMode}
   <div id="container">
-    {#if fields.length > 0}
-      {#if fields.length > 1}
-        <button on:click={handleResetOrder} disabled={disableReset}
-          >RESET ORDER</button
-        >
-        <button on:click={handleReverse}>REVERSE ORDER</button>
-      {/if}
-      <button on:click={handleDelete} type="reset">DELETE ALL</button>
-    {/if}
+    <button on:click={handleResetOrder} disabled={disableReset}
+      >RESET ORDER</button
+    >
+    <button on:click={handleReverse} disabled={fields.length < 2}
+      >REVERSE ORDER</button
+    >
+    <button on:click={handleDelete} type="reset">DELETE ALL</button>
   </div>
 {/if}

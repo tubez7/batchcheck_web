@@ -1,12 +1,12 @@
 <script>
   // PROPS
   export let field;
-  export let compositeValues;
+  export let compositeData;
 
   // FUNCTIONS
   function addFieldValues(fieldValues) {
-    compositeValues = [...compositeValues, fieldValues];
-    console.log("COMP VALUES", compositeValues);
+    compositeData = [...compositeData, fieldValues];
+    console.log("COMP VALUES", compositeData);
   }
 
   function handleClick(e) {
@@ -16,7 +16,7 @@
 </script>
 
 <div>
-  <p>{field.name}</p>
-  <p>{field.id}</p>
+  <p>Name: {field.name}</p>
+  <p>ID: {field.id}</p>
   <button on:click={handleClick}>Add to Field Value</button>
 </div>
