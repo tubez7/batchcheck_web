@@ -6,7 +6,7 @@ describe("raiseArrayElement()", () => {
     expect(input).toBeInstanceOf(Array);
   });
 
-  it("should not mutate the input array", () => {
+  it("should not return the same input array", () => {
     const input = [];
     const result = raiseArrayElement(input);
     expect(result).not.toBe(input);
@@ -35,5 +35,24 @@ describe("raiseArrayElement()", () => {
     const input = [1, 2, 3];
     const result = raiseArrayElement(input, 20);
     expect(result).toStrictEqual([1, 2, 3]);
+  });
+
+  it("should not mutate the input array", () => {
+    const input = [
+      { index: 0, fieldNumber: 1 },
+      { index: 1, fieldNumber: 2 },
+      { index: 2, fieldNumber: 3 },
+      { index: 3, fieldNumber: 4 },
+      { index: 4, fieldNumber: 5 },
+    ];
+    const expected = [
+      { index: 0, fieldNumber: 1 },
+      { index: 1, fieldNumber: 2 },
+      { index: 2, fieldNumber: 3 },
+      { index: 3, fieldNumber: 4 },
+      { index: 4, fieldNumber: 5 },
+    ];
+    raiseArrayElement(input, 1);
+    expect(input).toEqual(expected);
   });
 });

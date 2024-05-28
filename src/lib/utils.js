@@ -52,6 +52,7 @@ export function resetArrayOrder(array) {
 export function reverseArrayOrder(array) {
   if (!array) return [];
   const arrayClone = [...array];
+
   return arrayClone.reverse();
 }
 
@@ -63,7 +64,9 @@ export function deleteArrayElement(array, index) {
   if (!array) return [];
 
   const fieldNumber = array[index]?.fieldNumber;
-  const arrayClone = [...array];
+  const arrayClone = fieldNumber
+    ? array.map((element) => ({ ...element }))
+    : [...array];
 
   arrayClone.splice(index, 1);
 
@@ -86,6 +89,15 @@ export function checkSortOrder(array) {
   return true;
 }
 
-// export function setNewSortOrder() {
+export function setNewSortOrder(array) {
+  if (!array) return [];
+  const arrayClone = array.map((element) => ({ ...element }));
 
-// } WORK FROM HERE
+  arrayClone.forEach((element, i) => {
+    if (element.fieldNumber) {
+      element.fieldNumber = i + 1;
+    }
+  });
+
+  return arrayClone;
+}

@@ -22,8 +22,20 @@ describe("deleteArrayElement()", () => {
   });
 
   it("should not mutate the input array", () => {
-    const input = [1, 2, 3, 4, 5];
-    const value = [1, 2, 3, 4, 5];
+    const input = [
+      { index: 0, fieldNumber: 1 },
+      { index: 1, fieldNumber: 2 },
+      { index: 2, fieldNumber: 3 },
+      { index: 3, fieldNumber: 4 },
+      { index: 4, fieldNumber: 5 },
+    ];
+    const value = [
+      { index: 0, fieldNumber: 1 },
+      { index: 1, fieldNumber: 2 },
+      { index: 2, fieldNumber: 3 },
+      { index: 3, fieldNumber: 4 },
+      { index: 4, fieldNumber: 5 },
+    ];
     deleteArrayElement(input, 2);
 
     expect(input).toEqual(value);
