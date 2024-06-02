@@ -50,29 +50,22 @@
   }
 
   function viewEditField(fieldToEdit) {
+    setValuesToFalse();
     if (fieldToEdit === "name") {
-      setValuesToFalse();
       editFieldName = true;
     } else if (fieldToEdit === "serial") {
-      setValuesToFalse();
       editSerial = true;
     } else if (fieldToEdit === "incrementValue") {
-      setValuesToFalse();
       editIncrement = true;
     } else if (fieldToEdit === "recordsPerIncrement") {
-      setValuesToFalse();
       editRecordsPerIncrement = true;
     } else if (fieldToEdit === "serialPadded") {
-      setValuesToFalse();
       editPad = true;
     } else if (fieldToEdit === "prefix") {
-      setValuesToFalse();
       editPrefix = true;
     } else if (fieldToEdit === "suffix") {
-      setValuesToFalse();
       editSuffix = true;
     } else if (fieldToEdit === "type") {
-      setValuesToFalse();
       editType = true;
     }
   }

@@ -18,17 +18,14 @@
   // PROPS
   export let fields;
   export let editMode;
+  export let fieldsClone;
 
   // VARIABLES
   let initialised = false;
-
-  onMount(() => {
-    initialised = true;
-    console.log("CreateFields mounted");
-  });
+  $: fieldId = fields.length < 1 ? 1 : fieldId;
+  $: fieldNumber = fields.length + 1;
 
   // Set FieldName
-  $: fieldNumber = fields.length + 1;
   let fieldName = "";
   let validFieldName;
 
@@ -75,6 +72,7 @@
   // FUNCTIONS
   function addField(field) {
     fields = [...fields, field];
+    fieldsClone = [...fieldsClone, field];
   }
 
   function setDefaults() {
@@ -136,11 +134,19 @@
       prefix,
       suffix,
       type,
-      fieldNumber
+      fieldNumber,
+      fieldId
     );
     addField(field);
+    //fieldsClone = [...fields];
+    fieldId++;
     handleReset();
   }
+
+  onMount(() => {
+    initialised = true;
+    console.log("CreateFields mounted");
+  });
 </script>
 
 <div id={`create-field-box-${opaqueOverlay}`}>

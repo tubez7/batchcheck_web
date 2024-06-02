@@ -51,8 +51,8 @@ export function resetArrayOrder(array) {
 
 export function reverseArrayOrder(array) {
   if (!array) return [];
-  const arrayClone = [...array];
-  return arrayClone.reverse();
+
+  return array.toReversed();
 }
 
 export function compareEquality(value1, value2) {
@@ -63,7 +63,9 @@ export function deleteArrayElement(array, index) {
   if (!array) return [];
 
   const fieldNumber = array[index]?.fieldNumber;
-  const arrayClone = [...array];
+  const arrayClone = fieldNumber
+    ? array.map((element) => ({ ...element }))
+    : [...array];
 
   arrayClone.splice(index, 1);
 
@@ -84,4 +86,34 @@ export function checkSortOrder(array) {
     }
   }
   return true;
+}
+
+export function setNewSortOrder(array) {
+  if (!array) return [];
+  const arrayClone = array.map((element) => ({ ...element }));
+
+  arrayClone.forEach((element, i) => {
+    if (element.fieldNumber) {
+      element.fieldNumber = i + 1;
+    }
+  });
+
+  return arrayClone;
+}
+
+export function filterById(array, id) {
+  if (!array) return [];
+  return array.filter((element) => element.id !== id);
+}
+
+export function filterCompositeData(array, id) {
+  if (!array) return [];
+  const modifiedArray = array.map((element) => ({ ...element }));
+
+  modifiedArray.forEach((item) => {
+    const arrayToFilter = [...item.compositeData];
+    item.compositeData = filterById(arrayToFilter, id);
+  });
+
+  return modifiedArray;
 }

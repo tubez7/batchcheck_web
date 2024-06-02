@@ -2,23 +2,28 @@
   // IMPORTS
   import {
     deleteArrayElement,
+    filterCompositeData,
     lowerArrayElement,
     raiseArrayElement,
   } from "../../lib/utils";
+
   // PROPS
-  export let fields;
+  export let fieldsClone;
   export let field;
   export let index;
   export let indexToEdit;
   export let editPanelVisible;
   export let fieldToEdit;
   export let editMode;
+  export let createComposite;
+  export let compositeField;
 
   // VARIABLES
   $: standardField =
     field.type !== "Composite QR" && field.type !== "Composite-scan";
   $: disableUp = index === 0;
-  $: disableDown = index === fields.length - 1;
+  $: disableDown = index === fieldsClone.length - 1;
+  $: id = field.id;
 
   // FUNCTIONS
   function showEditPanel(e) {
@@ -30,26 +35,33 @@
 
   function createCompositeData(e) {
     e.preventDefault();
-    console.log("CREATE COMPOSITE CLICKED", fields);
+    createComposite = true;
+    compositeField = { ...field };
+    indexToEdit = index;
   }
 
   function moveFieldUp(e) {
     e.preventDefault();
-    fields = raiseArrayElement(fields, index);
+    fieldsClone = raiseArrayElement(fieldsClone, index);
   }
 
   function moveFieldDown(e) {
     e.preventDefault();
-    fields = lowerArrayElement(fields, index);
+    fieldsClone = lowerArrayElement(fieldsClone, index);
   }
 
   function deleteField(e) {
     e.preventDefault();
-    fields = deleteArrayElement(fields, index);
+    fieldsClone = filterCompositeData(
+      deleteArrayElement(fieldsClone, index),
+      id
+    );
   }
 </script>
 
 <div id="card">
+  FIELD ID: {field.id}
+  <br />
   FIELD NUMBER: {field.fieldNumber}
   <br />
   INDEX IN FIELDS: {index}

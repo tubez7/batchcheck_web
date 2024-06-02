@@ -5,40 +5,46 @@
     resetArrayOrder,
     reverseArrayOrder,
   } from "../../lib/utils";
-  export let fields;
+
+  // PROPS
+  export let fieldsClone;
   export let editMode;
+  export let compositeData;
 
   // VARIABLES
-  $: disableReset = checkSortOrder(fields);
+  $: arrayToSort = fieldsClone ? fieldsClone : compositeData;
+  $: disableReset = checkSortOrder(arrayToSort);
 
   // FUNCTIONS
   function handleDelete(e) {
     // trigger warning here before executing
     e.preventDefault();
-    fields = [];
+    fieldsClone ? (fieldsClone = []) : (compositeData = []);
   }
 
   function handleResetOrder(e) {
     e.preventDefault();
-    fields = resetArrayOrder(fields);
+    fieldsClone
+      ? (fieldsClone = resetArrayOrder(arrayToSort))
+      : (compositeData = resetArrayOrder(arrayToSort));
   }
 
   function handleReverse(e) {
     e.preventDefault();
-    fields = reverseArrayOrder(fields);
+    fieldsClone
+      ? (fieldsClone = reverseArrayOrder(arrayToSort))
+      : (compositeData = reverseArrayOrder(arrayToSort));
   }
 </script>
 
 {#if editMode}
   <div id="container">
-    {#if fields.length > 0}
-      {#if fields.length > 1}
-        <button on:click={handleResetOrder} disabled={disableReset}
-          >RESET ORDER</button
-        >
-        <button on:click={handleReverse}>REVERSE ORDER</button>
-      {/if}
-      <button on:click={handleDelete} type="reset">DELETE ALL</button>
-    {/if}
+    <button on:click={handleResetOrder} disabled={disableReset}
+      >RESET ORDER</button
+    >
+    <button on:click={handleReverse} disabled={arrayToSort.length < 2}
+      >REVERSE ORDER</button
+    >
+    <button on:click={handleDelete} type="reset">DELETE ALL</button>
   </div>
 {/if}
