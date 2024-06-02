@@ -18,6 +18,7 @@
   // PROPS
   export let fields;
   export let editMode;
+  export let fieldsClone;
 
   // VARIABLES
   let initialised = false;
@@ -71,6 +72,7 @@
   // FUNCTIONS
   function addField(field) {
     fields = [...fields, field];
+    fieldsClone = [...fieldsClone, field];
   }
 
   function setDefaults() {
@@ -136,6 +138,7 @@
       fieldId
     );
     addField(field);
+    //fieldsClone = [...fields];
     fieldId++;
     handleReset();
   }

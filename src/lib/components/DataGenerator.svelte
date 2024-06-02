@@ -13,6 +13,8 @@
   let indexToEdit = 0;
   let fieldToEdit = {};
   let editMode = false;
+  let fieldsClone = [];
+  let changeMade = false;
 
   // FUNCTIONS
   // function resetData(e) {
@@ -29,7 +31,8 @@
 
   // DEBUG WATCHERS
   // $: console.log("Records = ", records);
-  // $: console.log("Fields = ", fields);
+  //$: console.log("Fields has changed!...", fields);
+  //$: console.log("fieldsClone has changed!...", fieldsClone);
   // $: console.log("formValidated = ", formValidated);
   // $: console.log("indexToEdit = ", indexToEdit);
   //$: console.log("fieldToEdit = ", fieldToEdit);
@@ -41,7 +44,7 @@
   <legend>Batch-Check Constructor</legend>
   <div id="button-block">
     <button disabled={!formValidated}>GENERATE BATCH_CHECK TABLE</button>
-    <button on:click={toggleEditMode}
+    <button on:click={toggleEditMode} disabled={changeMade}
       >{editMode ? "CREATE FIELD MODE" : "EDIT FIELD MODE"}</button
     >
   </div>
@@ -51,16 +54,18 @@
     <div class="divider">
       <form>
         <SetRecords bind:records {editMode} />
-        <CreateFields bind:fields {editMode} />
+        <CreateFields bind:fields bind:fieldsClone {editMode} />
       </form>
     </div>
 
     <div class="divider">
       <EditFields
         bind:fields
+        bind:fieldsClone
         bind:indexToEdit
         bind:fieldToEdit
         bind:editPanelVisible
+        bind:changeMade
         {records}
         {editMode}
       />
@@ -71,7 +76,7 @@
 {#if editMode}
   {#if editPanelVisible}
     <FieldEditPanel
-      bind:fields
+      bind:fieldsClone
       bind:editPanelVisible
       field={fieldToEdit}
       index={indexToEdit}
@@ -91,10 +96,10 @@
   }
 
   #button-block {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
   /* #create {
     position: fixed;

@@ -11,11 +11,11 @@
   // PROPS
   export let createComposite;
   export let compositeField;
-  export let fields;
+  export let fieldsClone;
   export let index;
 
   // VARIABLES
-  let regularFields = fields.filter(
+  let regularFields = fieldsClone.filter(
     (field) => !field.type.includes("Composite")
   );
 
@@ -39,7 +39,7 @@
     compositeData = setNewSortOrder(compositeData);
     compositeField.compositeData = compositeData; // USE METHOD IF POSSIBLE
     compositeField.compositeSeparator = separator;
-    fields[index] = compositeField;
+    fieldsClone[index] = compositeField;
     createComposite = false;
   }
 </script>
@@ -62,7 +62,7 @@
   <div id="right">
     <h4>COMPOSITE DATA VALUE</h4>
     {#if compositeData.length > 0}
-      <FieldsSort bind:compositeData editMode={true} fields={null} />
+      <FieldsSort bind:compositeData editMode={true} fieldsClone={null} />
     {/if}
     <div class="box">
       {#each compositeData as value, i}

@@ -7,32 +7,32 @@
   } from "../../lib/utils";
 
   // PROPS
-  export let fields;
+  export let fieldsClone;
   export let editMode;
   export let compositeData;
 
   // VARIABLES
-  $: arrayToSort = fields ? fields : compositeData;
+  $: arrayToSort = fieldsClone ? fieldsClone : compositeData;
   $: disableReset = checkSortOrder(arrayToSort);
 
   // FUNCTIONS
   function handleDelete(e) {
     // trigger warning here before executing
     e.preventDefault();
-    fields ? (fields = []) : (compositeData = []);
+    fieldsClone ? (fieldsClone = []) : (compositeData = []);
   }
 
   function handleResetOrder(e) {
     e.preventDefault();
-    fields
-      ? (fields = resetArrayOrder(arrayToSort))
+    fieldsClone
+      ? (fieldsClone = resetArrayOrder(arrayToSort))
       : (compositeData = resetArrayOrder(arrayToSort));
   }
 
   function handleReverse(e) {
     e.preventDefault();
-    fields
-      ? (fields = reverseArrayOrder(arrayToSort))
+    fieldsClone
+      ? (fieldsClone = reverseArrayOrder(arrayToSort))
       : (compositeData = reverseArrayOrder(arrayToSort));
   }
 </script>

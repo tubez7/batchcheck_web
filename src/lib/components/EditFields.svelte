@@ -1,4 +1,7 @@
 <script>
+  // IMPORTS
+  import { compareEquality } from "$lib/utils.js";
+
   // COMPONENTS
   import CreateCompositeData from "$lib/components/CreateCompositeData.svelte";
   import FieldCard from "$lib/components/FieldCard.svelte";
@@ -7,16 +10,34 @@
 
   // PROPS
   export let fields;
+  export let fieldsClone;
   export let records;
   export let indexToEdit;
   export let fieldToEdit;
   export let editPanelVisible;
   export let editMode;
+  export let changeMade;
 
   // VARIABLES
   $: opaqueOverlay = editMode ? "edit" : "create";
   let createComposite = false;
   let compositeField = {};
+  $: changeMade = !compareEquality(fields, fieldsClone);
+  $: console.log("FieldsClone has changed...", fieldsClone, fields);
+  $: disabled = !changeMade;
+
+  // FUNCTIONS
+  function handleSave(e) {
+    e.preventDefault();
+    fields = [...fieldsClone];
+    fieldsClone = [...fields];
+  }
+
+  function handleCancel(e) {
+    e.preventDefault();
+    // WARNING HERE
+    fieldsClone = [...fields];
+  }
 </script>
 
 <div id={opaqueOverlay}>
@@ -24,17 +45,17 @@
     <h2>FIELD EDITOR</h2>
     <h3>NUMBER OF BATCHES/RECORDS: {records}</h3>
 
-    {#if fields.length < 1 && editMode}
+    {#if fieldsClone.length < 1 && editMode}
       <p>NO FIELD DATA TO EDIT</p>
     {/if}
 
-    {#if fields.length > 0}
-      <FieldsSort bind:fields {editMode} compositeData={null} />
+    {#if fieldsClone.length > 0}
+      <FieldsSort bind:fieldsClone {editMode} compositeData={null} />
 
       <fieldset id="card-box">
-        {#each fields as field, i}
+        {#each fieldsClone as field, i}
           <FieldCard
-            bind:fields
+            bind:fieldsClone
             bind:indexToEdit
             bind:fieldToEdit
             bind:editPanelVisible
@@ -46,6 +67,10 @@
           />
         {/each}
       </fieldset>
+      {#if editMode}
+        <button on:click={handleSave} {disabled}>SAVE & UPDATE</button>
+        <button on:click={handleCancel} {disabled}>RESET CHANGES</button>
+      {/if}
     {/if}
   </fieldset>
 </div>
@@ -54,7 +79,7 @@
   <PopUp --colour="cyan">
     <CreateCompositeData
       bind:createComposite
-      bind:fields
+      bind:fieldsClone
       {compositeField}
       index={indexToEdit}
     />

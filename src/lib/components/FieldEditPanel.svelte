@@ -7,7 +7,7 @@
 
   // PROPS
   export let editPanelVisible;
-  export let fields;
+  export let fieldsClone;
   export let field;
   export let index;
 
@@ -65,7 +65,7 @@
 
   function saveAndUpdate(e) {
     e.preventDefault();
-    fields[index] = fieldClone;
+    fieldsClone[index] = fieldClone;
     editPanelVisible = false;
   }
 </script>
