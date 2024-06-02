@@ -1,4 +1,4 @@
-import { filterCompositeData, searchAndDeleteField } from "../src/lib/utils";
+import { filterById, filterCompositeData } from "../src/lib/utils";
 
 function createDataArray() {
   const data = [];
@@ -9,16 +9,15 @@ function createDataArray() {
 }
 
 function createFilteredData(id) {
-  return searchAndDeleteField(createDataArray(), id);
+  return filterById(createDataArray(), id);
 }
 
-function createData(func, ...args) {
-  const array = [];
-  for (let i = 0; i < 10; i++) {
-    const data = func(...args);
-    array.push({ id: i + 1, compositeData: data });
-  }
-  return array;
+function createData(callback, callback2, ...args) {
+  const array = callback2();
+  return array.map((element) => ({
+    ...element,
+    compositeData: callback(...args),
+  }));
 }
 
 describe("filterCompositeData", () => {
@@ -36,8 +35,8 @@ describe("filterCompositeData", () => {
   });
 
   test("function should filter the compositeData nested array of each object by the id parameter it is passed", () => {
-    const input = createData(createDataArray);
-    const expected = createData(createFilteredData, 5);
+    const input = createData(createDataArray, createDataArray);
+    const expected = createData(createFilteredData, createDataArray, 5);
     const result = filterCompositeData(input, 5);
 
     expect(result).toEqual(expected);

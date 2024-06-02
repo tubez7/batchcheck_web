@@ -4,7 +4,7 @@
     deleteArrayElement,
     lowerArrayElement,
     raiseArrayElement,
-    searchAndDeleteField,
+    filterById,
   } from "../../lib/utils";
 
   // PROPS
@@ -63,9 +63,9 @@
     //   "BEFORE",
     //   compositeData,
     //   "RESULT = ",
-    //   searchAndDeleteField(compositeData, id)
+    //   filterById(compositeData, id)
     // );
-    // compositeField.compositeData = searchAndDeleteField(compositeData, id);
+    // compositeField.compositeData = filterById(compositeData, id);
   }
 </script>
 

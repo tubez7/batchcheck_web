@@ -101,7 +101,7 @@ export function setNewSortOrder(array) {
   return arrayClone;
 }
 
-export function searchAndDeleteField(array, id) {
+export function filterById(array, id) {
   if (!array) return [];
   return array.filter((element) => element.id !== id);
 }
@@ -112,7 +112,7 @@ export function filterCompositeData(array, id) {
 
   modifiedArray.forEach((item) => {
     const arrayToFilter = [...item.compositeData];
-    item.compositeData = searchAndDeleteField(arrayToFilter, id);
+    item.compositeData = filterById(arrayToFilter, id);
   });
 
   return modifiedArray;

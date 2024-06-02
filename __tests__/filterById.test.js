@@ -1,15 +1,15 @@
-import { searchAndDeleteField } from "../src/lib/utils";
+import { filterById } from "../src/lib/utils";
 
-describe("searchAndDeleteField()", () => {
+describe("filterById()", () => {
   test("function should return an array", () => {
-    const result = searchAndDeleteField();
+    const result = filterById();
 
     expect(result).toEqual([]);
   });
 
   test("function should return a different array to the one passed to it", () => {
     const input = [];
-    const result = searchAndDeleteField(input);
+    const result = filterById(input);
 
     expect(result).not.toBe(input);
   });
@@ -24,7 +24,7 @@ describe("searchAndDeleteField()", () => {
       { name: 1, id: 1 },
       { name: 3, id: 3 },
     ];
-    const result = searchAndDeleteField(input, 2);
+    const result = filterById(input, 2);
 
     expect(result).toEqual(expected);
   });
@@ -41,7 +41,7 @@ describe("searchAndDeleteField()", () => {
       { name: 3, id: 3 },
     ];
 
-    searchAndDeleteField(input, 2);
+    filterById(input, 2);
     expect(input).toEqual(expected);
   });
 
@@ -61,7 +61,7 @@ describe("searchAndDeleteField()", () => {
       { index: 4, fieldNumber: 5 },
     ];
 
-    const result = searchAndDeleteField(input, 1);
+    const result = filterById(input, 1);
 
     expect(result).toEqual(expected);
   });
