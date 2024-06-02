@@ -16,7 +16,7 @@
   // VARIABLES
   $: opaqueOverlay = editMode ? "edit" : "create";
   let createComposite = false;
-  let compositeField;
+  let compositeField = {};
 </script>
 
 <div id={opaqueOverlay}>

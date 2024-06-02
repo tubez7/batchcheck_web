@@ -4,6 +4,7 @@
     deleteArrayElement,
     lowerArrayElement,
     raiseArrayElement,
+    searchAndDeleteField,
   } from "../../lib/utils";
 
   // PROPS
@@ -22,6 +23,13 @@
     field.type !== "Composite QR" && field.type !== "Composite-scan";
   $: disableUp = index === 0;
   $: disableDown = index === fields.length - 1;
+  //let compositeData = compositeField.compositeData;
+  let id = field.id;
+  let compositeFields = fields.filter(
+    (field) => field.type.includes("Composite")
+  );
+
+  console.log(compositeFields);
 
   // FUNCTIONS
   function showEditPanel(e) {
@@ -33,9 +41,8 @@
 
   function createCompositeData(e) {
     e.preventDefault();
-    console.log("CREATE COMPOSITE CLICKED", fields);
     createComposite = true;
-    compositeField = {...field};
+    compositeField = { ...field };
     indexToEdit = index;
   }
 
@@ -52,11 +59,19 @@
   function deleteField(e) {
     e.preventDefault();
     fields = deleteArrayElement(fields, index);
+    // console.log(
+    //   "BEFORE",
+    //   compositeData,
+    //   "RESULT = ",
+    //   searchAndDeleteField(compositeData, id)
+    // );
+    // compositeField.compositeData = searchAndDeleteField(compositeData, id);
   }
-
 </script>
 
 <div id="card">
+  FIELD ID: {id}
+  <br />
   FIELD NUMBER: {field.fieldNumber}
   <br />
   INDEX IN FIELDS: {index}
@@ -103,7 +118,6 @@
     <button on:click={moveFieldDown} disabled={disableDown}>MOVE DOWN</button>
   {/if}
 </div>
-
 
 <style>
   #card {

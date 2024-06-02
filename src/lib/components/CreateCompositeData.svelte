@@ -1,6 +1,6 @@
 <script>
   // IMPORTS
-  import { compareEquality } from "$lib/utils.js";
+  import { compareEquality, setNewSortOrder } from "$lib/utils.js";
 
   // COMPONENTS
   import FieldItem from "$lib/components/FieldItem.svelte";
@@ -36,7 +36,7 @@
 
   function handleSave(e) {
     e.preventDefault();
-    // CALL setNewSortOrder() HERE -> compositeData = setNewSortOrder(compositeData)
+    compositeData = setNewSortOrder(compositeData);
     compositeField.compositeData = compositeData; // USE METHOD IF POSSIBLE
     compositeField.compositeSeparator = separator;
     fields[index] = compositeField;
