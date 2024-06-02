@@ -4,7 +4,7 @@
     deleteArrayElement,
     lowerArrayElement,
     raiseArrayElement,
-    filterById,
+    filterCompositeData,
   } from "../../lib/utils";
 
   // PROPS
@@ -23,13 +23,7 @@
     field.type !== "Composite QR" && field.type !== "Composite-scan";
   $: disableUp = index === 0;
   $: disableDown = index === fields.length - 1;
-  //let compositeData = compositeField.compositeData;
   let id = field.id;
-  let compositeFields = fields.filter(
-    (field) => field.type.includes("Composite")
-  );
-
-  console.log(compositeFields);
 
   // FUNCTIONS
   function showEditPanel(e) {
@@ -58,14 +52,7 @@
 
   function deleteField(e) {
     e.preventDefault();
-    fields = deleteArrayElement(fields, index);
-    // console.log(
-    //   "BEFORE",
-    //   compositeData,
-    //   "RESULT = ",
-    //   filterById(compositeData, id)
-    // );
-    // compositeField.compositeData = filterById(compositeData, id);
+    fields = filterCompositeData(deleteArrayElement(fields, index), id);
   }
 </script>
 
