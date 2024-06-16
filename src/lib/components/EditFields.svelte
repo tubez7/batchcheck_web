@@ -23,8 +23,6 @@
   let createComposite = false;
   let compositeField = {};
   $: changeMade = !compareEquality(fields, fieldsClone);
-  $: console.log("FieldsClone has changed...", fieldsClone, fields);
-  $: disabled = !changeMade;
 
   // FUNCTIONS
   function handleSave(e) {
@@ -67,10 +65,13 @@
           />
         {/each}
       </fieldset>
-      {#if editMode}
-        <button on:click={handleSave} {disabled}>SAVE & UPDATE</button>
-        <button on:click={handleCancel} {disabled}>RESET CHANGES</button>
-      {/if}
+    {/if}
+    {#if editMode}
+      <button on:click={handleSave} disabled={!changeMade}>SAVE & UPDATE</button
+      >
+      <button on:click={handleCancel} disabled={!changeMade}
+        >RESET CHANGES</button
+      >
     {/if}
   </fieldset>
 </div>

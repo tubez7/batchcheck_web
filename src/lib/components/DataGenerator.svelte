@@ -15,6 +15,7 @@
   let editMode = false;
   let fieldsClone = [];
   let changeMade = false;
+  $: disabled = editMode ? changeMade : fields.length < 1;
 
   // FUNCTIONS
   // function resetData(e) {
@@ -44,7 +45,8 @@
   <legend>Batch-Check Constructor</legend>
   <div id="button-block">
     <button disabled={!formValidated}>GENERATE BATCH_CHECK TABLE</button>
-    <button on:click={toggleEditMode} disabled={changeMade}
+
+    <button on:click={toggleEditMode} {disabled}
       >{editMode ? "CREATE FIELD MODE" : "EDIT FIELD MODE"}</button
     >
   </div>
