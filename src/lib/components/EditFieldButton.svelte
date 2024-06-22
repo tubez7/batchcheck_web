@@ -11,6 +11,7 @@
   export let editPrefix;
   export let editSuffix;
   export let editType;
+  export let headerText;
 
   // VARIABLES
   let displayValueText;
@@ -53,20 +54,28 @@
     setValuesToFalse();
     if (fieldToEdit === "name") {
       editFieldName = true;
+      headerText = "Field Name";
     } else if (fieldToEdit === "serial") {
       editSerial = true;
+      headerText = "Serial";
     } else if (fieldToEdit === "incrementValue") {
       editIncrement = true;
+      headerText = "Increment Value";
     } else if (fieldToEdit === "recordsPerIncrement") {
       editRecordsPerIncrement = true;
+      headerText = "Records Per Increment";
     } else if (fieldToEdit === "serialPadded") {
       editPad = true;
+      headerText = "Serial Pad";
     } else if (fieldToEdit === "prefix") {
       editPrefix = true;
+      headerText = "Prefix";
     } else if (fieldToEdit === "suffix") {
       editSuffix = true;
+      headerText = "Suffix";
     } else if (fieldToEdit === "type") {
       editType = true;
+      headerText = "Field Type";
     }
   }
 
@@ -76,4 +85,28 @@
   }
 </script>
 
-<button on:click={handleClick}>{fieldId}: {displayValueText}</button>
+<span id="container">
+  <span><span id="field-id">{fieldId}: </span>{displayValueText}</span>
+  <button on:click={handleClick}>Edit</button>
+</span>
+
+<style>
+  #container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 0.125em;
+    margin-bottom: 0.125em;
+    padding: 2px;
+    padding-right: 5px;
+    align-items: stretch;
+    border-style: solid;
+    border-color: cyan;
+    background-color: rgb(241, 237, 237);
+    box-sizing: border-box;
+  }
+
+  #field-id {
+    font-weight: bolder;
+  }
+</style>

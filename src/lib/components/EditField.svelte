@@ -28,6 +28,7 @@
   export let editType;
   export let hasSerial;
   export let standardField;
+  export let headerText;
 
   // VARIABLES
   let serial = fieldClone.serial;
@@ -38,9 +39,10 @@
   $: padLead = !editPad ? fieldClone.padLead : padLead;
   let padTrail = fieldClone.padTrail;
   $: padTrail = !editPad ? fieldClone.padTrail : padTrail;
+
 </script>
 
-<PopUp --colour="aquamarine">
+<PopUp --colour="aquamarine" header={headerText}>
   {#if editFieldName}
     <EditFieldName
       bind:fieldClone

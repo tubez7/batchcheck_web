@@ -39,7 +39,9 @@
   //$: console.log("fieldToEdit = ", fieldToEdit);
 </script>
 
-<!-- <div></div> THIS WILL BE AN OPAQUE BLACK FILTER WHEN POP-UP OPENS -->
+{#if editPanelVisible}
+  <div id="opaque-filter"></div>
+{/if}
 
 <fieldset id="data-generator-box">
   <legend>Batch-Check Constructor</legend>
@@ -75,6 +77,7 @@
   </div>
 </fieldset>
 
+<!-- MIGHT NOT NEED EDIT MODE BELOW -->
 {#if editMode}
   {#if editPanelVisible}
     <FieldEditPanel
@@ -133,5 +136,18 @@
 
   #data-generator-box {
     background-color: beige;
+  }
+
+  #opaque-filter {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    background-color: black;
+    filter: opacity(50%);
   }
 </style>

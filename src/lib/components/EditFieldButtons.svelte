@@ -26,6 +26,7 @@
 
   // VARIABLES
   let initialised = false;
+  let headerText;
 
   // SERIAL VARIABLES
   $: hasSerial = !editSerial ? fieldClone.hasSerial : hasSerial;
@@ -67,6 +68,7 @@
       bind:editPrefix
       bind:editSuffix
       bind:editType
+      bind:headerText
       {fieldClone}
       fieldId="Field Name"
       value="name"
@@ -81,6 +83,7 @@
         bind:editPrefix
         bind:editSuffix
         bind:editType
+        bind:headerText
         {fieldClone}
         fieldId="Serial"
         value="serial"
@@ -95,6 +98,7 @@
           bind:editPrefix
           bind:editSuffix
           bind:editType
+          bind:headerText
           {fieldClone}
           fieldId="Increment serial by"
           value="incrementValue"
@@ -109,6 +113,7 @@
           bind:editPrefix
           bind:editSuffix
           bind:editType
+          bind:headerText
           {fieldClone}
           fieldId="Records Per Increment"
           value="recordsPerIncrement"
@@ -123,6 +128,7 @@
           bind:editPrefix
           bind:editSuffix
           bind:editType
+          bind:headerText
           {fieldClone}
           fieldId="Serial Padded"
           value="serialPadded"
@@ -137,6 +143,7 @@
         bind:editPrefix
         bind:editSuffix
         bind:editType
+        bind:headerText
         {fieldClone}
         fieldId="Prefix"
         value="prefix"
@@ -151,6 +158,7 @@
         bind:editPrefix
         bind:editSuffix
         bind:editType
+        bind:headerText
         {fieldClone}
         fieldId="Suffix"
         value="suffix"
@@ -165,6 +173,7 @@
       bind:editPrefix
       bind:editSuffix
       bind:editType
+      bind:headerText
       {fieldClone}
       fieldId="Field Type"
       value="type"
@@ -189,7 +198,19 @@
     bind:editPrefix
     bind:editSuffix
     bind:editType
+    {headerText}
     {hasSerial}
     {standardField}
   />
 {/if}
+
+<style>
+  #button-block {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    /* border-style: solid; */
+    border-color:red;
+    box-sizing: border-box;
+  }
+</style>

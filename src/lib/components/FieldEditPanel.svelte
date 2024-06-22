@@ -70,7 +70,7 @@
   }
 </script>
 
-<PopUp>
+<PopUp header="Edit Fields">
   <EditFieldButtons
     bind:fieldClone
     bind:field
@@ -91,9 +91,21 @@
   />
 
   {#if !editMode}
-    <button on:click={hideEditPanel}>CANCEL & CLOSE</button>
-    <button disabled={saveButtonDisabled} on:click={saveAndUpdate}
-      >SAVE & UPDATE</button
-    >
+    <div id="button-block">
+      <button on:click={hideEditPanel}>CANCEL & CLOSE</button>
+      <button disabled={saveButtonDisabled} on:click={saveAndUpdate}
+        >SAVE & UPDATE</button
+      >
+    </div>
   {/if}
 </PopUp>
+
+<style>
+  #button-block {
+    margin: auto;
+    margin-top: 15px;
+    /* border-style: solid; */
+    border-color: blue;
+    box-sizing: border-box;
+  }
+</style>
