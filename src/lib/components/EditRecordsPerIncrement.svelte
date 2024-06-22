@@ -48,6 +48,7 @@
   {serialPadded}
   {padLead}
   {padTrail}
+  minimumPadLength={null}
   value={recordsPerIncrement}
   validCheck={validRecordsPerIncrement}
   fieldToEditName="recordsPerIncrement"

@@ -1,5 +1,5 @@
 <script>
-  export let header = "";
+  export let header;
 </script>
 
 <div class="pop-up">
@@ -13,7 +13,7 @@
     display: flex;
     flex-direction: column;
     border-style: solid;
-    border-radius: 10px;
+    border-radius: 0.5em;
     padding: 1.5em;
     padding-top: 1em;
     background-color: var(--colour, lightgrey);
@@ -25,10 +25,8 @@
     box-sizing: border-box;
   }
 
-  /* SET DEFAULT Z-INDEX AS A VARIABLE (AS ABOVE) SO DIFFERENT VALUES CAN POTENTIALLY BE PASSED IN */
-
   h3 {
     margin: auto;
-    margin-bottom: 10px;
+    margin-bottom: 0.5em;
   }
 </style>

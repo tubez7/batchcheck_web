@@ -54,28 +54,28 @@
     setValuesToFalse();
     if (fieldToEdit === "name") {
       editFieldName = true;
-      headerText = "Field Name";
+      headerText = "Edit Field Name";
     } else if (fieldToEdit === "serial") {
       editSerial = true;
-      headerText = "Serial";
+      headerText = "Edit Serial Number";
     } else if (fieldToEdit === "incrementValue") {
       editIncrement = true;
-      headerText = "Increment Value";
+      headerText = "Edit Increment Value";
     } else if (fieldToEdit === "recordsPerIncrement") {
       editRecordsPerIncrement = true;
-      headerText = "Records Per Increment";
+      headerText = "Edit Records Per Increment";
     } else if (fieldToEdit === "serialPadded") {
       editPad = true;
-      headerText = "Serial Pad";
+      headerText = "Edit Serial Pad";
     } else if (fieldToEdit === "prefix") {
       editPrefix = true;
-      headerText = "Prefix";
+      headerText = "Edit Prefix";
     } else if (fieldToEdit === "suffix") {
       editSuffix = true;
-      headerText = "Suffix";
+      headerText = "Edit Suffix";
     } else if (fieldToEdit === "type") {
       editType = true;
-      headerText = "Field Type";
+      headerText = "Edit Field Type";
     }
   }
 

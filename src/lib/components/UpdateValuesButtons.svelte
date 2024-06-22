@@ -17,6 +17,7 @@
   export let editPrefix;
   export let editSuffix;
   export let editType;
+  export let minimumPadLength;
 
   // FUNCTIONS
   function terminateEditMode(fieldToCancel) {
@@ -40,16 +41,16 @@
   }
 
   function saveField(fieldToSave) {
-    fieldClone[fieldToSave] = value;
     if (fieldToSave === "serial") {
       fieldClone.hasSerial = hasSerial;
-      if (!hasSerial) {
-        fieldClone.serial = null;
-      }
+      fieldClone.serial = hasSerial ? value || 0 : null;
     } else if (fieldToSave === "padLength") {
+      fieldClone.padLength = serialPadded ? value || minimumPadLength : null;
       fieldClone.serialPadded = serialPadded;
       fieldClone.padLead = padLead;
       fieldClone.padTrail = padTrail;
+    } else {
+      fieldClone[fieldToSave] = value;
     }
     terminateEditMode(fieldToSave);
   }
@@ -82,6 +83,25 @@
   }
 </script>
 
-<button on:click={handleSave} disabled={!validCheck}>SAVE CHANGES</button>
-<button on:click={handleCancel}>CANCEL & CLOSE</button>
-<button on:click={handleReset}>RESET TO ORIGINAL VALUE</button>
+<div>
+  <button on:click={handleSave} disabled={!validCheck}>SAVE CHANGES</button>
+  <button on:click={handleCancel}>CANCEL & CLOSE</button>
+  <button on:click={handleReset}>RESET CHANGES</button>
+</div>
+
+<style>
+  div {
+    display: flex;
+    margin: auto;
+    margin-top: 1em;
+    /* padding: 0.5em; */
+    border-style: solid;
+    border-color: rgb(114, 113, 113);
+    box-sizing: border-box;
+    min-width: 20em;
+  }
+
+  button {
+    margin: 0.5em;
+  }
+</style>

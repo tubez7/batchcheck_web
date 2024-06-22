@@ -44,6 +44,7 @@
   {serialPadded}
   {padLead}
   {padTrail}
+  minimumPadLength={null}
   value={serial}
   validCheck={validSerial}
   fieldToEditName="serial"

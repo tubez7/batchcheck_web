@@ -26,6 +26,7 @@
   // VARIABLES
   let padLength = fieldClone.padLength;
   $: padLength = !editPad ? fieldClone.padLength : padLength;
+  let minimumPadLength = null;
 </script>
 
 <SetSerialPadded bind:serialPadded editMode={false} />
@@ -33,7 +34,7 @@
   <SetPadLength
     bind:padLength
     bind:validPadLength
-    minimumPadLength={null}
+    bind:minimumPadLength
     {serialPadded}
     {serial}
     editMode={false}
@@ -55,6 +56,7 @@
   {serialPadded}
   {padLead}
   {padTrail}
+  {minimumPadLength}
   value={padLength}
   validCheck={validPadLength}
   fieldToEditName="padLength"

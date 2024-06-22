@@ -210,7 +210,7 @@
     flex-direction: column;
     align-items: start;
     /* border-style: solid; */
-    border-color:red;
+    border-color: red;
     box-sizing: border-box;
   }
 </style>

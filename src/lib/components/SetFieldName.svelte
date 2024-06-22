@@ -31,6 +31,7 @@
   placeholder="Enter field name"
   disabled={editMode}
 />
+
 {#if fieldNameError}
   <p>Field Name is a mandatory field</p>
 {/if}

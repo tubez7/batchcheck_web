@@ -39,7 +39,6 @@
   $: padLead = !editPad ? fieldClone.padLead : padLead;
   let padTrail = fieldClone.padTrail;
   $: padTrail = !editPad ? fieldClone.padTrail : padTrail;
-
 </script>
 
 <PopUp --colour="aquamarine" header={headerText}>

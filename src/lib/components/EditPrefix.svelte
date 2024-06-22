@@ -40,6 +40,7 @@
   {serialPadded}
   {padLead}
   {padTrail}
+  minimumPadLength={null}
   value={prefix}
   validCheck={true}
   fieldToEditName="prefix"

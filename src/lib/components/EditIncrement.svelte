@@ -49,6 +49,7 @@
   {serialPadded}
   {padLead}
   {padTrail}
+  minimumPadLength={null}
   value={incrementValue}
   validCheck={validIncrement}
   fieldToEditName="incrementValue"
