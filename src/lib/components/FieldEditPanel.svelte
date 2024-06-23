@@ -6,6 +6,7 @@
   import EditField from "$lib/components/EditField.svelte";
   import EditFieldButtons from "$lib/components/EditFieldButtons.svelte";
   import PopUp from "$lib/components/PopUp.svelte";
+  import WarningAlert from "$lib/components/WarningAlert.svelte";
 
   // PROPS
   export let editPanelVisible;
@@ -17,6 +18,11 @@
   let fieldClone = { ...field };
   $: changeMade = !compareEquality(field, fieldClone);
   let headerText;
+
+  // ALERT VARIABLES
+  let warning = false;
+  let alert = "Any unsaved changes will be permanently lost.";
+  let userConfirmation = false;
 
   // FIELD NAME VARIABLES
   let validFieldName = true;
@@ -63,6 +69,12 @@
     !validPadLength;
 
   // FUNCTIONS
+  function userConfirmed(confirmation) {
+    if (confirmation) {
+      editPanelVisible = false;
+    }
+  }
+
   function setDefaults() {
     fieldClone.hasSerial = false;
     fieldClone.serial = null;
@@ -78,8 +90,7 @@
 
   function hideEditPanel(e) {
     e.preventDefault();
-    // - PROMPT USER THAT ANY UNSAVED CHANGES WILL BE LOST FIRST
-    editPanelVisible = false;
+    warning = true;
   }
 
   function saveAndUpdate(e) {
@@ -90,32 +101,42 @@
     fieldsClone[index] = fieldClone;
     editPanelVisible = false;
   }
+
+  $: userConfirmation, userConfirmed(userConfirmation);
 </script>
 
 {#if !editMode}
-  <PopUp header="Edit Fields">
-    <EditFieldButtons
-      bind:fieldClone
-      bind:editFieldName
-      bind:editSerial
-      bind:editIncrement
-      bind:editRecordsPerIncrement
-      bind:editPad
-      bind:editPrefix
-      bind:editSuffix
-      bind:editType
-      bind:headerText
-      {hasSerial}
-      {standardField}
-    />
+  {#if !warning}
+    <PopUp header="Edit Fields">
+      <EditFieldButtons
+        bind:fieldClone
+        bind:editFieldName
+        bind:editSerial
+        bind:editIncrement
+        bind:editRecordsPerIncrement
+        bind:editPad
+        bind:editPrefix
+        bind:editSuffix
+        bind:editType
+        bind:headerText
+        {hasSerial}
+        {standardField}
+      />
 
-    <div id="button-block">
-      <button on:click={hideEditPanel}>CANCEL & CLOSE</button>
-      <button disabled={saveButtonDisabled} on:click={saveAndUpdate}
-        >SAVE & UPDATE</button
-      >
-    </div>
-  </PopUp>
+      <div id="button-block">
+        <button on:click={hideEditPanel}>CANCEL & CLOSE</button>
+        <button disabled={saveButtonDisabled} on:click={saveAndUpdate}
+          >SAVE & UPDATE</button
+        >
+      </div>
+    </PopUp>
+  {/if}
+
+  {#if warning}
+    <PopUp --colour="red" header="Warning!">
+      <WarningAlert bind:warning bind:userConfirmation {alert} />
+    </PopUp>
+  {/if}
 {/if}
 
 {#if editMode}
