@@ -1,7 +1,9 @@
 <script>
   // IMPORTS
   import { compareEquality } from "$lib/utils.js";
+
   // COMPONENTS
+  import EditField from "$lib/components/EditField.svelte";
   import EditFieldButtons from "$lib/components/EditFieldButtons.svelte";
   import PopUp from "$lib/components/PopUp.svelte";
 
@@ -14,6 +16,7 @@
   // VARIABLES
   let fieldClone = { ...field };
   $: changeMade = !compareEquality(field, fieldClone);
+  let headerText;
 
   // FIELD NAME VARIABLES
   let validFieldName = true;
@@ -26,6 +29,7 @@
   let editIncrement = false;
   let editRecordsPerIncrement = false;
   let validRecordsPerIncrement = true;
+  $: hasSerial = !editSerial ? fieldClone.hasSerial : hasSerial;
 
   // PAD VARIABLES
   let validPadLength = true;
@@ -37,6 +41,8 @@
 
   // FIELD-TYPE VARIABLES
   let editType = false;
+  $: standardField =
+    fieldClone.type !== "Composite QR" && fieldClone.type !== "Composite-scan";
 
   $: editMode =
     editFieldName ||
@@ -57,6 +63,19 @@
     !validPadLength;
 
   // FUNCTIONS
+  function setDefaults() {
+    fieldClone.hasSerial = false;
+    fieldClone.serial = null;
+    fieldClone.incrementValue = 0;
+    fieldClone.recordsPerIncrement = 1;
+    fieldClone.serialPadded = false;
+    fieldClone.padLength = null;
+    fieldClone.padLead = "";
+    fieldClone.padTrail = "";
+    fieldClone.prefix = "";
+    fieldClone.suffix = "";
+  }
+
   function hideEditPanel(e) {
     e.preventDefault();
     // - PROMPT USER THAT ANY UNSAVED CHANGES WILL BE LOST FIRST
@@ -65,40 +84,63 @@
 
   function saveAndUpdate(e) {
     e.preventDefault();
+    if (!standardField) {
+      setDefaults();
+    }
     fieldsClone[index] = fieldClone;
     editPanelVisible = false;
   }
 </script>
 
-<PopUp header="Edit Fields">
-  <EditFieldButtons
-    bind:fieldClone
-    bind:field
-    bind:validFieldName
-    bind:validSerial
-    bind:validIncrement
-    bind:validRecordsPerIncrement
-    bind:validPadLength
-    bind:editFieldName
-    bind:editSerial
-    bind:editIncrement
-    bind:editRecordsPerIncrement
-    bind:editPad
-    bind:editPrefix
-    bind:editSuffix
-    bind:editType
-    {editMode}
-  />
+{#if !editMode}
+  <PopUp header="Edit Fields">
+    <EditFieldButtons
+      bind:fieldClone
+      bind:editFieldName
+      bind:editSerial
+      bind:editIncrement
+      bind:editRecordsPerIncrement
+      bind:editPad
+      bind:editPrefix
+      bind:editSuffix
+      bind:editType
+      bind:headerText
+      {hasSerial}
+      {standardField}
+    />
 
-  {#if !editMode}
     <div id="button-block">
       <button on:click={hideEditPanel}>CANCEL & CLOSE</button>
       <button disabled={saveButtonDisabled} on:click={saveAndUpdate}
         >SAVE & UPDATE</button
       >
     </div>
-  {/if}
-</PopUp>
+  </PopUp>
+{/if}
+
+{#if editMode}
+  <PopUp --colour="aquamarine" header={headerText}>
+    <EditField
+      bind:field
+      bind:fieldClone
+      bind:editFieldName
+      bind:validFieldName
+      bind:editSerial
+      bind:validSerial
+      bind:editIncrement
+      bind:validIncrement
+      bind:editRecordsPerIncrement
+      bind:validRecordsPerIncrement
+      bind:editPad
+      bind:validPadLength
+      bind:editPrefix
+      bind:editSuffix
+      bind:editType
+      {hasSerial}
+      {standardField}
+    />
+  </PopUp>
+{/if}
 
 <style>
   #button-block {

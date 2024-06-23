@@ -25,12 +25,12 @@
     }
   } else if (fieldId === "Serial Padded") {
     padText = fieldClone.padTrail
-      ? `Trail pad char (${fieldClone.padTrail})`
+      ? `Trail pad character (${fieldClone.padTrail})`
       : fieldClone.padLead
-        ? `Lead pad char (${fieldClone.padLead})`
+        ? `Lead pad character (${fieldClone.padLead})`
         : "";
     displayValueText = fieldClone.serialPadded
-      ? "Pad Length = " + fieldClone.padLength + ": " + padText
+      ? "Length = " + fieldClone.padLength + ": " + padText
       : "N/A";
   } else if (fieldId === "Prefix" || fieldId === "Suffix") {
     displayValueText = fieldClone[value] === "" ? "None" : fieldClone[value];
@@ -108,5 +108,9 @@
 
   #field-id {
     font-weight: bolder;
+  }
+
+  button {
+    margin-left: 0.5em;
   }
 </style>

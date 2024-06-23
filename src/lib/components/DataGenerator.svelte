@@ -77,16 +77,13 @@
   </div>
 </fieldset>
 
-<!-- MIGHT NOT NEED EDIT MODE BELOW -->
-{#if editMode}
-  {#if editPanelVisible}
-    <FieldEditPanel
-      bind:fieldsClone
-      bind:editPanelVisible
-      field={fieldToEdit}
-      index={indexToEdit}
-    />
-  {/if}
+{#if editPanelVisible}
+  <FieldEditPanel
+    bind:fieldsClone
+    bind:editPanelVisible
+    field={fieldToEdit}
+    index={indexToEdit}
+  />
 {/if}
 
 <style>
@@ -105,34 +102,6 @@
     justify-content: center;
     align-items: center;
   }
-
-  /* #create {
-    position: fixed;
-    display: block;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    background-color: black;
-    z-index: 2;
-    opacity: 0.7;
-    max-width: 50%;
-    max-height: 50%;
-  }
-
-  #edit {
-    position: fixed;
-    display: block;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    background-color: black;
-    z-index: 2;
-    opacity: 0.7;
-    max-width: 50%;
-    max-height: 50%;
-  }  */
 
   #data-generator-box {
     background-color: beige;
