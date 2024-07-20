@@ -149,15 +149,13 @@
   });
 </script>
 
-<div id={`create-field-box-${opaqueOverlay}`}>
+<div class={`create-field-box-${opaqueOverlay}`}>
   <fieldset>
     <h2>Field Type</h2>
-    <div class="field-seperators">
-      <SetFieldType bind:type {editMode} />
-    </div>
+    <SetFieldType bind:type {editMode} />
 
     <h2>Field Creation</h2>
-    <fieldset>
+    <fieldset class="border">
       <SetFieldName bind:fieldName bind:validFieldName {editMode} />
 
       {#if standardField}
@@ -194,24 +192,40 @@
         <SetPrefix bind:prefix {editMode} />
         <SetSuffix bind:suffix {editMode} />
       {/if}
-      
     </fieldset>
-    <button on:click={handleSubmit} type="submit" disabled={buttonDisable}
-      >Add Field</button
-    >
-    <button on:click={handleReset} type="reset" disabled={editMode}
-      >Reset Field Values</button
-    >
+
+    <div class="button-block">
+      <button on:click={handleSubmit} type="submit" disabled={buttonDisable}
+        >Add Field</button
+      >
+      <button on:click={handleReset} type="reset" disabled={editMode}
+        >Reset Values</button
+      >
+    </div>
   </fieldset>
 </div>
 
 <style>
-  #create-field-box-create {
+  .create-field-box-create {
     background-color: lightgreen;
   }
 
-  #create-field-box-edit {
+  .create-field-box-edit {
     background-color: rgb(66, 125, 66);
     opacity: 0.5;
+  }
+
+  .border {
+    padding-top: 1em;
+    margin-bottom: 0.75em;
+  }
+
+  .button-block {
+    text-align: center;
+  }
+
+  button {
+    height: 3em;
+    width: 10em;
   }
 </style>

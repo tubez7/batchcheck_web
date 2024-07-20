@@ -46,10 +46,10 @@
 <fieldset id="data-generator-box">
   <legend>Batch-Check Constructor</legend>
   <div id="button-block">
-    <button disabled={!formValidated}>GENERATE BATCH_CHECK TABLE</button>
+    <button disabled={!formValidated}>GENERATE TABLE</button>
 
     <button on:click={toggleEditMode} {disabled}
-      >{editMode ? "CREATE FIELD MODE" : "EDIT FIELD MODE"}</button
+      >{editMode ? "CREATE FIELDS" : "EDIT FIELDS"}</button
     >
   </div>
   <p>NB - * denotes a mandatory field</p>
@@ -118,5 +118,12 @@
     z-index: 2;
     background-color: black;
     filter: opacity(50%);
+  }
+
+  button {
+    height: 3em;
+    width: 10em;
+    margin-left: 0.25em;
+    margin-right: 0.25em;
   }
 </style>
