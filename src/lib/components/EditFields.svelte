@@ -7,6 +7,7 @@
   import FieldCard from "$lib/components/FieldCard.svelte";
   import FieldsSort from "$lib/components/FieldsSort.svelte";
   import PopUp from "$lib/components/PopUp.svelte";
+  // import WarningAlert from "$lib/components/WarningAlert.svelte";
 
   // PROPS
   export let fields;
@@ -24,19 +25,39 @@
   let compositeField = {};
   $: changeMade = !compareEquality(fields, fieldsClone);
 
+  // ALERT VARIABLES
+  // let warning = false;
+  // let alert = "All created fields will be permanently lost.";
+  // let userConfirmation = false;
+
   // FUNCTIONS
+  // function userConfirmed(confirmation) {
+  //   if (confirmation) {
+  //     console.log("USER CONFIRMED");
+  //     fieldsClone = [...fields];
+  //   }
+  // }
+
   function handleSave(e) {
     e.preventDefault();
     fields = [...fieldsClone];
     fieldsClone = [...fields];
   }
 
-  function handleCancel(e) {
+  function handleUndo(e) {
     e.preventDefault();
-    // WARNING HERE
+    //warning = true;
     fieldsClone = [...fields];
   }
+
+  // $: userConfirmation, userConfirmed(userConfirmation);
 </script>
+
+<!-- {#if warning}
+  <PopUp --colour="rgb(250, 128, 128)" header="Warning!">
+    <WarningAlert bind:warning bind:userConfirmation {alert} />
+  </PopUp>
+{/if} -->
 
 <div id={opaqueOverlay}>
   <fieldset id="edit-field-box">
@@ -67,17 +88,17 @@
       </fieldset>
     {/if}
     {#if editMode}
-      <button on:click={handleSave} disabled={!changeMade}>SAVE & UPDATE</button
+      <button on:click={handleSave} disabled={!changeMade}>CONFIRM & SAVE</button
       >
-      <button on:click={handleCancel} disabled={!changeMade}
-        >RESET CHANGES</button
+      <button on:click={handleUndo} disabled={!changeMade}
+        >UNDO CHANGES</button
       >
     {/if}
   </fieldset>
 </div>
 
 {#if createComposite}
-  <PopUp --colour="cyan">
+  <PopUp --colour="cyan" header="Create Composite Data">
     <CreateCompositeData
       bind:createComposite
       bind:fieldsClone

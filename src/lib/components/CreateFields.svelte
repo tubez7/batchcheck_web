@@ -158,59 +158,43 @@
 
     <h2>Field Creation</h2>
     <fieldset>
-      <div class="field-seperators">
-        <SetFieldName bind:fieldName bind:validFieldName {editMode} />
-      </div>
+      <SetFieldName bind:fieldName bind:validFieldName {editMode} />
+
       {#if standardField}
-        <div class="field-seperators">
-          <SetHasSerial bind:hasSerial {editMode} />
-        </div>
+        <SetHasSerial bind:hasSerial {editMode} />
         {#if hasSerial}
-          <div class="field-seperators">
-            <SetSerial {hasSerial} bind:serial bind:validSerial {editMode} />
-          </div>
-          <div class="field-seperators">
-            <SetIncrement
-              bind:incrementValue
-              bind:validIncrement
-              {hasSerial}
-              {editMode}
-            />
-          </div>
-          <div class="field-seperators">
-            <SetRecordsPerIncrement
-              bind:recordsPerIncrement
-              bind:validRecordsPerIncrement
-              {hasSerial}
-              {editMode}
-            />
-          </div>
-          <div class="field-seperators">
-            <SetSerialPadded bind:serialPadded {editMode} />
-          </div>
+          <SetSerial {hasSerial} bind:serial bind:validSerial {editMode} />
+          <SetSerialPadded bind:serialPadded {editMode} />
           {#if serialPadded}
-            <div class="field-seperators">
-              <SetPadLength
-                bind:padLength
-                bind:validPadLength
-                bind:minimumPadLength
-                {serialPadded}
-                {serial}
-                {editMode}
-              />
-            </div>
-            <div class="field-seperators">
-              <SetPadCharacter bind:padLead bind:padTrail {editMode} />
-            </div>
+            <SetPadLength
+              bind:padLength
+              bind:validPadLength
+              bind:minimumPadLength
+              {serialPadded}
+              {serial}
+              {editMode}
+            />
+            <SetPadCharacter bind:padLead bind:padTrail {editMode} />
           {/if}
+
+          <SetIncrement
+            bind:incrementValue
+            bind:validIncrement
+            {hasSerial}
+            {editMode}
+          />
+          <SetRecordsPerIncrement
+            bind:recordsPerIncrement
+            bind:validRecordsPerIncrement
+            {hasSerial}
+            {editMode}
+          />
         {/if}
-        <div class="field-seperators">
-          <SetPrefix bind:prefix {editMode} />
-        </div>
-        <div class="field-seperators">
-          <SetSuffix bind:suffix {editMode} />
-        </div>
+
+        <SetPrefix bind:prefix {editMode} />
+        <SetSuffix bind:suffix {editMode} />
       {/if}
+      
     </fieldset>
     <button on:click={handleSubmit} type="submit" disabled={buttonDisable}
       >Add Field</button

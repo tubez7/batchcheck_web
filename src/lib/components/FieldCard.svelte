@@ -74,10 +74,6 @@
     {#if field.hasSerial}
       FIELD SERIAL: {field.serial}
       <br />
-      SERIAL INCREMENT VAL: {field.incrementValue}
-      <br />
-      SERIAL RECORDS PER INCREMENT: {field.recordsPerIncrement}
-      <br />
       SERIAL HAS PAD: {field.serialPadded}
       <br />
       SERIAL PAD LENGTH: {field.padLength}
@@ -85,6 +81,10 @@
       SERIAL PAD LEAD CHAR: {field.padLead}
       <br />
       SERIAL PAD TRAIL CHAR: {field.padTrail}
+      <br />
+      SERIAL INCREMENT VAL: {field.incrementValue}
+      <br />
+      SERIAL RECORDS PER INCREMENT: {field.recordsPerIncrement}
       <br />
     {/if}
     FIELD PREFIX: {field.prefix}

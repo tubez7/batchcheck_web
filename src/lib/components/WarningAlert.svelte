@@ -28,19 +28,23 @@
 <style>
   #alert-text {
     font-weight: bolder;
+    margin-top: 0;
   }
 
   #button-block {
     text-align: center;
     border-style: solid;
+    /* border-color: rgb(160, 153, 153); */
+    border-color: rgb(121, 26, 26);
     box-sizing: border-box;
-    background-color: rgb(250, 128, 128);
+    /* background-color: rgb(250, 128, 128); */
   }
 
   #button-group {
     display: flex;
     margin: auto;
     margin-top: 1em;
+    margin-bottom: 0.75em;
     justify-content: space-evenly;
     box-sizing: border-box;
     min-width: 20em;

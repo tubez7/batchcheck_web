@@ -59,6 +59,21 @@
         bind:editType
         bind:headerText
         {fieldClone}
+        fieldId="Serial Padded"
+        value="serialPadded"
+      />
+
+      <EditFieldButton
+        bind:editFieldName
+        bind:editSerial
+        bind:editIncrement
+        bind:editRecordsPerIncrement
+        bind:editPad
+        bind:editPrefix
+        bind:editSuffix
+        bind:editType
+        bind:headerText
+        {fieldClone}
         fieldId="Increment serial by"
         value="incrementValue"
       />
@@ -77,22 +92,8 @@
         fieldId="Records Per Increment"
         value="recordsPerIncrement"
       />
-
-      <EditFieldButton
-        bind:editFieldName
-        bind:editSerial
-        bind:editIncrement
-        bind:editRecordsPerIncrement
-        bind:editPad
-        bind:editPrefix
-        bind:editSuffix
-        bind:editType
-        bind:headerText
-        {fieldClone}
-        fieldId="Serial Padded"
-        value="serialPadded"
-      />
     {/if}
+    
     <EditFieldButton
       bind:editFieldName
       bind:editSerial
@@ -144,8 +145,8 @@
     display: flex;
     flex-direction: column;
     align-items: start;
-    /* border-style: solid; */
-    border-color: red;
+    /* border-style: solid;
+    border-color: red; */
     box-sizing: border-box;
   }
 </style>

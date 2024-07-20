@@ -2,6 +2,9 @@
   // IMPORTS
   import { nonWhiteSpaceRegex } from "$lib/utils.js";
 
+  // COMPONENTS
+  import FieldItemStyle from "$lib/components/FieldItemStyle.svelte";
+
   // PROPS
   export let fieldName;
   export let validFieldName;
@@ -22,16 +25,26 @@
   }
 </script>
 
-<label for="fieldName">Enter Field Name*: </label>
-<input
-  bind:value={fieldName}
-  on:input={checkFieldName}
-  type="text"
-  id="fieldName"
-  placeholder="Enter field name"
-  disabled={editMode}
-/>
+<FieldItemStyle>
+  <label for="fieldName">Enter Field Name*: </label>
+  <input
+    bind:value={fieldName}
+    on:input={checkFieldName}
+    type="text"
+    id="fieldName"
+    placeholder="Enter field name"
+    disabled={editMode}
+  />
+</FieldItemStyle>
 
 {#if fieldNameError}
-  <p>Field Name is a mandatory field</p>
+  <p class="error-msg">Field Name is a mandatory field</p>
 {/if}
+
+<style>
+  .error-msg {
+    margin-top: 0;
+    color: red;
+    font-weight: bolder;
+  }
+</style>

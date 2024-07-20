@@ -90,7 +90,7 @@
 
   function hideEditPanel(e) {
     e.preventDefault();
-    warning = true;
+    changeMade ? warning = true : editPanelVisible = false;
   }
 
   function saveAndUpdate(e) {
@@ -133,14 +133,14 @@
   {/if}
 
   {#if warning}
-    <PopUp --colour="red" header="Warning!">
+    <PopUp --colour="rgb(250, 128, 128)" header="WARNING!">
       <WarningAlert bind:warning bind:userConfirmation {alert} />
     </PopUp>
   {/if}
 {/if}
 
 {#if editMode}
-  <PopUp --colour="aquamarine" header={headerText}>
+  <PopUp --colour="aquamarine" header={headerText} subHeader="(* denotes a mandatory field)">
     <EditField
       bind:field
       bind:fieldClone
@@ -167,8 +167,8 @@
   #button-block {
     margin: auto;
     margin-top: 15px;
-    /* border-style: solid; */
-    border-color: blue;
+    /* border-style: solid;
+    border-color: blue; */
     box-sizing: border-box;
   }
 </style>

@@ -1,14 +1,19 @@
 <script>
+  // PROPS
   export let header;
+  export let subHeader = "";
 </script>
 
-<div class="pop-up">
-  <h3>{header}</h3>
+<div id="pop-up">
+  <div id="header-block">
+    <h3>{header}</h3>
+    <p>{subHeader}</p>
+  </div>
   <slot />
 </div>
 
 <style>
-  .pop-up {
+  #pop-up {
     position: var(--position, fixed);
     display: flex;
     flex-direction: column;
@@ -25,8 +30,18 @@
     box-sizing: border-box;
   }
 
-  h3 {
-    margin: auto;
+  #header-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-bottom: 0.5em;
+  }
+
+  h3 {
+    margin-bottom: 0;
+  }
+
+  p {
+    margin-top: 0;
   }
 </style>
