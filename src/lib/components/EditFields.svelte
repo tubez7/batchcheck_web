@@ -34,7 +34,6 @@
   // FUNCTIONS
   function userConfirmed(confirmation) {
     if (confirmation) {
-      console.log("USER CONFIRMED");
       if (undo) {
         fieldsClone = [...fields];
       } else {
@@ -43,6 +42,7 @@
       }
       warningPopUpVisible = false;
     }
+    userConfirmation = false;
   }
 
   function handleSave(e) {

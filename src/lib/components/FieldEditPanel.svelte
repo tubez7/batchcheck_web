@@ -73,6 +73,7 @@
     if (confirmation) {
       editPanelVisible = false;
     }
+    userConfirmation = false;
   }
 
   function setDefaults() {
