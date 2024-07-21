@@ -5,6 +5,8 @@
     resetArrayOrder,
     reverseArrayOrder,
   } from "../../lib/utils";
+  // COMPONENTS
+  import FieldItemStyle from "$lib/components/FieldItemStyle.svelte";
 
   // PROPS
   export let fieldsClone;
@@ -17,7 +19,6 @@
 
   // FUNCTIONS
   function handleDelete(e) {
-    // trigger warning here before executing
     e.preventDefault();
     fieldsClone ? (fieldsClone = []) : (compositeData = []);
   }
@@ -38,7 +39,7 @@
 </script>
 
 {#if editMode}
-  <div id="container">
+  <FieldItemStyle>
     <button on:click={handleResetOrder} disabled={disableReset}
       >RESET ORDER</button
     >
@@ -46,5 +47,12 @@
       >REVERSE ORDER</button
     >
     <button on:click={handleDelete} type="reset">DELETE ALL</button>
-  </div>
+  </FieldItemStyle>
 {/if}
+
+<style>
+  button {
+    height: 3em;
+    width: 10em;
+  }
+</style>

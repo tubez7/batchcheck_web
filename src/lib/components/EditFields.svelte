@@ -97,10 +97,14 @@
       </fieldset>
     {/if}
     {#if editMode}
-      <button on:click={handleSave} disabled={!changeMade}
-        >CONFIRM & SAVE</button
-      >
-      <button on:click={handleUndo} disabled={!changeMade}>UNDO CHANGES</button>
+      <div class="button-block">
+        <button on:click={handleSave} disabled={!changeMade}
+          >CONFIRM & SAVE</button
+        >
+        <button id="undo-button" on:click={handleUndo} disabled={!changeMade}
+          >UNDO CHANGES</button
+        >
+      </div>
     {/if}
   </fieldset>
 </div>
@@ -128,5 +132,17 @@
 
   .card-box {
     background-color: rgb(194, 203, 244);
+  }
+
+  .button-block {
+    text-align: center;
+  }
+
+  button {
+    height: 3em;
+    width: 10em;
+    margin-top: 1em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
   }
 </style>

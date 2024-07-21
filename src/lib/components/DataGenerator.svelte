@@ -127,7 +127,7 @@
   button {
     height: 3em;
     width: 10em;
-    margin-left: 0.25em;
-    margin-right: 0.25em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
   }
 </style>
