@@ -1,17 +1,17 @@
 <script>
-  export let warning;
+  export let warningPopUpVisible;
   export let alert;
   export let userConfirmation;
 
   function handleConfirm(e) {
     e.preventDefault();
     userConfirmation = true;
-    warning = false;
+    warningPopUpVisible = false;
   }
 
   function handleCancel(e) {
     e.preventDefault();
-    warning = false;
+    warningPopUpVisible = false;
   }
 </script>
 

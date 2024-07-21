@@ -13,6 +13,7 @@
   export let fieldsClone;
   export let field;
   export let index;
+  export let warningPopUpVisible;
 
   // VARIABLES
   let fieldClone = { ...field };
@@ -20,7 +21,6 @@
   let headerText;
 
   // ALERT VARIABLES
-  let warning = false;
   let alert = "Any unsaved changes will be permanently lost.";
   let userConfirmation = false;
 
@@ -90,7 +90,7 @@
 
   function hideEditPanel(e) {
     e.preventDefault();
-    changeMade ? warning = true : editPanelVisible = false;
+    changeMade ? (warningPopUpVisible = true) : (editPanelVisible = false);
   }
 
   function saveAndUpdate(e) {
@@ -106,7 +106,7 @@
 </script>
 
 {#if !editMode}
-  {#if !warning}
+  {#if !warningPopUpVisible}
     <PopUp header="Edit Fields">
       <EditFieldButtons
         bind:fieldClone
@@ -132,15 +132,19 @@
     </PopUp>
   {/if}
 
-  {#if warning}
+  {#if warningPopUpVisible}
     <PopUp --colour="rgb(250, 128, 128)" header="WARNING!">
-      <WarningAlert bind:warning bind:userConfirmation {alert} />
+      <WarningAlert bind:warningPopUpVisible bind:userConfirmation {alert} />
     </PopUp>
   {/if}
 {/if}
 
 {#if editMode}
-  <PopUp --colour="aquamarine" header={headerText} subHeader="(* denotes a mandatory field)">
+  <PopUp
+    --colour="aquamarine"
+    header={headerText}
+    subHeader="(* denotes a mandatory field)"
+  >
     <EditField
       bind:field
       bind:fieldClone

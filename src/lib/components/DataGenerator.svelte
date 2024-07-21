@@ -10,6 +10,8 @@
   let records = 1;
   $: formValidated = fields.length > 0 && records > 0;
   let editPanelVisible = false;
+  let warningPopUpVisible = false;
+  $: popUpActive = editPanelVisible || warningPopUpVisible;
   let indexToEdit = 0;
   let fieldToEdit = {};
   let editMode = false;
@@ -39,7 +41,7 @@
   //$: console.log("fieldToEdit = ", fieldToEdit);
 </script>
 
-{#if editPanelVisible}
+{#if popUpActive}
   <div id="opaque-filter"></div>
 {/if}
 
@@ -70,6 +72,7 @@
         bind:fieldToEdit
         bind:editPanelVisible
         bind:changeMade
+        bind:warningPopUpVisible
         {records}
         {editMode}
       />
@@ -81,6 +84,7 @@
   <FieldEditPanel
     bind:fieldsClone
     bind:editPanelVisible
+    bind:warningPopUpVisible
     field={fieldToEdit}
     index={indexToEdit}
   />

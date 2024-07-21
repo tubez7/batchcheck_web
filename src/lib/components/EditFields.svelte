@@ -7,7 +7,7 @@
   import FieldCard from "$lib/components/FieldCard.svelte";
   import FieldsSort from "$lib/components/FieldsSort.svelte";
   import PopUp from "$lib/components/PopUp.svelte";
-  // import WarningAlert from "$lib/components/WarningAlert.svelte";
+  import WarningAlert from "$lib/components/WarningAlert.svelte";
 
   // PROPS
   export let fields;
@@ -18,6 +18,7 @@
   export let editPanelVisible;
   export let editMode;
   export let changeMade;
+  export let warningPopUpVisible;
 
   // VARIABLES
   $: opaqueOverlay = editMode ? "edit" : "create";
@@ -26,40 +27,48 @@
   $: changeMade = !compareEquality(fields, fieldsClone);
 
   // ALERT VARIABLES
-  // let warning = false;
-  // let alert = "All created fields will be permanently lost.";
-  // let userConfirmation = false;
+  let alert;
+  let userConfirmation = false;
+  let undo;
 
   // FUNCTIONS
-  // function userConfirmed(confirmation) {
-  //   if (confirmation) {
-  //     console.log("USER CONFIRMED");
-  //     fieldsClone = [...fields];
-  //   }
-  // }
+  function userConfirmed(confirmation) {
+    if (confirmation) {
+      console.log("USER CONFIRMED");
+      if (undo) {
+        fieldsClone = [...fields];
+      } else {
+        fields = [...fieldsClone];
+        fieldsClone = [...fields];
+      }
+      warningPopUpVisible = false;
+    }
+  }
 
   function handleSave(e) {
     e.preventDefault();
-    fields = [...fieldsClone];
-    fieldsClone = [...fields];
+    undo = false;
+    alert = "Previous field data will be permanently overwritten.";
+    warningPopUpVisible = true;
   }
 
   function handleUndo(e) {
     e.preventDefault();
-    //warning = true;
-    fieldsClone = [...fields];
+    undo = true;
+    alert = "All changes to fields will be permanently lost.";
+    warningPopUpVisible = true;
   }
 
-  // $: userConfirmation, userConfirmed(userConfirmation);
+  $: userConfirmation, userConfirmed(userConfirmation);
 </script>
 
-<!-- {#if warning}
-  <PopUp --colour="rgb(250, 128, 128)" header="Warning!">
-    <WarningAlert bind:warning bind:userConfirmation {alert} />
+{#if warningPopUpVisible}
+  <PopUp --colour="rgb(250, 128, 128)" header="WARNING!">
+    <WarningAlert bind:warningPopUpVisible bind:userConfirmation {alert} />
   </PopUp>
-{/if} -->
+{/if}
 
-<div id={opaqueOverlay}>
+<div class={opaqueOverlay}>
   <fieldset id="edit-field-box">
     <h2>FIELD EDITOR</h2>
     <h3>NUMBER OF BATCHES/RECORDS: {records}</h3>
@@ -71,7 +80,7 @@
     {#if fieldsClone.length > 0}
       <FieldsSort bind:fieldsClone {editMode} compositeData={null} />
 
-      <fieldset id="card-box">
+      <fieldset class="card-box">
         {#each fieldsClone as field, i}
           <FieldCard
             bind:fieldsClone
@@ -88,11 +97,10 @@
       </fieldset>
     {/if}
     {#if editMode}
-      <button on:click={handleSave} disabled={!changeMade}>CONFIRM & SAVE</button
+      <button on:click={handleSave} disabled={!changeMade}
+        >CONFIRM & SAVE</button
       >
-      <button on:click={handleUndo} disabled={!changeMade}
-        >UNDO CHANGES</button
-      >
+      <button on:click={handleUndo} disabled={!changeMade}>UNDO CHANGES</button>
     {/if}
   </fieldset>
 </div>
@@ -109,16 +117,16 @@
 {/if}
 
 <style>
-  #edit {
+  .edit {
     background-color: rgb(225, 184, 251);
   }
 
-  #create {
+  .create {
     background-color: rgb(98, 83, 107);
     opacity: 0.5;
   }
 
-  #card-box {
+  .card-box {
     background-color: rgb(194, 203, 244);
   }
 </style>
