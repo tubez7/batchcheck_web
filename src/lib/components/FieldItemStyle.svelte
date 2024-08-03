@@ -5,8 +5,10 @@
 <style>
   .container {
     display: flex;
-    align-items: center;
+    margin-top: 0.75em;
     margin-bottom: 0.75em;
+    border-style: solid;
+    border-color: red;
   }
 
   .container :global(> :not(:last-child)) {

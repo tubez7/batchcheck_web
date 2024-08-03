@@ -3,6 +3,7 @@
   import Field from "$lib/field";
   import { onMount } from "svelte";
   // COMPONENTS
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
   import SetFieldName from "$lib/components/SetFieldName.svelte";
   import SetFieldType from "$lib/components/SetFieldType.svelte";
   import SetHasSerial from "$lib/components/SetHasSerial.svelte";
@@ -138,7 +139,6 @@
       fieldId
     );
     addField(field);
-    //fieldsClone = [...fields];
     fieldId++;
     handleReset();
   }
@@ -150,12 +150,15 @@
 </script>
 
 <div class={`create-field-box-${opaqueOverlay}`}>
-  <fieldset>
+  <FieldsetStyle --colour="rgb(114, 113, 113)">
     <h2>Field Type</h2>
-    <SetFieldType bind:type {editMode} />
+
+    <FieldsetStyle>
+      <SetFieldType bind:type {editMode} />
+    </FieldsetStyle>
 
     <h2>Field Creation</h2>
-    <fieldset class="border">
+    <FieldsetStyle>
       <SetFieldName bind:fieldName bind:validFieldName {editMode} />
 
       {#if standardField}
@@ -164,15 +167,17 @@
           <SetSerial {hasSerial} bind:serial bind:validSerial {editMode} />
           <SetSerialPadded bind:serialPadded {editMode} />
           {#if serialPadded}
-            <SetPadLength
-              bind:padLength
-              bind:validPadLength
-              bind:minimumPadLength
-              {serialPadded}
-              {serial}
-              {editMode}
-            />
-            <SetPadCharacter bind:padLead bind:padTrail {editMode} />
+            <FieldsetStyle>
+              <SetPadLength
+                bind:padLength
+                bind:validPadLength
+                bind:minimumPadLength
+                {serialPadded}
+                {serial}
+                {editMode}
+              />
+              <SetPadCharacter bind:padLead bind:padTrail {editMode} />
+            </FieldsetStyle>
           {/if}
 
           <SetIncrement
@@ -192,7 +197,7 @@
         <SetPrefix bind:prefix {editMode} />
         <SetSuffix bind:suffix {editMode} />
       {/if}
-    </fieldset>
+    </FieldsetStyle>
 
     <div class="button-block">
       <button on:click={handleSubmit} type="submit" disabled={buttonDisable}
@@ -202,22 +207,19 @@
         >Reset Values</button
       >
     </div>
-  </fieldset>
+  </FieldsetStyle>
 </div>
 
 <style>
   .create-field-box-create {
     background-color: lightgreen;
+    border-radius: 1em;
   }
 
   .create-field-box-edit {
     background-color: rgb(66, 125, 66);
     opacity: 0.5;
-  }
-
-  .border {
-    padding-top: 1em;
-    margin-bottom: 0.75em;
+    border-radius: 1em;
   }
 
   .button-block {

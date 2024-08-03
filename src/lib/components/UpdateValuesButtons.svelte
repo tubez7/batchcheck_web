@@ -1,4 +1,7 @@
 <script>
+  // COMPONENTS
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
+
   // PROPS
   export let field;
   export let fieldClone;
@@ -83,25 +86,24 @@
   }
 </script>
 
-<div>
-  <button on:click={handleSave} disabled={!validCheck}>SAVE CHANGES</button>
-  <button on:click={handleCancel}>CANCEL & CLOSE</button>
-  <button on:click={handleReset}>RESET CHANGES</button>
-</div>
+<FieldsetStyle --colour="rgb(114, 113, 113)" --background="rgb(180, 250, 226)">
+  <div class="button-block">
+    <button on:click={handleSave} disabled={!validCheck}>SAVE CHANGES</button>
+    <button on:click={handleCancel}>CANCEL & CLOSE</button>
+    <button on:click={handleReset}>RESET CHANGES</button>
+  </div>
+</FieldsetStyle>
 
 <style>
-  div {
-    display: flex;
-    margin: auto;
-    margin-top: 1em;
-    /* padding: 0.5em; */
-    border-style: solid;
-    border-color: rgb(114, 113, 113);
-    box-sizing: border-box;
-    min-width: 20em;
+  .button-block {
+    text-align: center;
+    /* align-items: center; */
   }
 
   button {
-    margin: 0.5em;
+    height: 3em;
+    width: 10em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
   }
 </style>

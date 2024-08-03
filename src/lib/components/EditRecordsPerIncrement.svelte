@@ -1,5 +1,6 @@
 <script>
   // COMPONENTS
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
   import SetRecordsPerIncrement from "$lib/components/SetRecordsPerIncrement.svelte";
   import UpdateValuesButtons from "$lib/components/UpdateValuesButtons.svelte";
 
@@ -27,12 +28,15 @@
     : recordsPerIncrement;
 </script>
 
-<SetRecordsPerIncrement
-  bind:recordsPerIncrement
-  bind:validRecordsPerIncrement
-  {hasSerial}
-  editMode={false}
-/>
+<FieldsetStyle --colour="rgb(114, 113, 113)" --background="rgb(222, 255, 244)">
+  <SetRecordsPerIncrement
+    bind:recordsPerIncrement
+    bind:validRecordsPerIncrement
+    {hasSerial}
+    editMode={false}
+  />
+</FieldsetStyle>
+
 <UpdateValuesButtons
   bind:fieldClone
   bind:field

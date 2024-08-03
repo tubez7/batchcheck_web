@@ -1,4 +1,7 @@
 <script>
+  // COMPONENTS
+  import FieldItemStyle from "$lib/components/FieldItemStyle.svelte";
+
   // PROPS
   export let separator;
   export let editSeparator;
@@ -28,14 +31,21 @@
 </script>
 
 {#if !editSeparator}
-  <button on:click={enterEditSeparatorMode}
-    >Field Separator: {separator || "N/A"}</button
-  >
+  <fieldset>
+    <FieldItemStyle>
+      <p>Field Separator: {separator || "N/A"}</p>
+      <button on:click={enterEditSeparatorMode}>Edit</button>
+    </FieldItemStyle>
+  </fieldset>
 {/if}
 
 {#if editSeparator}
-  <label for="prefix">Field Separator: </label>
-  <input bind:value={separator} type="text" id="separator" {placeholder} />
-  <button on:click={handleSave} disabled={!changeMade}>SAVE</button>
-  <button on:click={handleCancel}>CANCEL</button>
+  <fieldset>
+    <FieldItemStyle>
+      <label for="prefix">Field Separator: </label>
+      <input bind:value={separator} type="text" id="separator" {placeholder} />
+      <button on:click={handleSave} disabled={!changeMade}>SAVE</button>
+      <button on:click={handleCancel}>CANCEL</button>
+    </FieldItemStyle>
+  </fieldset>
 {/if}

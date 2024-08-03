@@ -5,7 +5,6 @@
   // COMPONENTS
   import EditField from "$lib/components/EditField.svelte";
   import EditFieldButtons from "$lib/components/EditFieldButtons.svelte";
-  import FieldItemStyle from "$lib/components/FieldItemStyle.svelte";
   import PopUp from "$lib/components/PopUp.svelte";
   import WarningAlert from "$lib/components/WarningAlert.svelte";
 
@@ -125,14 +124,14 @@
         {standardField}
       />
 
-      <FieldItemStyle>
+      <div class="button-block">
         <button on:click={hideEditPanel}>CANCEL & CLOSE</button>
         <button
           id="save-button"
           disabled={saveButtonDisabled}
           on:click={saveAndUpdate}>SAVE & UPDATE</button
         >
-      </FieldItemStyle>
+      </div>
     </PopUp>
   {/if}
 
@@ -172,7 +171,7 @@
 {/if}
 
 <style>
-  button {
+  /* button {
     height: 3em;
     width: 10em;
     margin-top: 1em;
@@ -180,5 +179,17 @@
 
   #save-button {
     margin-top: 1em;
+  } */
+
+  .button-block {
+    text-align: center;
+  }
+
+  button {
+    height: 3em;
+    width: 10em;
+    margin-top: 1em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
   }
 </style>

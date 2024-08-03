@@ -1,5 +1,6 @@
 <script>
   // COMPONENTS
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
   import SetHasSerial from "$lib/components/SetHasSerial.svelte";
   import SetSerial from "$lib/components/SetSerial.svelte";
   import UpdateValuesButtons from "$lib/components/UpdateValuesButtons.svelte";
@@ -23,11 +24,13 @@
   export let padTrail;
 </script>
 
-<SetHasSerial bind:hasSerial editMode={false} />
+<FieldsetStyle --colour="rgb(114, 113, 113)" --background="rgb(222, 255, 244)">
+  <SetHasSerial bind:hasSerial editMode={false} />
 
-{#if hasSerial}
-  <SetSerial bind:serial bind:validSerial {hasSerial} editMode={false} />
-{/if}
+  {#if hasSerial}
+    <SetSerial bind:serial bind:validSerial {hasSerial} editMode={false} />
+  {/if}
+</FieldsetStyle>
 
 <UpdateValuesButtons
   bind:fieldClone

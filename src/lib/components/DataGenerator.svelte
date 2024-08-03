@@ -45,9 +45,9 @@
   <div id="opaque-filter"></div>
 {/if}
 
-<fieldset id="data-generator-box">
-  <legend>Batch-Check Constructor</legend>
-  <div id="button-block">
+<div class="app-background-colour">
+  <h2>Batch-Check Constructor</h2>
+  <div class="button-block">
     <button disabled={!formValidated}>GENERATE TABLE</button>
 
     <button on:click={toggleEditMode} {disabled}
@@ -56,7 +56,7 @@
   </div>
   <p>NB - * denotes a mandatory field</p>
 
-  <div id="container">
+  <div class="container">
     <div class="divider">
       <form>
         <SetRecords bind:records {editMode} />
@@ -78,7 +78,7 @@
       />
     </div>
   </div>
-</fieldset>
+</div>
 
 {#if editPanelVisible}
   <FieldEditPanel
@@ -91,7 +91,7 @@
 {/if}
 
 <style>
-  #container {
+  .container {
     display: flex;
     flex-direction: row;
   }
@@ -101,14 +101,17 @@
     max-width: 50%;
   }
 
-  #button-block {
+  .app-background-colour {
+    background-color: beige;
+    border-style: solid;
+    border-radius: 1em;
+    padding: 1em;
+  }
+
+  .button-block {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-
-  #data-generator-box {
-    background-color: beige;
   }
 
   #opaque-filter {

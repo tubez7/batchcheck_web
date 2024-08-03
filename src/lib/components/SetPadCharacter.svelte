@@ -1,6 +1,7 @@
 <script>
   // COMPONENTS
   import FieldItemStyle from "$lib/components/FieldItemStyle.svelte";
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
 
   // PROPS
   export let padLead;
@@ -8,7 +9,7 @@
   export let editMode;
 </script>
 
-<fieldset>
+<div>
   <p class="msg">
     {"Pad character*: (Will default to leading pad character of '0' if left unspecified)"}
   </p>
@@ -36,16 +37,12 @@
       disabled={padLead.length > 0 || editMode}
     />
   </FieldItemStyle>
-</fieldset>
+</div>
 
 <style>
   .msg {
     margin: 0;
-    margin-bottom: 0.75em;
-  }
-
-  fieldset {
-    padding-bottom: 0;
-    margin-bottom: 0.75em;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
   }
 </style>

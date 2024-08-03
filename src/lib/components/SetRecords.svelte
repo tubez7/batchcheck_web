@@ -4,6 +4,7 @@
 
   // COMPONENTS
   import FieldItemStyle from "$lib/components/FieldItemStyle.svelte";
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
 
   // PROPS
   export let records;
@@ -15,7 +16,7 @@
 </script>
 
 <div class={opaqueOverlay}>
-  <fieldset>
+  <FieldsetStyle>
     <h2>Records</h2>
     <p class="msg">{"(Set the total number of records/batches for the job)"}</p>
 
@@ -35,16 +36,18 @@
     {#if records < 1}
       <p class="error-msg">Values below 1 are not valid</p>
     {/if}
-  </fieldset>
+  </FieldsetStyle>
 </div>
 
 <style>
   .create {
     background-color: lightblue;
+    border-radius: 1em;
   }
 
   .edit {
     background-color: rgb(116, 148, 158);
+    border-radius: 1em;
     opacity: 0.5;
   }
 

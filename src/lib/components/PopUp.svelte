@@ -19,8 +19,7 @@
     flex-direction: column;
     border-style: solid;
     border-radius: 0.5em;
-    padding: 1.5em;
-    padding-top: 1em;
+    padding: 1em 1.5em;
     background-color: var(--colour, lightgrey);
     top: 50%;
     left: 50%;
@@ -43,5 +42,6 @@
 
   p {
     margin-top: 0;
+    margin-bottom: 0;
   }
 </style>

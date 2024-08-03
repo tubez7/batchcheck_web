@@ -110,7 +110,11 @@
 </div>
 
 {#if createComposite}
-  <PopUp --colour="cyan" header="Create Composite Data">
+  <PopUp
+    --colour="cyan"
+    header="Create Composite Data"
+    subHeader={compositeField.name}
+  >
     <CreateCompositeData
       bind:createComposite
       bind:fieldsClone

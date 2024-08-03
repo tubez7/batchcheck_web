@@ -1,7 +1,7 @@
 <script>
   // IMPORTS
   import { handleKeyDown } from "$lib/utils.js";
-  
+
   // COMPONENTS
   import FieldItemStyle from "$lib/components/FieldItemStyle.svelte";
 
@@ -19,7 +19,7 @@
 </script>
 
 <FieldItemStyle>
-  <label for="serial">Serial No#*:</label>
+  <label for="serial">Start Serial No#*:</label>
   <input
     bind:value={serial}
     on:keydown={handleKeyDown}

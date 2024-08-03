@@ -1,5 +1,6 @@
 <script>
   // COMPONENTS
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
   import SetFieldName from "$lib/components/SetFieldName.svelte";
   import UpdateValuesButtons from "$lib/components/UpdateValuesButtons.svelte";
 
@@ -26,9 +27,12 @@
 </script>
 
 <div id="container">
-  <div id="edit-component">
+  <FieldsetStyle
+    --colour="rgb(114, 113, 113)"
+    --background="rgb(222, 255, 244)"
+  >
     <SetFieldName bind:fieldName bind:validFieldName editMode={false} />
-  </div>
+  </FieldsetStyle>
 
   <UpdateValuesButtons
     bind:fieldClone

@@ -1,5 +1,6 @@
 <script>
   // COMPONENTS
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
   import SetIncrement from "$lib/components/SetIncrement.svelte";
   import UpdateValuesButtons from "$lib/components/UpdateValuesButtons.svelte";
 
@@ -27,12 +28,14 @@
     : incrementValue;
 </script>
 
-<SetIncrement
-  bind:incrementValue
-  bind:validIncrement
-  {hasSerial}
-  editMode={false}
-/>
+<FieldsetStyle --colour="rgb(114, 113, 113)" --background="rgb(222, 255, 244)">
+  <SetIncrement
+    bind:incrementValue
+    bind:validIncrement
+    {hasSerial}
+    editMode={false}
+  />
+</FieldsetStyle>
 
 <UpdateValuesButtons
   bind:fieldClone

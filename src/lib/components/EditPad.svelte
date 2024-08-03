@@ -1,5 +1,6 @@
 <script>
   // COMPONENTS
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
   import SetPadCharacter from "$lib/components/SetPadCharacter.svelte";
   import SetPadLength from "$lib/components/SetPadLength.svelte";
   import SetSerialPadded from "$lib/components/SetSerialPadded.svelte";
@@ -29,17 +30,30 @@
   let minimumPadLength = null;
 </script>
 
-<SetSerialPadded bind:serialPadded editMode={false} />
+<FieldsetStyle --colour="rgb(114, 113, 113)" --background="rgb(222, 255, 244)">
+  <SetSerialPadded bind:serialPadded editMode={false} />
+</FieldsetStyle>
+
 {#if serialPadded}
-  <SetPadLength
-    bind:padLength
-    bind:validPadLength
-    bind:minimumPadLength
-    {serialPadded}
-    {serial}
-    editMode={false}
-  />
-  <SetPadCharacter bind:padLead bind:padTrail editMode={false} />
+  <FieldsetStyle
+    --colour="rgb(114, 113, 113)"
+    --background="rgb(222, 255, 244)"
+  >
+    <SetPadLength
+      bind:padLength
+      bind:validPadLength
+      bind:minimumPadLength
+      {serialPadded}
+      {serial}
+      editMode={false}
+    />
+    <FieldsetStyle
+      --colour="rgb(114, 113, 113)"
+      --background="rgb(222, 255, 244)"
+    >
+      <SetPadCharacter bind:padLead bind:padTrail editMode={false} />
+    </FieldsetStyle>
+  </FieldsetStyle>
 {/if}
 <UpdateValuesButtons
   bind:fieldClone

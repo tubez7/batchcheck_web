@@ -17,9 +17,9 @@
 
 <p id="alert-text">{alert}</p>
 
-<div id="button-block">
+<div class="button-block">
   <p>Do you wish to proceed?</p>
-  <div id="button-group">
+  <div class="button-group">
     <button on:click={handleConfirm}>Confirm</button>
     <button on:click={handleCancel}>Cancel</button>
   </div>
@@ -31,7 +31,7 @@
     margin-top: 0;
   }
 
-  #button-block {
+  .button-block {
     text-align: center;
     border-style: solid;
     /* border-color: rgb(160, 153, 153); */
@@ -40,7 +40,7 @@
     /* background-color: rgb(250, 128, 128); */
   }
 
-  #button-group {
+  .button-group {
     display: flex;
     margin: auto;
     margin-top: 1em;
@@ -52,5 +52,7 @@
 
   button {
     margin: 0.5em;
+    height: 3em;
+    width: 10em;
   }
 </style>

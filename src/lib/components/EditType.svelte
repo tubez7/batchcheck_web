@@ -1,5 +1,6 @@
 <script>
   // COMPONENTS
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
   import SetFieldType from "$lib/components/SetFieldType.svelte";
   import UpdateValuesButtons from "$lib/components/UpdateValuesButtons.svelte";
 
@@ -24,7 +25,10 @@
   $: type = !editType ? fieldClone.type : type;
 </script>
 
-<SetFieldType bind:type editMode={false} />
+<FieldsetStyle --colour="rgb(114, 113, 113)" --background="rgb(222, 255, 244)">
+  <SetFieldType bind:type editMode={false} />
+</FieldsetStyle>
+
 <UpdateValuesButtons
   bind:fieldClone
   bind:field
