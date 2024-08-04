@@ -5,6 +5,7 @@
   // COMPONENTS
   import CreateCompositeData from "$lib/components/CreateCompositeData.svelte";
   import FieldCard from "$lib/components/FieldCard.svelte";
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
   import FieldsSort from "$lib/components/FieldsSort.svelte";
   import PopUp from "$lib/components/PopUp.svelte";
   import WarningAlert from "$lib/components/WarningAlert.svelte";
@@ -12,7 +13,7 @@
   // PROPS
   export let fields;
   export let fieldsClone;
-  export let records;
+  //export let records;
   export let indexToEdit;
   export let fieldToEdit;
   export let editPanelVisible;
@@ -69,9 +70,8 @@
 {/if}
 
 <div class={opaqueOverlay}>
-  <fieldset id="edit-field-box">
-    <h2>FIELD EDITOR</h2>
-    <h3>NUMBER OF BATCHES/RECORDS: {records}</h3>
+  <FieldsetStyle --colour="rgb(114, 113, 113)">
+    <h2 class="header">Field Editor</h2>
 
     {#if fieldsClone.length < 1 && editMode}
       <p>NO FIELD DATA TO EDIT</p>
@@ -80,7 +80,7 @@
     {#if fieldsClone.length > 0}
       <FieldsSort bind:fieldsClone {editMode} compositeData={null} />
 
-      <fieldset class="card-box">
+      <FieldsetStyle --background="rgb(166, 182, 255)">
         {#each fieldsClone as field, i}
           <FieldCard
             bind:fieldsClone
@@ -94,19 +94,21 @@
             index={i}
           />
         {/each}
-      </fieldset>
+      </FieldsetStyle>
     {/if}
     {#if editMode}
-      <div class="button-block">
-        <button on:click={handleSave} disabled={!changeMade}
-          >CONFIRM & SAVE</button
-        >
-        <button id="undo-button" on:click={handleUndo} disabled={!changeMade}
-          >UNDO CHANGES</button
-        >
-      </div>
+      <FieldsetStyle --colour="rgb(114, 113, 113)" --background="rgb(234, 204, 252)">
+        <div class="button-block">
+          <button on:click={handleSave} disabled={!changeMade}
+            >CONFIRM & SAVE</button
+          >
+          <button id="undo-button" on:click={handleUndo} disabled={!changeMade}
+            >UNDO CHANGES</button
+          >
+        </div>
+      </FieldsetStyle>
     {/if}
-  </fieldset>
+  </FieldsetStyle>
 </div>
 
 {#if createComposite}
@@ -127,26 +129,30 @@
 <style>
   .edit {
     background-color: rgb(225, 184, 251);
+    border-radius: 1em;
   }
 
   .create {
-    background-color: rgb(98, 83, 107);
+    background-color: rgb(155, 93, 194);
     opacity: 0.5;
-  }
-
-  .card-box {
-    background-color: rgb(194, 203, 244);
+    border-radius: 1em;
   }
 
   .button-block {
     text-align: center;
   }
 
+  .header {
+    margin-top: 0.25em;
+    margin-bottom: 0.5em;
+  }
+
   button {
     height: 3em;
     width: 10em;
-    margin-top: 1em;
+    /* margin-top: 1em; */
     margin-left: 0.5em;
     margin-right: 0.5em;
+    border-radius: 1em;
   }
 </style>

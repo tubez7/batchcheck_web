@@ -5,14 +5,14 @@
 <style>
   .container {
     display: flex;
-    margin-top: 0.75em;
-    margin-bottom: 0.75em;
-    border-style: solid;
-    border-color: red;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    /* border-style: solid;
+    border-color: red; */
   }
 
   .container :global(> :not(:last-child)) {
-    margin-right: 0.75em;
+    margin-right: 0.5em;
   }
 
   .container :global(> :last-child) {

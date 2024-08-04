@@ -3,6 +3,7 @@
   import CreateFields from "$lib/components/CreateFields.svelte";
   import EditFields from "$lib/components/EditFields.svelte";
   import FieldEditPanel from "$lib/components/FieldEditPanel.svelte";
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
   import SetRecords from "$lib/components/SetRecords.svelte";
 
   // VARIABLES
@@ -45,16 +46,20 @@
   <div id="opaque-filter"></div>
 {/if}
 
-<div class="app-background-colour">
-  <h2>Batch-Check Constructor</h2>
-  <div class="button-block">
-    <button disabled={!formValidated}>GENERATE TABLE</button>
+<div class="app-container">
+  <h2 class="header">Batch-Check Constructor</h2>
 
-    <button on:click={toggleEditMode} {disabled}
-      >{editMode ? "CREATE FIELDS" : "EDIT FIELDS"}</button
-    >
-  </div>
-  <p>NB - * denotes a mandatory field</p>
+  <p class="note">NB - * denotes a mandatory parameter</p>
+
+  <FieldsetStyle --background="rgb(222, 222, 177)">
+    <div class="button-block">
+      <button disabled={!formValidated}>GENERATE TABLE</button>
+
+      <button on:click={toggleEditMode} {disabled}
+        >{editMode ? "CREATE FIELDS" : "EDIT FIELDS"}</button
+      >
+    </div>
+  </FieldsetStyle>
 
   <div class="container">
     <div class="divider">
@@ -73,7 +78,6 @@
         bind:editPanelVisible
         bind:changeMade
         bind:warningPopUpVisible
-        {records}
         {editMode}
       />
     </div>
@@ -94,24 +98,34 @@
   .container {
     display: flex;
     flex-direction: row;
+    min-width: 100%;
   }
 
   .divider {
     flex: 1;
     max-width: 50%;
+    margin-left: 0.25em;
+    margin-right: 0.25em;
   }
 
-  .app-background-colour {
-    background-color: beige;
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(245, 245, 220);
     border-style: solid;
     border-radius: 1em;
     padding: 1em;
   }
 
   .button-block {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    text-align: center;
+  }
+
+  .header {
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+    align-self: baseline;
   }
 
   #opaque-filter {
@@ -132,5 +146,11 @@
     width: 10em;
     margin-left: 0.5em;
     margin-right: 0.5em;
+    border-radius: 1em;
+  }
+
+  .note {
+    align-self: baseline;
+    margin-bottom: 0;
   }
 </style>

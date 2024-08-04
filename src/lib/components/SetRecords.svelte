@@ -57,6 +57,7 @@
   }
 
   h2 {
+    margin-top: 0.25em;
     margin-bottom: 0;
   }
 

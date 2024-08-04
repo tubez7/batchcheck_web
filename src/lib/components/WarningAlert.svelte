@@ -1,8 +1,13 @@
 <script>
+  // COMPONENTS
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
+
+  // PROPS
   export let warningPopUpVisible;
   export let alert;
   export let userConfirmation;
 
+  // FUNCTIONS
   function handleConfirm(e) {
     e.preventDefault();
     userConfirmation = true;
@@ -15,44 +20,34 @@
   }
 </script>
 
-<p id="alert-text">{alert}</p>
+<p class="alert-text" id="sub-header">{alert}</p>
 
-<div class="button-block">
-  <p>Do you wish to proceed?</p>
-  <div class="button-group">
+<FieldsetStyle --colour="rgb(121, 26, 26)" --background="rgb(255, 156, 156)">
+  <p class="alert-text">Do you wish to proceed?</p>
+  <div class="button-block">
     <button on:click={handleConfirm}>Confirm</button>
     <button on:click={handleCancel}>Cancel</button>
   </div>
-</div>
+</FieldsetStyle>
 
 <style>
-  #alert-text {
-    font-weight: bolder;
+  .alert-text {
     margin-top: 0;
+    text-align: center;
+  }
+
+  #sub-header {
+    font-weight: bolder;
   }
 
   .button-block {
-    text-align: center;
-    border-style: solid;
-    /* border-color: rgb(160, 153, 153); */
-    border-color: rgb(121, 26, 26);
-    box-sizing: border-box;
-    /* background-color: rgb(250, 128, 128); */
-  }
-
-  .button-group {
     display: flex;
     margin: auto;
-    margin-top: 1em;
-    margin-bottom: 0.75em;
     justify-content: space-evenly;
-    box-sizing: border-box;
-    min-width: 20em;
   }
 
   button {
-    margin: 0.5em;
     height: 3em;
-    width: 10em;
+    width: 7em;
   }
 </style>

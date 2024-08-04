@@ -6,7 +6,7 @@
     reverseArrayOrder,
   } from "../../lib/utils";
   // COMPONENTS
-  import FieldItemStyle from "$lib/components/FieldItemStyle.svelte";
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
 
   // PROPS
   export let fieldsClone;
@@ -39,20 +39,29 @@
 </script>
 
 {#if editMode}
-  <FieldItemStyle>
-    <button on:click={handleResetOrder} disabled={disableReset}
-      >RESET ORDER</button
-    >
-    <button on:click={handleReverse} disabled={arrayToSort.length < 2}
-      >REVERSE ORDER</button
-    >
-    <button on:click={handleDelete} type="reset">DELETE ALL</button>
-  </FieldItemStyle>
+  <FieldsetStyle --background="rgb(234, 204, 252)">
+    <div class="button-block">
+      <button on:click={handleResetOrder} disabled={disableReset}
+        >RESET ORDER</button
+      >
+      <button on:click={handleReverse} disabled={arrayToSort.length < 2}
+        >REVERSE ORDER</button
+      >
+      <button on:click={handleDelete} type="reset">DELETE ALL</button>
+    </div>
+  </FieldsetStyle>
 {/if}
 
 <style>
+  .button-block {
+    text-align: center;
+  }
+
   button {
     height: 3em;
     width: 10em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    border-radius: 1em;
   }
 </style>

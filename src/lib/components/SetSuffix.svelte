@@ -8,12 +8,12 @@
 </script>
 
 <FieldItemStyle>
-  <label for="prefix">Suffix/static text:</label>
+  <label for="prefix">Suffix:</label>
   <input
     bind:value={suffix}
     type="text"
     id="suffix"
-    placeholder="Enter field suffix text"
+    placeholder="Enter static suffix text"
     disabled={editMode}
   />
 </FieldItemStyle>

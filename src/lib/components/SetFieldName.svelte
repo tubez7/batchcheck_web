@@ -26,7 +26,7 @@
 </script>
 
 <FieldItemStyle>
-  <label for="fieldName">Enter Field Name*: </label>
+  <label for="fieldName">Field Name*: </label>
   <input
     bind:value={fieldName}
     on:input={checkFieldName}

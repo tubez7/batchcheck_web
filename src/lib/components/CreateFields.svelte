@@ -151,23 +151,37 @@
 
 <div class={`create-field-box-${opaqueOverlay}`}>
   <FieldsetStyle --colour="rgb(114, 113, 113)">
-    <h2>Field Type</h2>
+    <h2 class="header">Field Category</h2>
 
-    <FieldsetStyle>
+    <FieldsetStyle --background="rgb(171, 255, 171)">
       <SetFieldType bind:type {editMode} />
     </FieldsetStyle>
 
-    <h2>Field Creation</h2>
-    <FieldsetStyle>
+    <h2 class="header">Field Parameters</h2>
+    <FieldsetStyle --background="rgb(171, 255, 171)">
       <SetFieldName bind:fieldName bind:validFieldName {editMode} />
 
       {#if standardField}
         <SetHasSerial bind:hasSerial {editMode} />
         {#if hasSerial}
-          <SetSerial {hasSerial} bind:serial bind:validSerial {editMode} />
+          <FieldsetStyle --background="rgb(187, 242, 187)">
+            <SetSerial {hasSerial} bind:serial bind:validSerial {editMode} />
+            <SetIncrement
+              bind:incrementValue
+              bind:validIncrement
+              {hasSerial}
+              {editMode}
+            />
+            <SetRecordsPerIncrement
+              bind:recordsPerIncrement
+              bind:validRecordsPerIncrement
+              {hasSerial}
+              {editMode}
+            />
+          </FieldsetStyle>
           <SetSerialPadded bind:serialPadded {editMode} />
           {#if serialPadded}
-            <FieldsetStyle>
+            <FieldsetStyle --background="rgb(187, 242, 187)">
               <SetPadLength
                 bind:padLength
                 bind:validPadLength
@@ -179,19 +193,6 @@
               <SetPadCharacter bind:padLead bind:padTrail {editMode} />
             </FieldsetStyle>
           {/if}
-
-          <SetIncrement
-            bind:incrementValue
-            bind:validIncrement
-            {hasSerial}
-            {editMode}
-          />
-          <SetRecordsPerIncrement
-            bind:recordsPerIncrement
-            bind:validRecordsPerIncrement
-            {hasSerial}
-            {editMode}
-          />
         {/if}
 
         <SetPrefix bind:prefix {editMode} />
@@ -212,7 +213,7 @@
 
 <style>
   .create-field-box-create {
-    background-color: lightgreen;
+    background-color: rgb(144, 238, 144);
     border-radius: 1em;
   }
 
@@ -226,10 +227,16 @@
     text-align: center;
   }
 
+  .header {
+    margin-top: 0.25em;
+    margin-bottom: 0.5em;
+  }
+
   button {
     height: 3em;
     width: 10em;
     margin-left: 0.5em;
     margin-right: 0.5em;
+    border-radius: 1em;
   }
 </style>

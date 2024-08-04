@@ -19,7 +19,7 @@
 </script>
 
 <FieldItemStyle>
-  <label for="serial">Start Serial No#*:</label>
+  <label for="serial">Start Number*:</label>
   <input
     bind:value={serial}
     on:keydown={handleKeyDown}
@@ -30,7 +30,6 @@
     placeholder="0"
     disabled={editMode}
   />
-  <p>{"(Will default to 0 if not specified)"}</p>
 </FieldItemStyle>
 
 {#if !validSerial}
@@ -42,5 +41,9 @@
     margin-top: 0;
     color: red;
     font-weight: bolder;
+  }
+
+  p {
+    margin: 0;
   }
 </style>

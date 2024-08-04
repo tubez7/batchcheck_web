@@ -13,7 +13,7 @@
 </script>
 
 <FieldItemStyle>
-  <label for="increment">Increment each batch/record by*:</label>
+  <label for="increment">Increment value*:</label>
   <input
     bind:value={incrementValue}
     type="number"

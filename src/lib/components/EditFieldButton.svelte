@@ -112,5 +112,6 @@
 
   button {
     margin-left: 0.5em;
+    border-radius: 1em;
   }
 </style>

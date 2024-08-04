@@ -11,5 +11,6 @@
     margin-top: 0.75em;
     margin-bottom: 0.75em;
     background-color: var(--background, transparent);
+    /* max-width: var(--width, 100%); */
   }
 </style>

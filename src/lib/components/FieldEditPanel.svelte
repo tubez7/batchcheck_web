@@ -146,7 +146,7 @@
   <PopUp
     --colour="aquamarine"
     header={headerText}
-    subHeader="(* denotes a mandatory field)"
+    subHeader="(* denotes a mandatory field parameter)"
   >
     <EditField
       bind:field
@@ -171,16 +171,6 @@
 {/if}
 
 <style>
-  /* button {
-    height: 3em;
-    width: 10em;
-    margin-top: 1em;
-  }
-
-  #save-button {
-    margin-top: 1em;
-  } */
-
   .button-block {
     text-align: center;
   }
@@ -191,5 +181,6 @@
     margin-top: 1em;
     margin-left: 0.5em;
     margin-right: 0.5em;
+    border-radius: 1em;
   }
 </style>
