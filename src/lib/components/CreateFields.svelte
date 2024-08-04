@@ -3,6 +3,7 @@
   import Field from "$lib/field";
   import { onMount } from "svelte";
   // COMPONENTS
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
   import SetFieldName from "$lib/components/SetFieldName.svelte";
   import SetFieldType from "$lib/components/SetFieldType.svelte";
   import SetHasSerial from "$lib/components/SetHasSerial.svelte";
@@ -138,7 +139,6 @@
       fieldId
     );
     addField(field);
-    //fieldsClone = [...fields];
     fieldId++;
     handleReset();
   }
@@ -149,47 +149,39 @@
   });
 </script>
 
-<div id={`create-field-box-${opaqueOverlay}`}>
-  <fieldset>
-    <h2>Field Type</h2>
-    <div class="field-seperators">
-      <SetFieldType bind:type {editMode} />
-    </div>
+<div class={`create-field-box-${opaqueOverlay}`}>
+  <FieldsetStyle --colour="rgb(114, 113, 113)">
+    <h2 class="header">Field Category</h2>
 
-    <h2>Field Creation</h2>
-    <fieldset>
-      <div class="field-seperators">
-        <SetFieldName bind:fieldName bind:validFieldName {editMode} />
-      </div>
+    <FieldsetStyle --background="rgb(171, 255, 171)">
+      <SetFieldType bind:type {editMode} />
+    </FieldsetStyle>
+
+    <h2 class="header">Field Parameters</h2>
+    <FieldsetStyle --background="rgb(171, 255, 171)">
+      <SetFieldName bind:fieldName bind:validFieldName {editMode} />
+
       {#if standardField}
-        <div class="field-seperators">
-          <SetHasSerial bind:hasSerial {editMode} />
-        </div>
+        <SetHasSerial bind:hasSerial {editMode} />
         {#if hasSerial}
-          <div class="field-seperators">
+          <FieldsetStyle --background="rgb(187, 242, 187)">
             <SetSerial {hasSerial} bind:serial bind:validSerial {editMode} />
-          </div>
-          <div class="field-seperators">
             <SetIncrement
               bind:incrementValue
               bind:validIncrement
               {hasSerial}
               {editMode}
             />
-          </div>
-          <div class="field-seperators">
             <SetRecordsPerIncrement
               bind:recordsPerIncrement
               bind:validRecordsPerIncrement
               {hasSerial}
               {editMode}
             />
-          </div>
-          <div class="field-seperators">
-            <SetSerialPadded bind:serialPadded {editMode} />
-          </div>
+          </FieldsetStyle>
+          <SetSerialPadded bind:serialPadded {editMode} />
           {#if serialPadded}
-            <div class="field-seperators">
+            <FieldsetStyle --background="rgb(187, 242, 187)">
               <SetPadLength
                 bind:padLength
                 bind:validPadLength
@@ -198,36 +190,53 @@
                 {serial}
                 {editMode}
               />
-            </div>
-            <div class="field-seperators">
               <SetPadCharacter bind:padLead bind:padTrail {editMode} />
-            </div>
+            </FieldsetStyle>
           {/if}
         {/if}
-        <div class="field-seperators">
-          <SetPrefix bind:prefix {editMode} />
-        </div>
-        <div class="field-seperators">
-          <SetSuffix bind:suffix {editMode} />
-        </div>
+
+        <SetPrefix bind:prefix {editMode} />
+        <SetSuffix bind:suffix {editMode} />
       {/if}
-    </fieldset>
-    <button on:click={handleSubmit} type="submit" disabled={buttonDisable}
-      >Add Field</button
-    >
-    <button on:click={handleReset} type="reset" disabled={editMode}
-      >Reset Field Values</button
-    >
-  </fieldset>
+    </FieldsetStyle>
+
+    <div class="button-block">
+      <button on:click={handleSubmit} type="submit" disabled={buttonDisable}
+        >Add Field</button
+      >
+      <button on:click={handleReset} type="reset" disabled={editMode}
+        >Reset Values</button
+      >
+    </div>
+  </FieldsetStyle>
 </div>
 
 <style>
-  #create-field-box-create {
-    background-color: lightgreen;
+  .create-field-box-create {
+    background-color: rgb(144, 238, 144);
+    border-radius: 1em;
   }
 
-  #create-field-box-edit {
+  .create-field-box-edit {
     background-color: rgb(66, 125, 66);
     opacity: 0.5;
+    border-radius: 1em;
+  }
+
+  .button-block {
+    text-align: center;
+  }
+
+  .header {
+    margin-top: 0.25em;
+    margin-bottom: 0.5em;
+  }
+
+  button {
+    height: 3em;
+    width: 10em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    border-radius: 1em;
   }
 </style>

@@ -5,45 +5,73 @@
   // COMPONENTS
   import CreateCompositeData from "$lib/components/CreateCompositeData.svelte";
   import FieldCard from "$lib/components/FieldCard.svelte";
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
   import FieldsSort from "$lib/components/FieldsSort.svelte";
   import PopUp from "$lib/components/PopUp.svelte";
+  import WarningAlert from "$lib/components/WarningAlert.svelte";
 
   // PROPS
   export let fields;
   export let fieldsClone;
-  export let records;
+  //export let records;
   export let indexToEdit;
   export let fieldToEdit;
   export let editPanelVisible;
   export let editMode;
   export let changeMade;
+  export let warningPopUpVisible;
 
   // VARIABLES
   $: opaqueOverlay = editMode ? "edit" : "create";
   let createComposite = false;
   let compositeField = {};
   $: changeMade = !compareEquality(fields, fieldsClone);
-  $: console.log("FieldsClone has changed...", fieldsClone, fields);
-  $: disabled = !changeMade;
+
+  // ALERT VARIABLES
+  let alert;
+  let userConfirmation = false;
+  let undo;
 
   // FUNCTIONS
+  function userConfirmed(confirmation) {
+    if (confirmation) {
+      if (undo) {
+        fieldsClone = [...fields];
+      } else {
+        fields = [...fieldsClone];
+        fieldsClone = [...fields];
+      }
+      warningPopUpVisible = false;
+    }
+    userConfirmation = false;
+  }
+
   function handleSave(e) {
     e.preventDefault();
-    fields = [...fieldsClone];
-    fieldsClone = [...fields];
+    undo = false;
+    alert = "Previous field data will be permanently overwritten.";
+    warningPopUpVisible = true;
   }
 
-  function handleCancel(e) {
+  function handleUndo(e) {
     e.preventDefault();
-    // WARNING HERE
-    fieldsClone = [...fields];
+    undo = true;
+    alert = "All changes to fields will be permanently lost.";
+    warningPopUpVisible = true;
   }
+
+  $: userConfirmation, userConfirmed(userConfirmation);
 </script>
 
-<div id={opaqueOverlay}>
-  <fieldset id="edit-field-box">
-    <h2>FIELD EDITOR</h2>
-    <h3>NUMBER OF BATCHES/RECORDS: {records}</h3>
+{#if warningPopUpVisible}
+  <PopUp --colour="rgb(250, 128, 128)" header="WARNING!">
+    <WarningAlert bind:warningPopUpVisible bind:userConfirmation {alert} />
+  </PopUp>
+{/if}
+
+<div class={opaqueOverlay}>
+  <FieldsetStyle --colour="rgb(114, 113, 113)">
+    <h2 class="header">Field Editor</h2>
 
     {#if fieldsClone.length < 1 && editMode}
       <p>NO FIELD DATA TO EDIT</p>
@@ -52,7 +80,7 @@
     {#if fieldsClone.length > 0}
       <FieldsSort bind:fieldsClone {editMode} compositeData={null} />
 
-      <fieldset id="card-box">
+      <FieldsetStyle --background="rgb(166, 182, 255)">
         {#each fieldsClone as field, i}
           <FieldCard
             bind:fieldsClone
@@ -66,17 +94,29 @@
             index={i}
           />
         {/each}
-      </fieldset>
-      {#if editMode}
-        <button on:click={handleSave} {disabled}>SAVE & UPDATE</button>
-        <button on:click={handleCancel} {disabled}>RESET CHANGES</button>
-      {/if}
+      </FieldsetStyle>
     {/if}
-  </fieldset>
+    {#if editMode}
+      <FieldsetStyle --colour="rgb(114, 113, 113)" --background="rgb(234, 204, 252)">
+        <div class="button-block">
+          <button on:click={handleSave} disabled={!changeMade}
+            >CONFIRM & SAVE</button
+          >
+          <button id="undo-button" on:click={handleUndo} disabled={!changeMade}
+            >UNDO CHANGES</button
+          >
+        </div>
+      </FieldsetStyle>
+    {/if}
+  </FieldsetStyle>
 </div>
 
 {#if createComposite}
-  <PopUp --colour="cyan">
+  <PopUp
+    --colour="cyan"
+    header="Create Composite Data"
+    subHeader={compositeField.name}
+  >
     <CreateCompositeData
       bind:createComposite
       bind:fieldsClone
@@ -87,16 +127,32 @@
 {/if}
 
 <style>
-  #edit {
+  .edit {
     background-color: rgb(225, 184, 251);
+    border-radius: 1em;
   }
 
-  #create {
-    background-color: rgb(98, 83, 107);
+  .create {
+    background-color: rgb(155, 93, 194);
     opacity: 0.5;
+    border-radius: 1em;
   }
 
-  #card-box {
-    background-color: rgb(194, 203, 244);
+  .button-block {
+    text-align: center;
+  }
+
+  .header {
+    margin-top: 0.25em;
+    margin-bottom: 0.5em;
+  }
+
+  button {
+    height: 3em;
+    width: 10em;
+    /* margin-top: 1em; */
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    border-radius: 1em;
   }
 </style>

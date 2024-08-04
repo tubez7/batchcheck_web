@@ -4,6 +4,7 @@
 
   // COMPONENTS
   import FieldItem from "$lib/components/FieldItem.svelte";
+  import FieldItemStyle from "$lib/components/FieldItemStyle.svelte";
   import FieldsSort from "$lib/components/FieldsSort.svelte";
   import SetSeparator from "$lib/components/SetSeparator.svelte";
   import ValueCard from "$lib/components/ValueCard.svelte";
@@ -45,39 +46,52 @@
 </script>
 
 <div id="composite-field-edit">
-  <h3>COMPOSITE DATA CREATOR</h3>
-  <p>Field Name: {compositeField.name}</p>
-
   <SetSeparator bind:separator bind:editSeparator />
 
-  <div id="left">
-    <h4>CONCATENATE FIELD DATA</h4>
-    <div class="box">
-      {#each regularFields as regularField}
-        <FieldItem bind:compositeData field={regularField} />
-      {/each}
+  <FieldItemStyle>
+    <div>
+      <h4>CONCATENATE FIELD DATA</h4>
+      <div class="box">
+        {#each regularFields as regularField}
+          <FieldItem bind:compositeData field={regularField} />
+        {/each}
+      </div>
     </div>
-  </div>
 
-  <div id="right">
-    <h4>COMPOSITE DATA VALUE</h4>
-    {#if compositeData.length > 0}
-      <FieldsSort bind:compositeData editMode={true} fieldsClone={null} />
-    {/if}
-    <div class="box">
-      {#each compositeData as value, i}
-        <ValueCard {...value} bind:compositeData index={i} />
-      {/each}
+    <div>
+      <h4>COMPOSITE DATA VALUE</h4>
+      {#if compositeData.length > 0}
+        <FieldsSort bind:compositeData editMode={true} fieldsClone={null} />
+      {/if}
+      <div class="box">
+        {#each compositeData as value, i}
+          <ValueCard {...value} bind:compositeData index={i} />
+        {/each}
+      </div>
     </div>
-  </div>
+  </FieldItemStyle>
   {#if !editSeparator}
-    <button on:click={handleClose}>CANCEL & CLOSE</button>
-    <button on:click={handleSave} disabled={!changeMade}>SAVE CHANGES</button>
+    <div class="button-block">
+      <button on:click={handleClose}>CANCEL & CLOSE</button>
+      <button on:click={handleSave} disabled={!changeMade}>SAVE CHANGES</button>
+    </div>
   {/if}
 </div>
 
 <style>
   .box {
     border-style: solid;
+  }
+
+  .button-block {
+    text-align: center;
+  }
+
+  button {
+    height: 3em;
+    width: 10em;
+    margin-top: 1em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
   }
 </style>

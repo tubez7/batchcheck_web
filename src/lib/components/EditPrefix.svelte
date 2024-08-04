@@ -1,5 +1,6 @@
 <script>
   // COMPONENTS
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
   import SetPrefix from "$lib/components/SetPrefix.svelte";
   import UpdateValuesButtons from "$lib/components/UpdateValuesButtons.svelte";
 
@@ -24,7 +25,9 @@
   $: prefix = !editPrefix ? fieldClone.prefix : prefix;
 </script>
 
-<SetPrefix bind:prefix editMode={false} />
+<FieldsetStyle --colour="rgb(114, 113, 113)" --background="rgb(222, 255, 244)">
+  <SetPrefix bind:prefix editMode={false} />
+</FieldsetStyle>
 <UpdateValuesButtons
   bind:fieldClone
   bind:field
@@ -40,6 +43,7 @@
   {serialPadded}
   {padLead}
   {padTrail}
+  minimumPadLength={null}
   value={prefix}
   validCheck={true}
   fieldToEditName="prefix"

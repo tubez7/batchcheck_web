@@ -1,5 +1,6 @@
 <script>
   // COMPONENTS
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
   import SetSuffix from "$lib/components/SetSuffix.svelte";
   import UpdateValuesButtons from "$lib/components/UpdateValuesButtons.svelte";
 
@@ -24,7 +25,10 @@
   $: suffix = !editSuffix ? fieldClone.suffix : suffix;
 </script>
 
-<SetSuffix bind:suffix editMode={false} />
+<FieldsetStyle --colour="rgb(114, 113, 113)" --background="rgb(222, 255, 244)">
+  <SetSuffix bind:suffix editMode={false} />
+</FieldsetStyle>
+
 <UpdateValuesButtons
   bind:fieldClone
   bind:field
@@ -40,6 +44,7 @@
   {serialPadded}
   {padLead}
   {padTrail}
+  minimumPadLength={null}
   value={suffix}
   validCheck={true}
   fieldToEditName="suffix"

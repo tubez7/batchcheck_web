@@ -6,6 +6,8 @@
     lowerArrayElement,
     raiseArrayElement,
   } from "../../lib/utils";
+  // COMPONENTS
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
 
   // PROPS
   export let fieldsClone;
@@ -24,6 +26,10 @@
   $: disableUp = index === 0;
   $: disableDown = index === fieldsClone.length - 1;
   $: id = field.id;
+  $: hasSerialString = field.hasSerial ? "Yes" : "No";
+  $: hasPadString = field.serialPadded ? "Yes" : "No";
+  let expanded;
+  $: editMode, (expanded = false);
 
   // FUNCTIONS
   function showEditPanel(e) {
@@ -57,62 +63,125 @@
       id
     );
   }
+
+  function toggleExpand(e) {
+    e.preventDefault();
+    expanded = !expanded;
+  }
 </script>
 
-<div id="card">
-  FIELD ID: {field.id}
-  <br />
-  FIELD NUMBER: {field.fieldNumber}
-  <br />
-  INDEX IN FIELDS: {index}
-  <br />
-  FIELD NAME: {field.name}
-  <br />
-  {#if standardField}
-    FIELD HAS SERIAL: {field.hasSerial}
-    <br />
-    {#if field.hasSerial}
-      FIELD SERIAL: {field.serial}
-      <br />
-      SERIAL INCREMENT VAL: {field.incrementValue}
-      <br />
-      SERIAL RECORDS PER INCREMENT: {field.recordsPerIncrement}
-      <br />
-      SERIAL HAS PAD: {field.serialPadded}
-      <br />
-      SERIAL PAD LENGTH: {field.padLength}
-      <br />
-      SERIAL PAD LEAD CHAR: {field.padLead}
-      <br />
-      SERIAL PAD TRAIL CHAR: {field.padTrail}
-      <br />
+<FieldsetStyle --background="rgb(194, 203, 244)" --style="dotted">
+  <div class="container">
+    <div class="divider">
+      <ul class="card">
+        <li>Field Name: {field.name}</li>
+        <li>Field Category: {field.type}</li>
+        {#if editMode && !expanded}
+          <button class="expand-collapse-button" on:click={toggleExpand}
+            >Expand...</button
+          >
+        {/if}
+        {#if standardField}
+          {#if expanded}
+            <li>Has Serial: {hasSerialString}</li>
+            {#if field.hasSerial}
+              <li>Start Number: {field.serial}</li>
+              <li>Increment Value: {field.incrementValue}</li>
+              <li>Records Per Increment: {field.recordsPerIncrement}</li>
+              <li>Padded: {hasPadString}</li>
+              <li>Pad Length: {field.padLength}</li>
+              <li>Leading Pad Character: {field.padLead}</li>
+              <li>Trailing Pad Character: {field.padTrail}</li>
+            {/if}
+            <li>Prefix: {field.prefix}</li>
+            <li>Suffix: {field.suffix}</li>
+          {/if}
+        {/if}
+      </ul>
+      {#if editMode && expanded}
+          <button class="expand-collapse-button" on:click={toggleExpand}
+            >Collapse...</button
+          >
+        {/if}
+    </div>
+
+    {#if editMode}
+      <div class="divider" id="move-card-block">
+        <button on:click={moveFieldUp} disabled={disableUp}>&#8593</button>
+        <button on:click={moveFieldDown} disabled={disableDown}>&#8595</button>
+      </div>
     {/if}
-    FIELD PREFIX: {field.prefix}
-    <br />
-    FIELD SUFFIX: {field.suffix}
-    <br />
-  {/if}
-  FIELD TYPE: {field.type}
-  <br />
-  <br />
+  </div>
+
   {#if editMode}
-    <button on:click={moveFieldUp} disabled={disableUp}>MOVE UP</button>
-    <br />
-    <button on:click={showEditPanel}>EDIT FIELD</button>
-    {#if !standardField}
-      <button on:click={createCompositeData}>CREATE COMPOSITE FIELD DATA</button
-      >
+    {#if expanded}
+      <FieldsetStyle --background="rgb(166, 182, 255)">
+        <div class="button-block">
+          <button on:click={showEditPanel}>EDIT</button>
+          {#if !standardField}
+            <button on:click={createCompositeData}>CREATE</button>
+          {/if}
+          <button on:click={deleteField}>DELETE</button>
+        </div>
+      </FieldsetStyle>
     {/if}
-    <button on:click={deleteField}>DELETE FIELD</button>
-    <br />
-    <button on:click={moveFieldDown} disabled={disableDown}>MOVE DOWN</button>
   {/if}
-</div>
+</FieldsetStyle>
 
 <style>
-  #card {
-    border-style: dotted;
-    background-color: pink;
-    margin: 0.5em;
+  .container {
+    display: flex;
+    flex-direction: row;
+    min-width: 100%;
+    align-items: center;
+  }
+  .divider {
+    flex: 1;
+    margin-right: 0.25em;
+  }
+
+  #move-card-block {
+    background-color: rgb(166, 182, 255);
+    max-width: 20%;
+    min-height: 6.5em;
+    border-style: solid;
+    border-color: rgb(114, 113, 113);
+    border-radius: 1em;
+    padding: 0.5em;
+    box-sizing: border-box;
+    align-content: space-evenly;
+  }
+
+  #move-card-block button {
+    width: 100%;
+    min-height: 3em;
+    border-radius: 1em;
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+  }
+
+  .expand-collapse-button {
+    border: none;
+    color: blue;
+    background-color: transparent;
+    text-decoration: underline;
+    font-style: italic;
+    font-size: 1em;
+  }
+
+  .card {
+    list-style-type: circle;
+  }
+
+  .button-block {
+    text-align: center;
+  }
+
+  .button-block button {
+    height: 3em;
+    width: 10em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    border-radius: 1em;
   }
 </style>

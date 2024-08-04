@@ -5,6 +5,8 @@
     resetArrayOrder,
     reverseArrayOrder,
   } from "../../lib/utils";
+  // COMPONENTS
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
 
   // PROPS
   export let fieldsClone;
@@ -17,7 +19,6 @@
 
   // FUNCTIONS
   function handleDelete(e) {
-    // trigger warning here before executing
     e.preventDefault();
     fieldsClone ? (fieldsClone = []) : (compositeData = []);
   }
@@ -38,13 +39,29 @@
 </script>
 
 {#if editMode}
-  <div id="container">
-    <button on:click={handleResetOrder} disabled={disableReset}
-      >RESET ORDER</button
-    >
-    <button on:click={handleReverse} disabled={arrayToSort.length < 2}
-      >REVERSE ORDER</button
-    >
-    <button on:click={handleDelete} type="reset">DELETE ALL</button>
-  </div>
+  <FieldsetStyle --background="rgb(234, 204, 252)">
+    <div class="button-block">
+      <button on:click={handleResetOrder} disabled={disableReset}
+        >RESET ORDER</button
+      >
+      <button on:click={handleReverse} disabled={arrayToSort.length < 2}
+        >REVERSE ORDER</button
+      >
+      <button on:click={handleDelete} type="reset">DELETE ALL</button>
+    </div>
+  </FieldsetStyle>
 {/if}
+
+<style>
+  .button-block {
+    text-align: center;
+  }
+
+  button {
+    height: 3em;
+    width: 10em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    border-radius: 1em;
+  }
+</style>

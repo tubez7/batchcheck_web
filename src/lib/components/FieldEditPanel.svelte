@@ -1,19 +1,28 @@
 <script>
   // IMPORTS
   import { compareEquality } from "$lib/utils.js";
+
   // COMPONENTS
+  import EditField from "$lib/components/EditField.svelte";
   import EditFieldButtons from "$lib/components/EditFieldButtons.svelte";
   import PopUp from "$lib/components/PopUp.svelte";
+  import WarningAlert from "$lib/components/WarningAlert.svelte";
 
   // PROPS
   export let editPanelVisible;
   export let fieldsClone;
   export let field;
   export let index;
+  export let warningPopUpVisible;
 
   // VARIABLES
   let fieldClone = { ...field };
   $: changeMade = !compareEquality(field, fieldClone);
+  let headerText;
+
+  // ALERT VARIABLES
+  let alert = "Any unsaved changes will be permanently lost.";
+  let userConfirmation = false;
 
   // FIELD NAME VARIABLES
   let validFieldName = true;
@@ -26,6 +35,7 @@
   let editIncrement = false;
   let editRecordsPerIncrement = false;
   let validRecordsPerIncrement = true;
+  $: hasSerial = !editSerial ? fieldClone.hasSerial : hasSerial;
 
   // PAD VARIABLES
   let validPadLength = true;
@@ -37,6 +47,8 @@
 
   // FIELD-TYPE VARIABLES
   let editType = false;
+  $: standardField =
+    fieldClone.type !== "Composite QR" && fieldClone.type !== "Composite-scan";
 
   $: editMode =
     editFieldName ||
@@ -57,43 +69,118 @@
     !validPadLength;
 
   // FUNCTIONS
+  function userConfirmed(confirmation) {
+    if (confirmation) {
+      editPanelVisible = false;
+    }
+    userConfirmation = false;
+  }
+
+  function setDefaults() {
+    fieldClone.hasSerial = false;
+    fieldClone.serial = null;
+    fieldClone.incrementValue = 0;
+    fieldClone.recordsPerIncrement = 1;
+    fieldClone.serialPadded = false;
+    fieldClone.padLength = null;
+    fieldClone.padLead = "";
+    fieldClone.padTrail = "";
+    fieldClone.prefix = "";
+    fieldClone.suffix = "";
+  }
+
   function hideEditPanel(e) {
     e.preventDefault();
-    // - PROMPT USER THAT ANY UNSAVED CHANGES WILL BE LOST FIRST
-    editPanelVisible = false;
+    changeMade ? (warningPopUpVisible = true) : (editPanelVisible = false);
   }
 
   function saveAndUpdate(e) {
     e.preventDefault();
+    if (!standardField) {
+      setDefaults();
+    }
     fieldsClone[index] = fieldClone;
     editPanelVisible = false;
   }
+
+  $: userConfirmation, userConfirmed(userConfirmation);
 </script>
 
-<PopUp>
-  <EditFieldButtons
-    bind:fieldClone
-    bind:field
-    bind:validFieldName
-    bind:validSerial
-    bind:validIncrement
-    bind:validRecordsPerIncrement
-    bind:validPadLength
-    bind:editFieldName
-    bind:editSerial
-    bind:editIncrement
-    bind:editRecordsPerIncrement
-    bind:editPad
-    bind:editPrefix
-    bind:editSuffix
-    bind:editType
-    {editMode}
-  />
+{#if !editMode}
+  {#if !warningPopUpVisible}
+    <PopUp header="Edit Fields">
+      <EditFieldButtons
+        bind:fieldClone
+        bind:editFieldName
+        bind:editSerial
+        bind:editIncrement
+        bind:editRecordsPerIncrement
+        bind:editPad
+        bind:editPrefix
+        bind:editSuffix
+        bind:editType
+        bind:headerText
+        {hasSerial}
+        {standardField}
+      />
 
-  {#if !editMode}
-    <button on:click={hideEditPanel}>CANCEL & CLOSE</button>
-    <button disabled={saveButtonDisabled} on:click={saveAndUpdate}
-      >SAVE & UPDATE</button
-    >
+      <div class="button-block">
+        <button on:click={hideEditPanel}>CANCEL & CLOSE</button>
+        <button
+          id="save-button"
+          disabled={saveButtonDisabled}
+          on:click={saveAndUpdate}>SAVE & UPDATE</button
+        >
+      </div>
+    </PopUp>
   {/if}
-</PopUp>
+
+  {#if warningPopUpVisible}
+    <PopUp --colour="rgb(250, 128, 128)" header="WARNING!">
+      <WarningAlert bind:warningPopUpVisible bind:userConfirmation {alert} />
+    </PopUp>
+  {/if}
+{/if}
+
+{#if editMode}
+  <PopUp
+    --colour="aquamarine"
+    header={headerText}
+    subHeader="(* denotes a mandatory field parameter)"
+  >
+    <EditField
+      bind:field
+      bind:fieldClone
+      bind:editFieldName
+      bind:validFieldName
+      bind:editSerial
+      bind:validSerial
+      bind:editIncrement
+      bind:validIncrement
+      bind:editRecordsPerIncrement
+      bind:validRecordsPerIncrement
+      bind:editPad
+      bind:validPadLength
+      bind:editPrefix
+      bind:editSuffix
+      bind:editType
+      {hasSerial}
+      {standardField}
+    />
+  </PopUp>
+{/if}
+
+<style>
+  .button-block {
+    text-align: center;
+  }
+
+  button {
+    height: 3em;
+    width: 10em;
+    margin-top: 1em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    border-radius: 1em;
+  }
+</style>
