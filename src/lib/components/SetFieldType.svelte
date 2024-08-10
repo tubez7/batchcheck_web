@@ -32,7 +32,7 @@
     type="radio"
     id="fieldType4"
     name="field-type"
-    value="Invisible-scan"
+    value="Scan"
     bind:group={type}
     disabled={editMode}
   />
@@ -41,7 +41,7 @@
     type="radio"
     id="fieldType3"
     name="field-type"
-    value="Visible-scan"
+    value="Visible data scan"
     bind:group={type}
     disabled={editMode}
   />
@@ -67,7 +67,7 @@
     type="radio"
     id="fieldType6"
     name="field-type"
-    value="Composite-scan"
+    value="Composite Scan"
     bind:group={type}
     disabled={editMode}
   />

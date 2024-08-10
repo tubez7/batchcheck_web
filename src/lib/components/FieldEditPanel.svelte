@@ -48,7 +48,7 @@
   // FIELD-TYPE VARIABLES
   let editType = false;
   $: standardField =
-    fieldClone.type !== "Composite QR" && fieldClone.type !== "Composite-scan";
+    fieldClone.type !== "Composite QR" && fieldClone.type !== "Composite Scan";
 
   $: editMode =
     editFieldName ||

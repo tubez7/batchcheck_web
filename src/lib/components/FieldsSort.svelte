@@ -16,6 +16,10 @@
   // VARIABLES
   $: arrayToSort = fieldsClone ? fieldsClone : compositeData;
   $: disableReset = checkSortOrder(arrayToSort);
+  $: backgroundColour = fieldsClone
+    ? "rgb(234, 204, 252)"
+    : "rgb(214, 193, 99)";
+  $: marginBottom = fieldsClone ? "0.75em" : "0.2em";
 
   // FUNCTIONS
   function handleDelete(e) {
@@ -39,7 +43,7 @@
 </script>
 
 {#if editMode}
-  <FieldsetStyle --background="rgb(234, 204, 252)">
+  <FieldsetStyle --background={backgroundColour} --margin-bottom={marginBottom}>
     <div class="button-block">
       <button on:click={handleResetOrder} disabled={disableReset}
         >RESET ORDER</button
@@ -47,7 +51,7 @@
       <button on:click={handleReverse} disabled={arrayToSort.length < 2}
         >REVERSE ORDER</button
       >
-      <button on:click={handleDelete} type="reset">DELETE ALL</button>
+      <button on:click={handleDelete} type="reset" disabled={arrayToSort.length < 1}>DELETE ALL</button>
     </div>
   </FieldsetStyle>
 {/if}

@@ -1,4 +1,7 @@
 <script>
+  // COMPONENTS
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
+
   // PROPS
   export let field;
   export let compositeData;
@@ -21,8 +24,32 @@
   }
 </script>
 
-<div>
-  <p>Name: {field.name}</p>
-  <p>ID: {field.id}</p>
-  <button on:click={handleClick}>Add to Field Value</button>
-</div>
+<FieldsetStyle
+  --style="solid"
+  --colour="rgb(194, 169, 41)"
+  --background="rgb(250, 227, 125)"
+  --padding="0"
+  --margin-top="0.5em"
+  --margin-bottom="0.5em"
+>
+  <div class="container">
+    <p>Field: {field.name}</p>
+    <!-- <p>ID: {field.id}</p> -->
+    <button on:click={handleClick}>&#x27A1</button>
+  </div>
+</FieldsetStyle>
+
+<style>
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0.25em;
+  }
+
+  button {
+    border-radius: 1em;
+    height: 2em;
+    width: 3em;
+  }
+</style>

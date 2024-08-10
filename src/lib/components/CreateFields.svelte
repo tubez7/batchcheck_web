@@ -57,7 +57,7 @@
 
   // Set Type
   let type = "Data";
-  $: standardField = type !== "Composite QR" && type !== "Composite-scan";
+  $: standardField = type !== "Composite QR" && type !== "Composite Scan";
 
   // Reactive
   $: buttonDisable =

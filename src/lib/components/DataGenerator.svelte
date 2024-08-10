@@ -12,7 +12,8 @@
   $: formValidated = fields.length > 0 && records > 0;
   let editPanelVisible = false;
   let warningPopUpVisible = false;
-  $: popUpActive = editPanelVisible || warningPopUpVisible;
+  let createComposite = false;
+  $: popUpActive = editPanelVisible || warningPopUpVisible || createComposite;
   let indexToEdit = 0;
   let fieldToEdit = {};
   let editMode = false;
@@ -78,6 +79,7 @@
         bind:editPanelVisible
         bind:changeMade
         bind:warningPopUpVisible
+        bind:createComposite
         {editMode}
       />
     </div>
@@ -138,7 +140,7 @@
     height: 100%;
     z-index: 2;
     background-color: black;
-    filter: opacity(50%);
+    filter: opacity(85%);
   }
 
   button {

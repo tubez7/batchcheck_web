@@ -1,6 +1,6 @@
 <script>
-   // IMPORTS
-   import {
+  // IMPORTS
+  import {
     deleteArrayElement,
     lowerArrayElement,
     raiseArrayElement,
@@ -8,7 +8,7 @@
 
   // PROPS
   export let name;
-  export let id;
+  //export let id;
   export let index;
   export let compositeData;
   export let fieldNumber;
@@ -16,7 +16,7 @@
   // VARIABLES
   $: disableUp = index === 0;
   $: disableDown = index === compositeData.length - 1;
-  
+
   // FUNCTIONS
   function moveValueUp(e) {
     e.preventDefault();
@@ -34,19 +34,15 @@
   }
 </script>
 
-
 <div id="value-card">
-  <p>FIELD-NAME: {name}</p>
-  <p>FIELD-ID: {id}</p>
-  <p>INDEX: {index}</p>
-  <p>NUMBER: {fieldNumber}</p>
+  <p>Value {fieldNumber}: {name}</p>
   <button on:click={moveValueUp} disabled={disableUp}>MOVE UP</button>
   <button on:click={moveValueDown} disabled={disableDown}>MOVE DOWN</button>
   <button on:click={deleteValue}>DELETE FIELD</button>
 </div>
 
 <style>
-    #value-card {
-        border-style: dashed;
-    }
+  #value-card {
+    border-style: dashed;
+  }
 </style>

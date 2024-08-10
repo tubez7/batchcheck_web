@@ -22,7 +22,7 @@
 
   // VARIABLES
   $: standardField =
-    field.type !== "Composite QR" && field.type !== "Composite-scan";
+    field.type !== "Composite QR" && field.type !== "Composite Scan";
   $: disableUp = index === 0;
   $: disableDown = index === fieldsClone.length - 1;
   $: id = field.id;
@@ -99,10 +99,10 @@
         {/if}
       </ul>
       {#if editMode && expanded}
-          <button class="expand-collapse-button" on:click={toggleExpand}
-            >Collapse...</button
-          >
-        {/if}
+        <button class="expand-collapse-button" on:click={toggleExpand}
+          >Collapse...</button
+        >
+      {/if}
     </div>
 
     {#if editMode}

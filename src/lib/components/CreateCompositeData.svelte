@@ -4,7 +4,7 @@
 
   // COMPONENTS
   import FieldItem from "$lib/components/FieldItem.svelte";
-  import FieldItemStyle from "$lib/components/FieldItemStyle.svelte";
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
   import FieldsSort from "$lib/components/FieldsSort.svelte";
   import SetSeparator from "$lib/components/SetSeparator.svelte";
   import ValueCard from "$lib/components/ValueCard.svelte";
@@ -45,42 +45,80 @@
   }
 </script>
 
-<div id="composite-field-edit">
-  <SetSeparator bind:separator bind:editSeparator />
+<FieldsetStyle
+  --colour="rgb(194, 169, 41)"
+  --margin-top="0"
+  --padding="0.3em"
+  --background="rgb(250, 227, 125)"
+>
+  <div class="header-block">
+    <h4>Field Data</h4>
+    <h4>Field Value</h4>
+  </div>
 
-  <FieldItemStyle>
-    <div>
-      <h4>CONCATENATE FIELD DATA</h4>
-      <div class="box">
-        {#each regularFields as regularField}
-          <FieldItem bind:compositeData field={regularField} />
-        {/each}
-      </div>
+  <div class="block">
+    <div class="divider" id="left">
+      {#each regularFields as regularField}
+        <FieldItem bind:compositeData field={regularField} />
+      {/each}
     </div>
 
-    <div>
-      <h4>COMPOSITE DATA VALUE</h4>
-      {#if compositeData.length > 0}
-        <FieldsSort bind:compositeData editMode={true} fieldsClone={null} />
-      {/if}
+    <div class="divider" id="right">
       <div class="box">
         {#each compositeData as value, i}
           <ValueCard {...value} bind:compositeData index={i} />
         {/each}
       </div>
     </div>
-  </FieldItemStyle>
-  {#if !editSeparator}
-    <div class="button-block">
-      <button on:click={handleClose}>CANCEL & CLOSE</button>
-      <button on:click={handleSave} disabled={!changeMade}>SAVE CHANGES</button>
-    </div>
-  {/if}
-</div>
+  </div>
+  <FieldsSort bind:compositeData editMode={true} fieldsClone={null} />
+</FieldsetStyle>
+
+<SetSeparator bind:separator bind:editSeparator />
+
+{#if !editSeparator}
+  <div class="button-block">
+    <button on:click={handleClose}>CANCEL & CLOSE</button>
+    <button on:click={handleSave} disabled={!changeMade}>SAVE CHANGES</button>
+  </div>
+{/if}
 
 <style>
-  .box {
+  /* media query on container max height. current value for small screen */
+  .block {
+    display: flex;
+    justify-content: space-between;
+    min-width: 40em;
+    max-height: 12em;
+  }
+
+  .divider {
+    width: 50%;
+    text-align: center;
+    overflow-y: auto;
+    background-color: rgb(214, 193, 99);
     border-style: solid;
+    border-color: rgb(194, 169, 41);
+    border-radius: 1em;
+    box-sizing: border-box;
+    margin-bottom: 0.25em;
+  }
+
+  #left {
+    margin-right: 0.2em;
+    padding-right: 0.5em;
+  }
+
+  #right {
+    margin-left: 0.2em;
+  }
+
+  .header-block {
+    display: flex;
+    justify-content: space-around;
+    min-width: 35em;
+    margin-bottom: 0;
+    margin-top: 0;
   }
 
   .button-block {
@@ -90,8 +128,9 @@
   button {
     height: 3em;
     width: 10em;
-    margin-top: 1em;
+    /* margin-top: 1em; */
     margin-left: 0.5em;
     margin-right: 0.5em;
+    border-radius: 1em;
   }
 </style>

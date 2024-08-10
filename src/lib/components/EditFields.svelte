@@ -11,6 +11,7 @@
   import WarningAlert from "$lib/components/WarningAlert.svelte";
 
   // PROPS
+  export let createComposite;
   export let fields;
   export let fieldsClone;
   //export let records;
@@ -23,7 +24,7 @@
 
   // VARIABLES
   $: opaqueOverlay = editMode ? "edit" : "create";
-  let createComposite = false;
+  // let createComposite = false;
   let compositeField = {};
   $: changeMade = !compareEquality(fields, fieldsClone);
 
@@ -97,7 +98,10 @@
       </FieldsetStyle>
     {/if}
     {#if editMode}
-      <FieldsetStyle --colour="rgb(114, 113, 113)" --background="rgb(234, 204, 252)">
+      <FieldsetStyle
+        --colour="rgb(114, 113, 113)"
+        --background="rgb(234, 204, 252)"
+      >
         <div class="button-block">
           <button on:click={handleSave} disabled={!changeMade}
             >CONFIRM & SAVE</button
@@ -113,7 +117,8 @@
 
 {#if createComposite}
   <PopUp
-    --colour="cyan"
+    --colour="rgb(255, 225, 71)"
+    --pad="1em 0.5em"
     header="Create Composite Data"
     subHeader={compositeField.name}
   >
