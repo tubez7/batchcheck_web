@@ -12,7 +12,8 @@
   $: formValidated = fields.length > 0 && records > 0;
   let editPanelVisible = false;
   let warningPopUpVisible = false;
-  $: popUpActive = editPanelVisible || warningPopUpVisible;
+  let createComposite = false;
+  $: popUpActive = editPanelVisible || warningPopUpVisible || createComposite;
   let indexToEdit = 0;
   let fieldToEdit = {};
   let editMode = false;
@@ -20,17 +21,20 @@
   let changeMade = false;
   $: disabled = editMode ? changeMade : fields.length < 1;
 
-  // FUNCTIONS
-  // function resetData(e) {
-  //   // trigger warning here before executing
-  //   e.preventDefault();
-  //   records = 1;
-  //   fields = [];
-  // }
+  let testMsg = false;
 
+  // FUNCTIONS
   function toggleEditMode(e) {
     e.preventDefault();
     editMode = !editMode;
+  }
+
+  function generateTable(e) {
+    e.preventDefault();
+    testMsg = true;
+    setTimeout(() => {
+      testMsg = false;
+    }, 5000);
   }
 
   // DEBUG WATCHERS
@@ -42,59 +46,77 @@
   //$: console.log("fieldToEdit = ", fieldToEdit);
 </script>
 
-{#if popUpActive}
-  <div id="opaque-filter"></div>
-{/if}
+<main class="app-window">
+  {#if popUpActive}
+    <div id="opaque-filter"></div>
+  {/if}
 
-<div class="app-container">
-  <h2 class="header">Batch-Check Constructor</h2>
+  <h1>BATCH-CHECK v1.0</h1>
+  <div class="app-container">
+    <h2 class="header">Batch-Check Constructor</h2>
 
-  <p class="note">NB - * denotes a mandatory parameter</p>
+    <p class="note">NB - * denotes a mandatory parameter</p>
 
-  <FieldsetStyle --background="rgb(222, 222, 177)">
-    <div class="button-block">
-      <button disabled={!formValidated}>GENERATE TABLE</button>
+    <FieldsetStyle --background="rgb(222, 222, 177)">
+      <div class="button-block">
+        <button on:click={generateTable} disabled={!formValidated}
+          >GENERATE TABLE</button
+        >
 
-      <button on:click={toggleEditMode} {disabled}
-        >{editMode ? "CREATE FIELDS" : "EDIT FIELDS"}</button
-      >
-    </div>
-  </FieldsetStyle>
+        <button on:click={toggleEditMode} {disabled}
+          >{editMode ? "CREATE FIELDS" : "EDIT FIELDS"}</button
+        >
+      </div>
+      {#if testMsg}
+        <p style="color: red;font-weight:bolder;">
+          THIS FEATURE IS NOT SUPPORTED IN UI TEST BUILD
+        </p>
+      {/if}
+    </FieldsetStyle>
 
-  <div class="container">
-    <div class="divider">
-      <form>
-        <SetRecords bind:records {editMode} />
-        <CreateFields bind:fields bind:fieldsClone {editMode} />
-      </form>
-    </div>
+    <div class="container">
+      <div class="divider">
+        <form>
+          <SetRecords bind:records {editMode} />
+          <CreateFields bind:fields bind:fieldsClone {editMode} />
+        </form>
+      </div>
 
-    <div class="divider">
-      <EditFields
-        bind:fields
-        bind:fieldsClone
-        bind:indexToEdit
-        bind:fieldToEdit
-        bind:editPanelVisible
-        bind:changeMade
-        bind:warningPopUpVisible
-        {editMode}
-      />
+      <div class="divider">
+        <EditFields
+          bind:fields
+          bind:fieldsClone
+          bind:indexToEdit
+          bind:fieldToEdit
+          bind:editPanelVisible
+          bind:changeMade
+          bind:warningPopUpVisible
+          bind:createComposite
+          {editMode}
+        />
+      </div>
     </div>
   </div>
-</div>
 
-{#if editPanelVisible}
-  <FieldEditPanel
-    bind:fieldsClone
-    bind:editPanelVisible
-    bind:warningPopUpVisible
-    field={fieldToEdit}
-    index={indexToEdit}
-  />
-{/if}
+  {#if editPanelVisible}
+    <FieldEditPanel
+      bind:fieldsClone
+      bind:editPanelVisible
+      bind:warningPopUpVisible
+      field={fieldToEdit}
+      index={indexToEdit}
+    />
+  {/if}
+</main>
 
 <style>
+  .app-window {
+    min-width: 1250px;
+    max-width: 1350px;
+    margin: auto;
+    padding: 0;
+  }
+
   .container {
     display: flex;
     flex-direction: row;
@@ -116,6 +138,7 @@
     border-style: solid;
     border-radius: 1em;
     padding: 1em;
+    margin-bottom: 25px;
   }
 
   .button-block {
@@ -138,7 +161,7 @@
     height: 100%;
     z-index: 2;
     background-color: black;
-    filter: opacity(50%);
+    filter: opacity(85%);
   }
 
   button {

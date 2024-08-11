@@ -7,8 +7,8 @@
     display: flex;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
-    /* border-style: solid;
-    border-color: red; */
+    align-items: center;
+    justify-content: var(--justify, normal);
   }
 
   .container :global(> :not(:last-child)) {
@@ -16,7 +16,6 @@
   }
 
   .container :global(> :last-child) {
-    /* margin-right: 0; */
     margin: 0;
   }
 </style>

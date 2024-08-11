@@ -19,11 +19,12 @@
     flex-direction: column;
     border-style: solid;
     border-radius: 0.5em;
-    padding: 1em 1.5em;
+    padding: var(--pad, 1em 1.5em);
     background-color: var(--colour, lightgrey);
     top: 50%;
     left: 50%;
     min-height: var(--min-height, 25%);
+    max-height: var(--max-height, 100%);
     transform: translate(-50%, -50%);
     z-index: var(--z-index, 3);
     box-sizing: border-box;

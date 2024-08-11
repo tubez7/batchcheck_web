@@ -1,6 +1,7 @@
 <script>
   // COMPONENTS
   import FieldItemStyle from "$lib/components/FieldItemStyle.svelte";
+  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
 
   // PROPS
   export let separator;
@@ -31,21 +32,51 @@
 </script>
 
 {#if !editSeparator}
-  <fieldset>
-    <FieldItemStyle>
+  <FieldsetStyle
+    --colour="rgb(194, 169, 41)"
+    --padding="0 0.2em 0 0.2em"
+    --background="rgb(250, 227, 125)"
+  >
+    <FieldItemStyle --justify="space-around">
       <p>Field Separator: {separator || "N/A"}</p>
       <button on:click={enterEditSeparatorMode}>Edit</button>
     </FieldItemStyle>
-  </fieldset>
+  </FieldsetStyle>
 {/if}
 
 {#if editSeparator}
-  <fieldset>
-    <FieldItemStyle>
-      <label for="prefix">Field Separator: </label>
-      <input bind:value={separator} type="text" id="separator" {placeholder} />
-      <button on:click={handleSave} disabled={!changeMade}>SAVE</button>
-      <button on:click={handleCancel}>CANCEL</button>
+  <FieldsetStyle
+    --colour="rgb(194, 169, 41)"
+    --padding="0 0.2em 0 0.2em"
+    --background="rgb(250, 227, 125)"
+  >
+    <FieldItemStyle --justify="space-around">
+      <div>
+        <label for="prefix">Field Separator: </label>
+        <input
+          bind:value={separator}
+          type="text"
+          id="separator"
+          {placeholder}
+        />
+      </div>
+      <div>
+        <button on:click={handleSave} disabled={!changeMade}>SAVE</button>
+        <button on:click={handleCancel}>CANCEL</button>
+      </div>
     </FieldItemStyle>
-  </fieldset>
+  </FieldsetStyle>
 {/if}
+
+<style>
+  button {
+    height: 2em;
+    width: 7em;
+    border-radius: 1em;
+  }
+
+  p {
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+  }
+</style>

@@ -11,6 +11,7 @@
   import WarningAlert from "$lib/components/WarningAlert.svelte";
 
   // PROPS
+  export let createComposite;
   export let fields;
   export let fieldsClone;
   //export let records;
@@ -23,7 +24,7 @@
 
   // VARIABLES
   $: opaqueOverlay = editMode ? "edit" : "create";
-  let createComposite = false;
+  // let createComposite = false;
   let compositeField = {};
   $: changeMade = !compareEquality(fields, fieldsClone);
 
@@ -81,23 +82,28 @@
       <FieldsSort bind:fieldsClone {editMode} compositeData={null} />
 
       <FieldsetStyle --background="rgb(166, 182, 255)">
-        {#each fieldsClone as field, i}
-          <FieldCard
-            bind:fieldsClone
-            bind:indexToEdit
-            bind:fieldToEdit
-            bind:editPanelVisible
-            bind:createComposite
-            bind:compositeField
-            {field}
-            {editMode}
-            index={i}
-          />
-        {/each}
+        <div class="scroll-bar">
+          {#each fieldsClone as field, i}
+            <FieldCard
+              bind:fieldsClone
+              bind:indexToEdit
+              bind:fieldToEdit
+              bind:editPanelVisible
+              bind:createComposite
+              bind:compositeField
+              {field}
+              {editMode}
+              index={i}
+            />
+          {/each}
+        </div>
       </FieldsetStyle>
     {/if}
     {#if editMode}
-      <FieldsetStyle --colour="rgb(114, 113, 113)" --background="rgb(234, 204, 252)">
+      <FieldsetStyle
+        --colour="rgb(114, 113, 113)"
+        --background="rgb(234, 204, 252)"
+      >
         <div class="button-block">
           <button on:click={handleSave} disabled={!changeMade}
             >CONFIRM & SAVE</button
@@ -113,7 +119,8 @@
 
 {#if createComposite}
   <PopUp
-    --colour="cyan"
+    --colour="rgb(255, 225, 71)"
+    --pad="1em 0.5em"
     header="Create Composite Data"
     subHeader={compositeField.name}
   >
@@ -147,12 +154,34 @@
     margin-bottom: 0.5em;
   }
 
+  .scroll-bar {
+    max-height: 43em;
+    overflow: auto;
+  }
+
   button {
     height: 3em;
     width: 10em;
-    /* margin-top: 1em; */
     margin-left: 0.5em;
     margin-right: 0.5em;
     border-radius: 1em;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0.75em;
+  }
+
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px rgb(62, 60, 83);
+    border-radius: 1em;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgb(80, 76, 159);
+    border-radius: 1em;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(53, 50, 116);
   }
 </style>

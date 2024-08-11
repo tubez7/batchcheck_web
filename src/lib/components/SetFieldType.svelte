@@ -32,7 +32,7 @@
     type="radio"
     id="fieldType4"
     name="field-type"
-    value="Invisible-scan"
+    value="Scan"
     bind:group={type}
     disabled={editMode}
   />
@@ -41,7 +41,7 @@
     type="radio"
     id="fieldType3"
     name="field-type"
-    value="Visible-scan"
+    value="Visible data scan"
     bind:group={type}
     disabled={editMode}
   />
@@ -50,7 +50,7 @@
 
 <div class="header-block">
   <h3 id="header-header-block">Composite Fields</h3>
-  <p class="msg">(Composite fields values are set from the Edit Field Menu)</p>
+  <p class="msg">(Values are set in the Field Editor Menu)</p>
 </div>
 
 <FieldItemStyle>
@@ -67,7 +67,7 @@
     type="radio"
     id="fieldType6"
     name="field-type"
-    value="Composite-scan"
+    value="Composite Scan"
     bind:group={type}
     disabled={editMode}
   />

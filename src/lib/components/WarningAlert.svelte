@@ -49,5 +49,6 @@
   button {
     height: 3em;
     width: 7em;
+    border-radius: 1em;
   }
 </style>
