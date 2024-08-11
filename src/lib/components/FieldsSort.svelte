@@ -46,12 +46,16 @@
   <FieldsetStyle --background={backgroundColour} --margin-bottom={marginBottom}>
     <div class="button-block">
       <button on:click={handleResetOrder} disabled={disableReset}
-        >RESET ORDER</button
+        >ORIGINAL ORDER</button
       >
       <button on:click={handleReverse} disabled={arrayToSort.length < 2}
         >REVERSE ORDER</button
       >
-      <button on:click={handleDelete} type="reset" disabled={arrayToSort.length < 1}>DELETE ALL</button>
+      <button
+        on:click={handleDelete}
+        type="reset"
+        disabled={arrayToSort.length < 1}>DELETE ALL</button
+      >
     </div>
   </FieldsetStyle>
 {/if}

@@ -50,7 +50,7 @@
 
 <div class="header-block">
   <h3 id="header-header-block">Composite Fields</h3>
-  <p class="msg">(Composite fields values are set from the Edit Field Menu)</p>
+  <p class="msg">(Values are set in the Field Editor Menu)</p>
 </div>
 
 <FieldItemStyle>

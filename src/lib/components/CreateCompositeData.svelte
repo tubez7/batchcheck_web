@@ -58,19 +58,22 @@
 
   <div class="block">
     <div class="divider" id="left">
-      {#each regularFields as regularField}
-        <FieldItem bind:compositeData field={regularField} />
-      {/each}
+      <div class="scroll-bar">
+        {#each regularFields as regularField}
+          <FieldItem bind:compositeData field={regularField} />
+        {/each}
+      </div>
     </div>
 
     <div class="divider" id="right">
-      <div class="box">
+      <div class="scroll-bar">
         {#each compositeData as value, i}
-          <ValueCard {...value} bind:compositeData index={i} />
+          <ValueCard name={value.name} bind:compositeData index={i} />
         {/each}
       </div>
     </div>
   </div>
+
   <FieldsSort bind:compositeData editMode={true} fieldsClone={null} />
 </FieldsetStyle>
 
@@ -84,24 +87,27 @@
 {/if}
 
 <style>
-  /* media query on container max height. current value for small screen */
   .block {
     display: flex;
     justify-content: space-between;
     min-width: 40em;
-    max-height: 12em;
   }
 
   .divider {
     width: 50%;
     text-align: center;
-    overflow-y: auto;
     background-color: rgb(214, 193, 99);
     border-style: solid;
     border-color: rgb(194, 169, 41);
     border-radius: 1em;
     box-sizing: border-box;
     margin-bottom: 0.25em;
+  }
+
+  /* media query on container max height. current value for small screen */
+  .scroll-bar {
+    max-height: 12em;
+    overflow: auto;
   }
 
   #left {
@@ -111,6 +117,7 @@
 
   #right {
     margin-left: 0.2em;
+    padding-right: 0.5em;
   }
 
   .header-block {
@@ -128,9 +135,26 @@
   button {
     height: 3em;
     width: 10em;
-    /* margin-top: 1em; */
     margin-left: 0.5em;
     margin-right: 0.5em;
     border-radius: 1em;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0.5em;
+  }
+
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px rgb(112, 97, 22);
+    border-radius: 1em;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgb(156, 135, 30);
+    border-radius: 1em;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(112, 97, 22);
   }
 </style>

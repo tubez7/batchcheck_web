@@ -34,8 +34,7 @@
 >
   <div class="container">
     <p>Field: {field.name}</p>
-    <!-- <p>ID: {field.id}</p> -->
-    <button on:click={handleClick}>&#x27A1</button>
+    <button on:click={handleClick}>&#x2794</button>
   </div>
 </FieldsetStyle>
 

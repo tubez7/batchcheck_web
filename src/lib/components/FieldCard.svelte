@@ -106,9 +106,9 @@
     </div>
 
     {#if editMode}
-      <div class="divider" id="move-card-block">
-        <button on:click={moveFieldUp} disabled={disableUp}>&#8593</button>
-        <button on:click={moveFieldDown} disabled={disableDown}>&#8595</button>
+      <div class="divider move-card-block">
+        <button on:click={moveFieldUp} disabled={disableUp}>&#11014</button>
+        <button on:click={moveFieldDown} disabled={disableDown}>&#11015</button>
       </div>
     {/if}
   </div>
@@ -140,24 +140,29 @@
     margin-right: 0.25em;
   }
 
-  #move-card-block {
+  .move-card-block {
+    display: flex;
+    flex-direction: column;
     background-color: rgb(166, 182, 255);
-    max-width: 20%;
+    max-width: 6em;
     min-height: 6.5em;
     border-style: solid;
     border-color: rgb(114, 113, 113);
     border-radius: 1em;
     padding: 0.5em;
     box-sizing: border-box;
-    align-content: space-evenly;
+    align-items: center;
   }
 
-  #move-card-block button {
-    width: 100%;
+  .move-card-block button {
+    /* width: 100%; */
+    min-width: 5em;
+    max-width: 6em;
     min-height: 3em;
     border-radius: 1em;
     margin-top: 0.25em;
     margin-bottom: 0.25em;
+    font-weight: bolder;
   }
 
   .expand-collapse-button {
