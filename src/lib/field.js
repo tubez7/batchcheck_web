@@ -31,6 +31,7 @@ class Field {
     this.id = id;
     this.compositeData = [];
     this.compositeSeparator = "";
+    this.expanded = false;
   }
 }
 
