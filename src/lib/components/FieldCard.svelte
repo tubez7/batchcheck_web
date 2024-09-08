@@ -28,7 +28,7 @@
   $: id = field.id;
   $: hasSerialString = field.hasSerial ? "Yes" : "No";
   $: hasPadString = field.serialPadded ? "Yes" : "No";
-  let expanded;
+  let expanded = false;
   $: editMode, (expanded = false);
 
   // FUNCTIONS
@@ -49,11 +49,13 @@
   function moveFieldUp(e) {
     e.preventDefault();
     fieldsClone = raiseArrayElement(fieldsClone, index);
+    //expanded = false;
   }
 
   function moveFieldDown(e) {
     e.preventDefault();
     fieldsClone = lowerArrayElement(fieldsClone, index);
+    //expanded = false;
   }
 
   function deleteField(e) {
@@ -62,6 +64,7 @@
       deleteArrayElement(fieldsClone, index),
       id
     );
+    //expanded = false;
   }
 
   function toggleExpand(e) {
