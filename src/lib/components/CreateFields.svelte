@@ -78,7 +78,7 @@
 
   function setDefaults() {
     if (initialised) {
-      console.log(initialised, "setDefaults called DEBUGGING ONLY. Pls remove");
+      // console.log(initialised, "setDefaults called DEBUGGING ONLY. Pls remove");
       hasSerial = false;
       serial = null;
       incrementValue = 0;

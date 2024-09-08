@@ -56,7 +56,23 @@ export function reverseArrayOrder(array) {
 }
 
 export function compareEquality(value1, value2) {
-  return isEqual(value1, value2);
+  const hasExpanded = value1[0]?.hasOwnProperty("expanded");
+
+  if (hasExpanded) {
+    const clonedArray1 = value1.map((element) => ({ ...element }));
+    const clonedArray2 = value2.map((element) => ({ ...element }));
+
+    clonedArray1.forEach((element) => {
+      element.expanded = false;
+    });
+    clonedArray2.forEach((element) => {
+      element.expanded = false;
+    });
+
+    return isEqual(clonedArray1, clonedArray2);
+  } else {
+    return isEqual(value1, value2);
+  }
 }
 
 export function deleteArrayElement(array, index) {
@@ -116,4 +132,19 @@ export function filterCompositeData(array, id) {
   });
 
   return modifiedArray;
+}
+
+export function amendFieldExpanded(array, index) {
+  if (!array) return [];
+  const arrayClone = array.map((element) => ({ ...element }));
+
+  arrayClone.forEach((element, i) => {
+    if (i === index) {
+      element.expanded = !element.expanded;
+    } else {
+      element.expanded = false;
+    }
+  });
+
+  return arrayClone;
 }

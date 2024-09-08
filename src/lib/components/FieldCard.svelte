@@ -1,6 +1,7 @@
 <script>
   // IMPORTS
   import {
+    amendFieldExpanded,
     deleteArrayElement,
     filterCompositeData,
     lowerArrayElement,
@@ -28,8 +29,8 @@
   $: id = field.id;
   $: hasSerialString = field.hasSerial ? "Yes" : "No";
   $: hasPadString = field.serialPadded ? "Yes" : "No";
-  let expanded = false;
-  $: editMode, (expanded = false);
+  $: expanded = field.expanded;
+  $: editMode, (field.expanded = false);
 
   // FUNCTIONS
   function showEditPanel(e) {
@@ -49,13 +50,11 @@
   function moveFieldUp(e) {
     e.preventDefault();
     fieldsClone = raiseArrayElement(fieldsClone, index);
-    //expanded = false;
   }
 
   function moveFieldDown(e) {
     e.preventDefault();
     fieldsClone = lowerArrayElement(fieldsClone, index);
-    //expanded = false;
   }
 
   function deleteField(e) {
@@ -64,12 +63,11 @@
       deleteArrayElement(fieldsClone, index),
       id
     );
-    //expanded = false;
   }
 
   function toggleExpand(e) {
     e.preventDefault();
-    expanded = !expanded;
+    fieldsClone = amendFieldExpanded(fieldsClone, index);
   }
 </script>
 

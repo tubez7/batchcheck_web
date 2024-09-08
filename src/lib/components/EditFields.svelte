@@ -14,7 +14,6 @@
   export let createComposite;
   export let fields;
   export let fieldsClone;
-  //export let records;
   export let indexToEdit;
   export let fieldToEdit;
   export let editPanelVisible;
@@ -24,9 +23,10 @@
 
   // VARIABLES
   $: opaqueOverlay = editMode ? "edit" : "create";
-  // let createComposite = false;
   let compositeField = {};
   $: changeMade = !compareEquality(fields, fieldsClone);
+  $: borderColour = changeMade ? "red" : "rgb(114, 113, 113)";
+  $: borderWidth = changeMade ? "thick" : "initial";
 
   // ALERT VARIABLES
   let alert;
@@ -101,7 +101,8 @@
     {/if}
     {#if editMode}
       <FieldsetStyle
-        --colour="rgb(114, 113, 113)"
+        --colour={borderColour}
+        --width={borderWidth}
         --background="rgb(234, 204, 252)"
       >
         <div class="button-block">
