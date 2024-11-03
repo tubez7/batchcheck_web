@@ -1,4 +1,9 @@
 <script>
+  // IMPORTS
+  import { goto } from "$app/navigation";
+  import { tableStoreData } from "$lib/stores";
+  import { onMount } from "svelte";
+  import { get } from "svelte/store";
   // COMPONENTS
   import CreateFields from "$lib/components/CreateFields.svelte";
   import EditFields from "$lib/components/EditFields.svelte";
@@ -8,8 +13,8 @@
 
   // VARIABLES
   let fields = [];
+  let receivedData;
   let records = 1;
-  $: formValidated = fields.length > 0 && records > 0;
   let editPanelVisible = false;
   let warningPopUpVisible = false;
   let createComposite = false;
@@ -20,10 +25,15 @@
   let fieldsClone = [];
   let changeMade = false;
   $: disabled = editMode ? changeMade : fields.length < 1;
+  $: formValidated = fields.length > 0 && records > 0 && !changeMade;
 
-  let testMsg = false;
+  //FUNCTIONS
+  onMount(() => {
+    receivedData = get(tableStoreData);
+    fieldsClone = receivedData.length > 0 ? receivedData : fieldsClone;
+    fields = receivedData.length > 0 ? receivedData : fields;
+  });
 
-  // FUNCTIONS
   function toggleEditMode(e) {
     e.preventDefault();
     editMode = !editMode;
@@ -31,10 +41,9 @@
 
   function generateTable(e) {
     e.preventDefault();
-    testMsg = true;
-    setTimeout(() => {
-      testMsg = false;
-    }, 5000);
+    const tableName = encodeURIComponent("Richard's Table");
+    tableStoreData.set(fields);
+    goto(`/${tableName}`);
   }
 
   // DEBUG WATCHERS
@@ -67,11 +76,6 @@
           >{editMode ? "CREATE FIELDS" : "EDIT FIELDS"}</button
         >
       </div>
-      {#if testMsg}
-        <p style="color: red;font-weight:bolder;">
-          THIS FEATURE IS NOT SUPPORTED IN UI TEST BUILD
-        </p>
-      {/if}
     </FieldsetStyle>
 
     <div class="container">
