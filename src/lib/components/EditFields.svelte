@@ -1,7 +1,7 @@
 <script>
   // IMPORTS
   import { compareEquality } from "$lib/utils.js";
-  import { onMount } from "svelte";
+  //import { onMount } from "svelte";
 
   // COMPONENTS
   import CreateCompositeData from "$lib/components/CreateCompositeData.svelte";

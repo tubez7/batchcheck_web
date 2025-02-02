@@ -1,6 +1,6 @@
 <script>
   // IMPORTS
-  import { goto } from "$app/navigation";
+  //import { goto } from "$app/navigation";
   import { tableStoreData } from "$lib/stores";
   import { onMount } from "svelte";
   import { get } from "svelte/store";
@@ -8,8 +8,10 @@
   import CreateFields from "$lib/components/CreateFields.svelte";
   import EditFields from "$lib/components/EditFields.svelte";
   import FieldEditPanel from "$lib/components/FieldEditPanel.svelte";
-  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
+  //import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
+  import Headers from "$lib/components/Headers.svelte";
   import SetRecords from "$lib/components/SetRecords.svelte";
+  import ActionButtons from "$lib/components/ActionButtons.svelte";
 
   // VARIABLES
   let fields = [];
@@ -17,8 +19,13 @@
   let records = 1;
   let editPanelVisible = false;
   let warningPopUpVisible = false;
+  let tableGeneratePopUp = false;
   let createComposite = false;
-  $: popUpActive = editPanelVisible || warningPopUpVisible || createComposite;
+  $: popUpActive =
+    editPanelVisible ||
+    warningPopUpVisible ||
+    createComposite ||
+    tableGeneratePopUp;
   let indexToEdit = 0;
   let fieldToEdit = {};
   let editMode = false;
@@ -29,22 +36,24 @@
 
   // FUNCTIONS
   onMount(() => {
+    tableGeneratePopUp = false;
     receivedData = get(tableStoreData);
     fieldsClone = receivedData.length > 0 ? receivedData : fieldsClone;
     fields = receivedData.length > 0 ? receivedData : fields;
   });
 
-  function toggleEditMode(e) {
-    e.preventDefault();
-    editMode = !editMode;
-  }
+  // function toggleEditMode(e) {
+  //   e.preventDefault();
+  //   editMode = !editMode;
+  // }
 
-  function generateTable(e) {
-    e.preventDefault();
-    const tableName = encodeURIComponent("Richard's Table"); // hardcode to be replaced
-    tableStoreData.set(fields);
-    goto(`/${tableName}`);
-  }
+  // function generateTable(e) {
+  //   e.preventDefault();
+  //   tableGeneratePopUp = true;
+  //   const tableName = encodeURIComponent("Richard's Table"); // hardcode to be replaced
+  //   tableStoreData.set(fields);
+  //   goto(`/${tableName}`);
+  // }
 
   // DEBUG WATCHERS
   // $: console.log("Records = ", records);
@@ -62,21 +71,8 @@
 
   <h1>BATCH-CHECK v1.0</h1>
   <div class="app-container">
-    <h2 class="header">Batch-Check Constructor</h2>
-
-    <p class="note">NB - * denotes a mandatory parameter</p>
-
-    <FieldsetStyle --background="rgb(222, 222, 177)">
-      <div class="button-block">
-        <button on:click={generateTable} disabled={!formValidated}
-          >GENERATE TABLE</button
-        >
-
-        <button on:click={toggleEditMode} {disabled}
-          >{editMode ? "CREATE FIELDS" : "EDIT FIELDS"}</button
-        >
-      </div>
-    </FieldsetStyle>
+    <Headers />
+    <ActionButtons bind:editMode {tableGeneratePopUp} {disabled} {formValidated} />
 
     <div class="container">
       <div class="divider">
@@ -145,15 +141,15 @@
     margin-bottom: 25px;
   }
 
-  .button-block {
+  /* .button-block {
     text-align: center;
-  }
+  } */
 
-  .header {
+  /* .header {
     margin-top: 0.25em;
     margin-bottom: 0.25em;
     align-self: baseline;
-  }
+  } */
 
   #opaque-filter {
     position: fixed;
@@ -168,16 +164,16 @@
     filter: opacity(85%);
   }
 
-  button {
+  /* button {
     height: 3em;
     width: 10em;
     margin-left: 0.5em;
     margin-right: 0.5em;
     border-radius: 1em;
-  }
+  } */
 
-  .note {
+  /* .note {
     align-self: baseline;
     margin-bottom: 0;
-  }
+  } */
 </style>
