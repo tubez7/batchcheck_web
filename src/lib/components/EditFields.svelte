@@ -1,7 +1,6 @@
 <script>
   // IMPORTS
   import { compareEquality } from "$lib/utils.js";
-  //import { onMount } from "svelte";
 
   // COMPONENTS
   import CreateCompositeData from "$lib/components/CreateCompositeData.svelte";
@@ -9,6 +8,7 @@
   import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
   import FieldsSort from "$lib/components/FieldsSort.svelte";
   import PopUp from "$lib/components/PopUp.svelte";
+  import TwoButtons from "$lib/components/TwoButtons.svelte";
   import WarningAlert from "$lib/components/WarningAlert.svelte";
 
   // PROPS
@@ -107,12 +107,18 @@
         --background="rgb(234, 204, 252)"
       >
         <div class="button-block">
-          <button on:click={handleSave} disabled={!changeMade}
-            >CONFIRM & SAVE</button
-          >
-          <button id="undo-button" on:click={handleUndo} disabled={!changeMade}
-            >UNDO CHANGES</button
-          >
+          <TwoButtons
+            --hover1="rgb(66, 237, 180)"
+            --hover2="rgb(250, 128, 128)"
+            callbackFunc1={handleSave}
+            callbackFunc2={handleUndo}
+            button1text="CONFIRM & SAVE"
+            button2text="UNDO CHANGES"
+            disableButton1={!changeMade}
+            disableButton2={!changeMade}
+            type1="button"
+            type2="button"
+          />
         </div>
       </FieldsetStyle>
     {/if}
@@ -159,14 +165,6 @@
   .scroll-bar {
     max-height: 43em;
     overflow: auto;
-  }
-
-  button {
-    height: 3em;
-    width: 10em;
-    margin-left: 0.5em;
-    margin-right: 0.5em;
-    border-radius: 1em;
   }
 
   ::-webkit-scrollbar {

@@ -15,6 +15,7 @@
   import SetSerial from "$lib/components/SetSerial.svelte";
   import SetSerialPadded from "$lib/components/SetSerialPadded.svelte";
   import SetSuffix from "$lib/components/SetSuffix.svelte";
+  import TwoButtons from "$lib/components/TwoButtons.svelte";
 
   // PROPS
   export let fields;
@@ -201,12 +202,16 @@
     </FieldsetStyle>
 
     <div class="button-block">
-      <button on:click={handleSubmit} type="submit" disabled={buttonDisable}
-        >Add Field</button
-      >
-      <button on:click={handleReset} type="reset" disabled={editMode}
-        >Reset Values</button
-      >
+      <TwoButtons
+        callbackFunc1={handleSubmit}
+        button1text="Add Field"
+        disableButton1={buttonDisable}
+        type1="submit"
+        callbackFunc2={handleReset}
+        button2text="Reset Values"
+        disableButton2={editMode}
+        type2="reset"
+      />
     </div>
   </FieldsetStyle>
 </div>
@@ -230,13 +235,5 @@
   .header {
     margin-top: 0.25em;
     margin-bottom: 0.5em;
-  }
-
-  button {
-    height: 3em;
-    width: 10em;
-    margin-left: 0.5em;
-    margin-right: 0.5em;
-    border-radius: 1em;
   }
 </style>

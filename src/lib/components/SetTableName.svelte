@@ -6,6 +6,7 @@
 
   // PROPS
   export let tableName = "";
+  export let validName;
 
   // VARIABLES
   let tableNameError = false;

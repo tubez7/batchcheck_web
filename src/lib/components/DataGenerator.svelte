@@ -1,6 +1,5 @@
 <script>
   // IMPORTS
-  //import { goto } from "$app/navigation";
   import { tableStoreData } from "$lib/stores";
   import { onMount } from "svelte";
   import { get } from "svelte/store";
@@ -9,11 +8,11 @@
   import EditFields from "$lib/components/EditFields.svelte";
   import FieldEditPanel from "$lib/components/FieldEditPanel.svelte";
   //import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
-  import Headers from "$lib/components/Headers.svelte";
-  import SetRecords from "$lib/components/SetRecords.svelte";
   import ActionButtons from "$lib/components/ActionButtons.svelte";
-  import PopUp from "$lib/components/PopUp.svelte";
   import GenerateTable from "$lib/components/GenerateTable.svelte";
+  import Headers from "$lib/components/Headers.svelte";
+  import PopUp from "$lib/components/PopUp.svelte";
+  import SetRecords from "$lib/components/SetRecords.svelte";
 
   // VARIABLES
   let fields = [];
@@ -33,7 +32,6 @@
   let editMode = false;
   let fieldsClone = [];
   let changeMade = false;
-  //let tableName = "";
   $: disabled = editMode ? changeMade : fields.length < 1;
   $: formValidated = fields.length > 0 && records > 0 && !changeMade;
 
@@ -48,14 +46,6 @@
   // function toggleEditMode(e) {
   //   e.preventDefault();
   //   editMode = !editMode;
-  // }
-
-  // function generateTable(e) {
-  //   e.preventDefault();
-  //   tableGeneratePopUp = true;
-  //   const tableName = encodeURIComponent("Richard's Table"); // hardcode to be replaced
-  //   tableStoreData.set(fields);
-  //   goto(`/${tableName}`);
   // }
 
   // DEBUG WATCHERS
@@ -73,15 +63,20 @@
   {/if}
 
   {#if tableGeneratePopUp}
-  <PopUp header="Table Name">
-    <GenerateTable bind:tableGeneratePopUp {fields} />
-  </PopUp>
+    <PopUp header="Table Name" --colour="rgb(80, 162, 171)">
+      <GenerateTable bind:tableGeneratePopUp {fields} />
+    </PopUp>
   {/if}
 
   <h1>BATCH-CHECK v1.0</h1>
   <div class="app-container">
     <Headers />
-    <ActionButtons bind:editMode bind:tableGeneratePopUp {disabled} {formValidated} />
+    <ActionButtons
+      bind:editMode
+      bind:tableGeneratePopUp
+      {disabled}
+      {formValidated}
+    />
 
     <div class="container">
       <div class="divider">
@@ -150,16 +145,6 @@
     margin-bottom: 25px;
   }
 
-  /* .button-block {
-    text-align: center;
-  } */
-
-  /* .header {
-    margin-top: 0.25em;
-    margin-bottom: 0.25em;
-    align-self: baseline;
-  } */
-
   #opaque-filter {
     position: fixed;
     top: 0;
@@ -172,14 +157,6 @@
     background-color: black;
     filter: opacity(85%);
   }
-
-  /* button {
-    height: 3em;
-    width: 10em;
-    margin-left: 0.5em;
-    margin-right: 0.5em;
-    border-radius: 1em;
-  } */
 
   /* .note {
     align-self: baseline;
