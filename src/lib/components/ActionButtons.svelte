@@ -1,7 +1,7 @@
 <script>
   // IMPORTS
-  import { goto } from "$app/navigation";
-  import { tableStoreData } from "$lib/stores";
+  //import { goto } from "$app/navigation";
+  //import { tableStoreData } from "$lib/stores";
   // COMPONENTS
   import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
 
@@ -17,18 +17,15 @@
     editMode = !editMode;
   }
 
-  function generateTable(e) {
+  function openTableNamePopUp(e) {
     e.preventDefault();
     tableGeneratePopUp = true;
-    const tableName = encodeURIComponent("Richard's Table"); // hardcode to be replaced
-    tableStoreData.set(fields);
-    goto(`/${tableName}`);
   }
 </script>
 
 <FieldsetStyle --background="rgb(222, 222, 177)">
   <div class="button-block">
-    <button on:click={generateTable} disabled={!formValidated}
+    <button on:click={openTableNamePopUp} disabled={!formValidated}
       >GENERATE TABLE</button
     >
 

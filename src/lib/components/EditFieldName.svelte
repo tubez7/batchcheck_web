@@ -26,7 +26,7 @@
   $: fieldName = !editFieldName ? fieldClone.name : fieldName;
 </script>
 
-<div id="container">
+<div class="container">
   <FieldsetStyle
     --colour="rgb(114, 113, 113)"
     --background="rgb(222, 255, 244)"
@@ -57,7 +57,7 @@
 </div>
 
 <style>
-  #container {
+  .container {
     display: flex;
     flex-direction: column;
     /* border-style: solid;

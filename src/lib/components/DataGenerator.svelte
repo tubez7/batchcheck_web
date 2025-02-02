@@ -12,6 +12,8 @@
   import Headers from "$lib/components/Headers.svelte";
   import SetRecords from "$lib/components/SetRecords.svelte";
   import ActionButtons from "$lib/components/ActionButtons.svelte";
+  import PopUp from "$lib/components/PopUp.svelte";
+  import GenerateTable from "$lib/components/GenerateTable.svelte";
 
   // VARIABLES
   let fields = [];
@@ -31,6 +33,7 @@
   let editMode = false;
   let fieldsClone = [];
   let changeMade = false;
+  //let tableName = "";
   $: disabled = editMode ? changeMade : fields.length < 1;
   $: formValidated = fields.length > 0 && records > 0 && !changeMade;
 
@@ -69,10 +72,16 @@
     <div id="opaque-filter"></div>
   {/if}
 
+  {#if tableGeneratePopUp}
+  <PopUp header="Table Name">
+    <GenerateTable bind:tableGeneratePopUp {fields} />
+  </PopUp>
+  {/if}
+
   <h1>BATCH-CHECK v1.0</h1>
   <div class="app-container">
     <Headers />
-    <ActionButtons bind:editMode {tableGeneratePopUp} {disabled} {formValidated} />
+    <ActionButtons bind:editMode bind:tableGeneratePopUp {disabled} {formValidated} />
 
     <div class="container">
       <div class="divider">
