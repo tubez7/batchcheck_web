@@ -27,7 +27,7 @@
   $: disabled = editMode ? changeMade : fields.length < 1;
   $: formValidated = fields.length > 0 && records > 0 && !changeMade;
 
-  //FUNCTIONS
+  // FUNCTIONS
   onMount(() => {
     receivedData = get(tableStoreData);
     fieldsClone = receivedData.length > 0 ? receivedData : fieldsClone;
@@ -41,7 +41,7 @@
 
   function generateTable(e) {
     e.preventDefault();
-    const tableName = encodeURIComponent("Richard's Table");
+    const tableName = encodeURIComponent("Richard's Table"); // hardcode to be replaced
     tableStoreData.set(fields);
     goto(`/${tableName}`);
   }
