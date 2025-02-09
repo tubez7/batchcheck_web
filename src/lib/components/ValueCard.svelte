@@ -105,5 +105,16 @@
     max-height: 3em;
     background-color: rgb(245, 128, 128);
     font-weight: bolder;
+    cursor: pointer;
+    box-shadow: 0 2px #999;
+  }
+
+  button:hover {
+    background-color: rgb(242, 76, 76);
+  }
+
+  button:active {
+    box-shadow: 0 2px #666;
+    transform: translateY(2px);
   }
 </style>
