@@ -24,8 +24,6 @@
 <FieldsetStyle --background="rgb(222, 222, 177)">
   <div class="button-block">
     <TwoButtons
-      --hover1="rgb(181, 181, 78)"
-      --hover2="rgb(181, 181, 78)"
       callbackFunc1={openTableNamePopUp}
       callbackFunc2={toggleEditMode}
       button1text="GENERATE TABLE"

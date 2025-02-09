@@ -1,11 +1,16 @@
 <script>
+  // IMPORTS
   import { goto } from "$app/navigation";
   import { tableStoreData } from "$lib/stores";
   import { get } from "svelte/store";
 
+  // PROPS
   export let data;
+
+  // VARIABLES
   let receivedData = get(tableStoreData);
 
+  // FUNCTIONS
   function goBack(e) {
     e.preventDefault();
     goto("/");

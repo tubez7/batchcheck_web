@@ -53,6 +53,7 @@
       >
       <button
         on:click={handleDelete}
+        id="reset-button"
         type="reset"
         disabled={arrayToSort.length < 1}>DELETE ALL</button
       >
@@ -62,14 +63,28 @@
 
 <style>
   .button-block {
-    text-align: center;
+    display: flex;
+    justify-content: space-evenly;
   }
 
   button {
     height: 3em;
     width: 10em;
-    margin-left: 0.5em;
-    margin-right: 0.5em;
     border-radius: 1em;
+    cursor: pointer;
+    box-shadow: 0 5px #999;
+  }
+
+  button:hover {
+    background-color: rgb(207, 207, 207);
+  }
+
+  #reset-button:hover {
+    background-color: rgb(250, 128, 128);
+  }
+
+  button:active {
+    box-shadow: 0 2px #666;
+    transform: translateY(4px);
   }
 </style>
