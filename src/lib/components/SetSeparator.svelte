@@ -39,7 +39,7 @@
   >
     <FieldItemStyle --justify="space-around">
       <p>Field Separator: {separator || "N/A"}</p>
-      <button on:click={enterEditSeparatorMode}>Edit</button>
+      <button id="edit" on:click={enterEditSeparatorMode}>Edit</button>
     </FieldItemStyle>
   </FieldsetStyle>
 {/if}
@@ -77,6 +77,10 @@
     border-radius: 1em;
     box-shadow: 0 2px #999;
     cursor: pointer;
+  }
+
+  #edit:hover {
+    background-color: rgb(207, 207, 207);
   }
 
   #save:hover {
