@@ -99,7 +99,7 @@
     margin-bottom: 0.125em;
     padding: 2px;
     padding-right: 5px;
-    align-items: stretch;
+    align-items: center;
     border-style: solid;
     border-color: cyan;
     background-color: rgb(241, 237, 237);
@@ -113,5 +113,16 @@
   button {
     margin-left: 0.5em;
     border-radius: 1em;
+    box-shadow: 0 2px #999;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: rgb(207, 207, 207);
+  }
+
+  button:active {
+    box-shadow: 0 1px #666;
+    transform: translateY(2px);
   }
 </style>

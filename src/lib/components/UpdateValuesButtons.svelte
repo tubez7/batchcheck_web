@@ -88,16 +88,17 @@
 
 <FieldsetStyle --colour="rgb(114, 113, 113)" --background="rgb(180, 250, 226)">
   <div class="button-block">
-    <button on:click={handleSave} disabled={!validCheck}>SAVE CHANGES</button>
-    <button on:click={handleCancel}>CANCEL & CLOSE</button>
-    <button on:click={handleReset}>RESET CHANGES</button>
+    <button id="save" on:click={handleSave} disabled={!validCheck} type="submit"
+      >SAVE CHANGES</button
+    >
+    <button id="close" on:click={handleCancel}>CANCEL & CLOSE</button>
+    <button id="reset" on:click={handleReset} type="reset">RESET VALUE</button>
   </div>
 </FieldsetStyle>
 
 <style>
   .button-block {
     text-align: center;
-    /* align-items: center; */
   }
 
   button {
@@ -106,5 +107,24 @@
     margin-left: 0.5em;
     margin-right: 0.5em;
     border-radius: 1em;
+    cursor: pointer;
+    box-shadow: 0 5px #999;
+  }
+
+  #reset:hover {
+    background-color: rgb(250, 128, 128);
+  }
+
+  #close:hover {
+    background-color: rgb(239, 208, 80);
+  }
+
+  #save:hover {
+    background-color: rgb(66, 237, 180);
+  }
+
+  button:active {
+    box-shadow: 0 2px #666;
+    transform: translateY(4px);
   }
 </style>

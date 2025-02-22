@@ -1,6 +1,7 @@
 <script>
   // COMPONENTS
   import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
+  import TwoButtons from "$lib/components/TwoButtons.svelte";
 
   // PROPS
   export let warningPopUpVisible;
@@ -25,8 +26,18 @@
 <FieldsetStyle --colour="rgb(121, 26, 26)" --background="rgb(255, 156, 156)">
   <p class="alert-text">Do you wish to proceed?</p>
   <div class="button-block">
-    <button on:click={handleConfirm}>Confirm</button>
-    <button on:click={handleCancel}>Cancel</button>
+    <TwoButtons
+      --hover1="rgb(66, 237, 180)"
+      --hover2="rgb(250, 128, 128)"
+      callbackFunc1={handleConfirm}
+      callbackFunc2={handleCancel}
+      button1text="Confirm"
+      button2text="Cancel"
+      disableButton1={false}
+      disableButton2={false}
+      type1="button"
+      type2="button"
+    />
   </div>
 </FieldsetStyle>
 
@@ -44,11 +55,5 @@
     display: flex;
     margin: auto;
     justify-content: space-evenly;
-  }
-
-  button {
-    height: 3em;
-    width: 7em;
-    border-radius: 1em;
   }
 </style>

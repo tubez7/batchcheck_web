@@ -1,41 +1,52 @@
 <script>
+  // IMPORTS
+  import { tableStoreData } from "$lib/stores";
+  import { onMount } from "svelte";
+  import { get } from "svelte/store";
   // COMPONENTS
   import CreateFields from "$lib/components/CreateFields.svelte";
   import EditFields from "$lib/components/EditFields.svelte";
   import FieldEditPanel from "$lib/components/FieldEditPanel.svelte";
-  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
+  //import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
+  import ActionButtons from "$lib/components/ActionButtons.svelte";
+  import GenerateTable from "$lib/components/GenerateTable.svelte";
+  import Headers from "$lib/components/Headers.svelte";
+  import PopUp from "$lib/components/PopUp.svelte";
   import SetRecords from "$lib/components/SetRecords.svelte";
 
   // VARIABLES
   let fields = [];
+  let receivedData;
   let records = 1;
-  $: formValidated = fields.length > 0 && records > 0;
   let editPanelVisible = false;
   let warningPopUpVisible = false;
+  let tableGeneratePopUp = false;
   let createComposite = false;
-  $: popUpActive = editPanelVisible || warningPopUpVisible || createComposite;
+  $: popUpActive =
+    editPanelVisible ||
+    warningPopUpVisible ||
+    createComposite ||
+    tableGeneratePopUp;
   let indexToEdit = 0;
   let fieldToEdit = {};
   let editMode = false;
   let fieldsClone = [];
   let changeMade = false;
   $: disabled = editMode ? changeMade : fields.length < 1;
-
-  let testMsg = false;
+  $: formValidated = fields.length > 0 && records > 0 && !changeMade;
 
   // FUNCTIONS
-  function toggleEditMode(e) {
-    e.preventDefault();
-    editMode = !editMode;
-  }
+  onMount(() => {
+    tableGeneratePopUp = false;
+    receivedData = get(tableStoreData);
+    fieldsClone = receivedData.length > 0 ? receivedData : fieldsClone;
+    fields = receivedData.length > 0 ? receivedData : fields;
+  });
 
-  function generateTable(e) {
-    e.preventDefault();
-    testMsg = true;
-    setTimeout(() => {
-      testMsg = false;
-    }, 5000);
-  }
+  // function toggleEditMode(e) {
+  //   e.preventDefault();
+  //   editMode = !editMode;
+  // }
 
   // DEBUG WATCHERS
   // $: console.log("Records = ", records);
@@ -51,28 +62,21 @@
     <div id="opaque-filter"></div>
   {/if}
 
+  {#if tableGeneratePopUp}
+    <PopUp header="Table Name" --colour="rgb(80, 162, 171)">
+      <GenerateTable bind:tableGeneratePopUp {fields} />
+    </PopUp>
+  {/if}
+
   <h1>BATCH-CHECK v1.0</h1>
   <div class="app-container">
-    <h2 class="header">Batch-Check Constructor</h2>
-
-    <p class="note">NB - * denotes a mandatory parameter</p>
-
-    <FieldsetStyle --background="rgb(222, 222, 177)">
-      <div class="button-block">
-        <button on:click={generateTable} disabled={!formValidated}
-          >GENERATE TABLE</button
-        >
-
-        <button on:click={toggleEditMode} {disabled}
-          >{editMode ? "CREATE FIELDS" : "EDIT FIELDS"}</button
-        >
-      </div>
-      {#if testMsg}
-        <p style="color: red;font-weight:bolder;">
-          THIS FEATURE IS NOT SUPPORTED IN UI TEST BUILD
-        </p>
-      {/if}
-    </FieldsetStyle>
+    <Headers />
+    <ActionButtons
+      bind:editMode
+      bind:tableGeneratePopUp
+      {disabled}
+      {formValidated}
+    />
 
     <div class="container">
       <div class="divider">
@@ -141,16 +145,6 @@
     margin-bottom: 25px;
   }
 
-  .button-block {
-    text-align: center;
-  }
-
-  .header {
-    margin-top: 0.25em;
-    margin-bottom: 0.25em;
-    align-self: baseline;
-  }
-
   #opaque-filter {
     position: fixed;
     top: 0;
@@ -164,16 +158,8 @@
     filter: opacity(85%);
   }
 
-  button {
-    height: 3em;
-    width: 10em;
-    margin-left: 0.5em;
-    margin-right: 0.5em;
-    border-radius: 1em;
-  }
-
-  .note {
+  /* .note {
     align-self: baseline;
     margin-bottom: 0;
-  }
+  } */
 </style>

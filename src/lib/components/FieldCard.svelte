@@ -1,14 +1,16 @@
 <script>
   // IMPORTS
   import {
-    amendFieldExpanded,
     deleteArrayElement,
     filterCompositeData,
     lowerArrayElement,
     raiseArrayElement,
   } from "../../lib/utils";
   // COMPONENTS
+  import CardValues from "$lib/components/CardValues.svelte";
   import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
+  import TwoButtons from "$lib/components/TwoButtons.svelte";
+  import UpDownButtons from "$lib/components/UpDownButtons.svelte";
 
   // PROPS
   export let fieldsClone;
@@ -27,8 +29,6 @@
   $: disableUp = index === 0;
   $: disableDown = index === fieldsClone.length - 1;
   $: id = field.id;
-  $: hasSerialString = field.hasSerial ? "Yes" : "No";
-  $: hasPadString = field.serialPadded ? "Yes" : "No";
   $: expanded = field.expanded;
   $: editMode, (field.expanded = false);
 
@@ -64,52 +64,29 @@
       id
     );
   }
-
-  function toggleExpand(e) {
-    e.preventDefault();
-    fieldsClone = amendFieldExpanded(fieldsClone, index);
-  }
 </script>
 
 <FieldsetStyle --background="rgb(194, 203, 244)" --style="dotted">
   <div class="container">
     <div class="divider">
-      <ul class="card">
-        <li>Field Name: {field.name}</li>
-        <li>Field Category: {field.type}</li>
-        {#if editMode && !expanded}
-          <button class="expand-collapse-button" on:click={toggleExpand}
-            >Expand...</button
-          >
-        {/if}
-        {#if standardField}
-          {#if expanded}
-            <li>Has Serial: {hasSerialString}</li>
-            {#if field.hasSerial}
-              <li>Start Number: {field.serial}</li>
-              <li>Increment Value: {field.incrementValue}</li>
-              <li>Records Per Increment: {field.recordsPerIncrement}</li>
-              <li>Padded: {hasPadString}</li>
-              <li>Pad Length: {field.padLength}</li>
-              <li>Leading Pad Character: {field.padLead}</li>
-              <li>Trailing Pad Character: {field.padTrail}</li>
-            {/if}
-            <li>Prefix: {field.prefix}</li>
-            <li>Suffix: {field.suffix}</li>
-          {/if}
-        {/if}
-      </ul>
-      {#if editMode && expanded}
-        <button class="expand-collapse-button" on:click={toggleExpand}
-          >Collapse...</button
-        >
-      {/if}
+      <CardValues
+        bind:fieldsClone
+        {field}
+        {editMode}
+        {standardField}
+        {expanded}
+        {index}
+      />
     </div>
 
     {#if editMode}
       <div class="divider move-card-block">
-        <button on:click={moveFieldUp} disabled={disableUp}>&#11014</button>
-        <button on:click={moveFieldDown} disabled={disableDown}>&#11015</button>
+        <UpDownButtons
+          callbackFunc1={moveFieldUp}
+          disableButton1={disableUp}
+          callbackFunc2={moveFieldDown}
+          disableButton2={disableDown}
+        />
       </div>
     {/if}
   </div>
@@ -118,11 +95,20 @@
     {#if expanded}
       <FieldsetStyle --background="rgb(166, 182, 255)">
         <div class="button-block">
-          <button on:click={showEditPanel}>EDIT</button>
           {#if !standardField}
             <button on:click={createCompositeData}>CREATE</button>
           {/if}
-          <button on:click={deleteField}>DELETE</button>
+          <TwoButtons
+            --hover2="rgb(250, 128, 128)"
+            callbackFunc1={showEditPanel}
+            callbackFunc2={deleteField}
+            button1text="EDIT"
+            button2text="DELETE"
+            disableButton1={false}
+            disableButton2={false}
+            type1="button"
+            type2="button"
+          />
         </div>
       </FieldsetStyle>
     {/if}
@@ -155,32 +141,12 @@
     align-items: center;
   }
 
-  .move-card-block button {
-    /* width: 100%; */
-    min-width: 5em;
-    max-width: 6em;
-    min-height: 3em;
-    border-radius: 1em;
-    margin-top: 0.25em;
-    margin-bottom: 0.25em;
-    font-weight: bolder;
-  }
-
-  .expand-collapse-button {
-    border: none;
-    color: blue;
-    background-color: transparent;
-    text-decoration: underline;
-    font-style: italic;
-    font-size: 1em;
-  }
-
-  .card {
-    list-style-type: circle;
-  }
-
   .button-block {
     text-align: center;
+  }
+
+  button {
+    cursor: pointer;
   }
 
   .button-block button {
@@ -189,5 +155,15 @@
     margin-left: 0.5em;
     margin-right: 0.5em;
     border-radius: 1em;
+    box-shadow: 0 5px #999;
+  }
+
+  .button-block button:hover {
+    background-color: rgb(207, 207, 207);
+  }
+
+  .button-block button:active {
+    box-shadow: 0 2px #666;
+    transform: translateY(4px);
   }
 </style>

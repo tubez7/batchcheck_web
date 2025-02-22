@@ -50,5 +50,16 @@
     border-radius: 1em;
     height: 2em;
     width: 3em;
+    box-shadow: 0 2px #999;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: rgb(207, 207, 207);
+  }
+
+  button:active {
+    box-shadow: 0 1px #666;
+    transform: translateY(2px);
   }
 </style>

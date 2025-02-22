@@ -39,7 +39,7 @@
   >
     <FieldItemStyle --justify="space-around">
       <p>Field Separator: {separator || "N/A"}</p>
-      <button on:click={enterEditSeparatorMode}>Edit</button>
+      <button id="edit" on:click={enterEditSeparatorMode}>Edit</button>
     </FieldItemStyle>
   </FieldsetStyle>
 {/if}
@@ -61,8 +61,10 @@
         />
       </div>
       <div>
-        <button on:click={handleSave} disabled={!changeMade}>SAVE</button>
-        <button on:click={handleCancel}>CANCEL</button>
+        <button id="save" on:click={handleSave} disabled={!changeMade}
+          >SAVE</button
+        >
+        <button id="cancel" on:click={handleCancel}>CANCEL</button>
       </div>
     </FieldItemStyle>
   </FieldsetStyle>
@@ -73,6 +75,25 @@
     height: 2em;
     width: 7em;
     border-radius: 1em;
+    box-shadow: 0 2px #999;
+    cursor: pointer;
+  }
+
+  #edit:hover {
+    background-color: rgb(207, 207, 207);
+  }
+
+  #save:hover {
+    background-color: rgb(66, 237, 180);
+  }
+
+  #cancel:hover {
+    background-color: rgb(250, 128, 128);
+  }
+
+  button:active {
+    box-shadow: 0 1px #666;
+    transform: translateY(2px);
   }
 
   p {

@@ -5,6 +5,8 @@
     lowerArrayElement,
     raiseArrayElement,
   } from "../../lib/utils";
+  // COMPONENTS
+  import UpDownButtons from "$lib/components/UpDownButtons.svelte";
 
   // PROPS
   export let name;
@@ -39,8 +41,19 @@
     <button on:click={deleteValue}>&#128465</button>
   </div>
   <div class="move-card-block">
-    <button on:click={moveValueUp} disabled={disableUp}>&#11014</button>
-    <button on:click={moveValueDown} disabled={disableDown}>&#11015</button>
+    <UpDownButtons
+      --width="3em"
+      --height="2em"
+      --top="0.125em"
+      --bottom="0.125em"
+      --shadow="0 2px #999"
+      --activeShadow="0 1px #666"
+      --activeTransform="translateY(2px)"
+      callbackFunc1={moveValueUp}
+      disableButton1={disableUp}
+      callbackFunc2={moveValueDown}
+      disableButton2={disableDown}
+    />
   </div>
 </div>
 
@@ -76,15 +89,6 @@
     align-items: center;
   }
 
-  .move-card-block button {
-    min-width: 3em;
-    min-height: 2em;
-    border-radius: 1em;
-    margin-top: 0.125em;
-    margin-bottom: 0.125em;
-    font-weight: bolder;
-  }
-
   .info-box {
     display: flex;
     justify-content: space-between;
@@ -94,12 +98,23 @@
     align-items: center;
   }
 
-  .info-box button {
+  button {
     border-radius: 1em;
     min-width: 3em;
     min-height: 2em;
     max-height: 3em;
     background-color: rgb(245, 128, 128);
     font-weight: bolder;
+    cursor: pointer;
+    box-shadow: 0 2px #999;
+  }
+
+  button:hover {
+    background-color: rgb(242, 76, 76);
+  }
+
+  button:active {
+    box-shadow: 0 2px #666;
+    transform: translateY(2px);
   }
 </style>

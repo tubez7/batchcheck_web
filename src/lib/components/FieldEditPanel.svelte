@@ -6,6 +6,7 @@
   import EditField from "$lib/components/EditField.svelte";
   import EditFieldButtons from "$lib/components/EditFieldButtons.svelte";
   import PopUp from "$lib/components/PopUp.svelte";
+  import TwoButtons from "$lib/components/TwoButtons.svelte";
   import WarningAlert from "$lib/components/WarningAlert.svelte";
 
   // PROPS
@@ -125,12 +126,18 @@
       />
 
       <div class="button-block">
-        <button on:click={hideEditPanel}>CANCEL & CLOSE</button>
-        <button
-          id="save-button"
-          disabled={saveButtonDisabled}
-          on:click={saveAndUpdate}>SAVE & UPDATE</button
-        >
+        <TwoButtons
+          --hover1="rgb(66, 237, 180)"
+          --hover2="rgb(250, 128, 128)"
+          callbackFunc1={saveAndUpdate}
+          callbackFunc2={hideEditPanel}
+          button1text="SAVE & UPDATE"
+          button2text="CANCEL & CLOSE"
+          disableButton1={saveButtonDisabled}
+          disableButton2={false}
+          type1="submit"
+          type2="reset"
+        />
       </div>
     </PopUp>
   {/if}
@@ -173,14 +180,6 @@
 <style>
   .button-block {
     text-align: center;
-  }
-
-  button {
-    height: 3em;
-    width: 10em;
     margin-top: 1em;
-    margin-left: 0.5em;
-    margin-right: 0.5em;
-    border-radius: 1em;
   }
 </style>

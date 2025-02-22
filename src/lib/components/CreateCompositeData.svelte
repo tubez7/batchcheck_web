@@ -7,6 +7,7 @@
   import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
   import FieldsSort from "$lib/components/FieldsSort.svelte";
   import SetSeparator from "$lib/components/SetSeparator.svelte";
+  import TwoButtons from "$lib/components/TwoButtons.svelte";
   import ValueCard from "$lib/components/ValueCard.svelte";
 
   // PROPS
@@ -81,8 +82,18 @@
 
 {#if !editSeparator}
   <div class="button-block">
-    <button on:click={handleClose}>CANCEL & CLOSE</button>
-    <button on:click={handleSave} disabled={!changeMade}>SAVE CHANGES</button>
+    <TwoButtons
+      --hover1="rgb(66, 237, 180)"
+      --hover2="rgb(250, 128, 128)"
+      callbackFunc1={handleSave}
+      callbackFunc2={handleClose}
+      button1text="SAVE CHANGES"
+      button2text="CANCEL & CLOSE"
+      disableButton1={!changeMade}
+      disableButton2={false}
+      type1="submit"
+      type2="reset"
+    />
   </div>
 {/if}
 
@@ -130,14 +141,6 @@
 
   .button-block {
     text-align: center;
-  }
-
-  button {
-    height: 3em;
-    width: 10em;
-    margin-left: 0.5em;
-    margin-right: 0.5em;
-    border-radius: 1em;
   }
 
   ::-webkit-scrollbar {
