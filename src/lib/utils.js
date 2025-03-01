@@ -148,3 +148,23 @@ export function amendFieldExpanded(array, index) {
 
   return arrayClone;
 }
+
+export function parseTableColumns(array) {
+  if (!array) return [];
+  return array.map((element) => {
+    const obj = {};
+    let type = "";
+    obj["title"] = element.name;
+    if (element?.type) {
+      type = element.type;
+    }
+    if (type.includes("QR")) {
+      obj.type = "image";
+    } else if (type === "Scan" || type === "Composite Scan") {
+      obj.type = "color";
+    } else {
+      obj.type = "text";
+    }
+    return obj;
+  });
+}
