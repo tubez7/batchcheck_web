@@ -3,19 +3,37 @@
   import { goto } from "$app/navigation";
   import { tableStoreData } from "$lib/stores";
   import { get } from "svelte/store";
+  import {parseTableColumns} from "$lib/utils.js";
+  // COMPONENTS
+  import Jspreadsheet from "$lib/components/Jspreadsheet.svelte";
 
   // PROPS
   export let data;
 
   // VARIABLES
   let receivedData = get(tableStoreData);
+  let darkMode = false;
+  $: buttonText = darkMode ? "LIGHT MODE" : "DARK MODE";
+
+  let columns = parseTableColumns(receivedData);
+
+  console.log(columns);
+
+  let tableData = [
+    ["ROW 1 - VALUE 1", "ROW 1 - VALUE 2"],
+    ["ROW 2 - VALUE 1", "ROW 2 - VALUE 2"],
+  ];
 
   // FUNCTIONS
+  function toggleTheme(e) {
+    e.preventDefault();
+    darkMode = !darkMode;
+  }
+
   function goBack(e) {
     e.preventDefault();
     goto("/");
   }
-
   console.log("received", receivedData);
 </script>
 
@@ -26,4 +44,11 @@
     <li>{i} - {column.name}</li>
   </ul>
 {/each}
-<button on:click={goBack}>RETURN TO EDITOR</button>
+
+<!-- <Jspreadsheet {columns} {tableData} {darkMode} /> -->
+<Jspreadsheet {columns} {tableData} />
+
+<div>
+  <button on:click={toggleTheme}>{buttonText}</button>
+  <button on:click={goBack}>RETURN TO EDITOR</button>
+</div>
