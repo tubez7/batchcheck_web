@@ -168,3 +168,20 @@ export function parseTableColumns(array) {
     return obj;
   });
 }
+
+export function getColumnId() {
+  return "";
+}
+
+export function setTableStyle(rows, columns) {
+  const returnObj = {};
+  let numberString;
+  for (let row = 1; row <= rows; row++) {
+    numberString = row.toString();
+    columns.forEach((column) => {
+      returnObj["A" + numberString] = column.type;
+    });
+  }
+  console.log(returnObj);
+  return returnObj;
+}
