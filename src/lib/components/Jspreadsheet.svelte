@@ -18,8 +18,8 @@
 
   // Update values with spreadsheet events when cell values change
   $: styleSettings = {
-    A1: "background-color: Red",
-    A2: "background-color: Green",
+    A1: "background-color: rgb(250, 128, 128)",
+    A2: "background-color: rgb(66, 237, 180)",
   };
 
   //   if (darkMode) {

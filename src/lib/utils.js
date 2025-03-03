@@ -169,17 +169,27 @@ export function parseTableColumns(array) {
   });
 }
 
-export function getColumnId() {
-  return "";
+export function getColumnId(number) {
+  let returnString = "";
+  while (number >= 0) {
+    returnString = String.fromCharCode((number % 26) + 65) + returnString;
+    number = Math.floor(number / 26) - 1;
+  }
+  return returnString;
 }
 
-export function setTableStyle(rows, columns) {
+export function setTableStyle(rows, columns, mode) {
   const returnObj = {};
   let numberString;
+  let columnId;
+  const defaultColour = "background-color: White";
+  const darkModeColour = "background-color: #3e3e3e";
+  let backgroundColour = mode ? darkModeColour : defaultColour;
   for (let row = 1; row <= rows; row++) {
     numberString = row.toString();
-    columns.forEach((column) => {
-      returnObj["A" + numberString] = column.type;
+    columns.forEach((column, i) => {
+      columnId = getColumnId(i);
+      returnObj[columnId + numberString] = backgroundColour;
     });
   }
   console.log(returnObj);
