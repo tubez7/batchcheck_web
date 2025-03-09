@@ -54,7 +54,20 @@ describe("setTableStyle()", () => {
       B1: "background-color: rgb(250, 128, 128)",
       C1: "background-color: rgb(250, 128, 128)",
     };
-    const result = setTableStyle(1, input, true);
+    const result = setTableStyle(1, input, false);
+
+    expect(result).toEqual(expected);
+  });
+
+  test("testing assorted field type values", () => {
+    const input = [{ type: "Data" }, { type: "Scan" }, { type: "QR" }];
+
+    const expected = {
+      A1: "background-color: White",
+      B1: "background-color: rgb(250, 128, 128)",
+      C1: "background-color: White",
+    };
+    const result = setTableStyle(1, input, false);
 
     expect(result).toEqual(expected);
   });

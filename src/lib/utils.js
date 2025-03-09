@@ -178,20 +178,61 @@ export function getColumnId(number) {
   return returnString;
 }
 
-export function setTableStyle(rows, columns, mode) {
+export function setTableStyle(rows, columns, darkMode) {
   const returnObj = {};
   let numberString;
   let columnId;
-  const defaultColour = "background-color: White";
+  const lightModeColour = "background-color: White";
   const darkModeColour = "background-color: #3e3e3e";
-  let backgroundColour = mode ? darkModeColour : defaultColour;
+  const defaultColour = darkMode ? darkModeColour : lightModeColour;
+  let backgroundColour;
+
   for (let row = 1; row <= rows; row++) {
     numberString = row.toString();
+    let typeString = "";
+
     columns.forEach((column, i) => {
+      typeString = column.type.toUpperCase();
       columnId = getColumnId(i);
+      if (typeString.includes("SCAN")) {
+        backgroundColour = "background-color: rgb(250, 128, 128)";
+      } else {
+        backgroundColour = defaultColour;
+      }
       returnObj[columnId + numberString] = backgroundColour;
     });
   }
-  console.log(returnObj);
+
   return returnObj;
+}
+
+export function createDataFieldCellValue(field, rowNumber) {
+  let returnString = "";
+  let calculatedValue = "";
+  const prefix = field.prefix || "";
+  const suffix = field.suffix || "";
+
+  if (field?.hasSerial) {
+    const incrementValue = field.incrementValue;
+    const recordsPerIncrement = field.recordsPerIncrement;
+    const rowModifier = recordsPerIncrement !== 1 ? rowNumber : rowNumber - 1;
+    const multiplyValue = Math.floor(rowModifier / recordsPerIncrement);
+    calculatedValue = (
+      field.serial +
+      incrementValue * multiplyValue
+    ).toString();
+
+    if (field?.serialPadded) {
+      const padLength = field.padLength;
+      const padChar = field.padLead || field.padTrail;
+      if (field?.padLead) {
+        calculatedValue = calculatedValue.padStart(padLength, padChar);
+      } else {
+        calculatedValue = calculatedValue.padEnd(padLength, padChar);
+      }
+    }
+  }
+  returnString += prefix + calculatedValue + suffix;
+
+  return returnString;
 }

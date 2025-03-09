@@ -1,9 +1,9 @@
 <script>
   // IMPORTS
   import { goto } from "$app/navigation";
-  import { tableStoreData } from "$lib/stores";
+  import { tableStoreData, totalRowsStored } from "$lib/stores";
   import { get } from "svelte/store";
-  import {parseTableColumns} from "$lib/utils.js";
+  import {parseTableColumns, setTableStyle} from "$lib/utils.js";
   // COMPONENTS
   import Jspreadsheet from "$lib/components/Jspreadsheet.svelte";
 
@@ -12,12 +12,13 @@
 
   // VARIABLES
   let receivedData = get(tableStoreData);
+  let totalRows = get(totalRowsStored);
   let darkMode = false;
   $: buttonText = darkMode ? "LIGHT MODE" : "DARK MODE";
-
   let columns = parseTableColumns(receivedData);
+  let defaultCellStyles = setTableStyle(totalRows, receivedData, darkMode);
 
-  console.log(columns);
+  //console.log(columns);
 
   let tableData = [
     ["ROW 1 - VALUE 1", "ROW 1 - VALUE 2"],
@@ -46,7 +47,7 @@
 {/each}
 
 <!-- <Jspreadsheet {columns} {tableData} {darkMode} /> -->
-<Jspreadsheet {columns} {tableData} />
+<Jspreadsheet {columns} {tableData} styleSettings={defaultCellStyles} />
 
 <div>
   <button on:click={toggleTheme}>{buttonText}</button>
