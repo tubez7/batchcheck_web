@@ -16,7 +16,7 @@
   $: darkMode = false;
   $: buttonText = darkMode ? "LIGHT MODE" : "DARK MODE";
   let columns = parseTableColumns(receivedData);
-  let defaultCellStyles = setTableStyle(totalRows, receivedData, darkMode);
+  let styleSettings = setTableStyle(totalRows, receivedData, darkMode);
 
   //console.log(columns);
 
@@ -46,8 +46,7 @@
   </ul>
 {/each}
 
-<!-- <Jspreadsheet {columns} {tableData} {darkMode} /> -->
-<Jspreadsheet {columns} {tableData} styleSettings={defaultCellStyles} />
+<Jspreadsheet {columns} {tableData} {styleSettings} />
 
 <div>
   <button on:click={toggleTheme}>{buttonText}</button>
