@@ -44,13 +44,15 @@ describe("createDataFieldCellValue()", () => {
     };
     const result = createDataFieldCellValue(field, 2);
     const result2 = createDataFieldCellValue(field, 3);
-    const result3 = createDataFieldCellValue(field, 5);
+    const result3 = createDataFieldCellValue(field, 4);
     const result4 = createDataFieldCellValue(field, 6);
+    const result5 = createDataFieldCellValue(field, 7);
 
     expect(result).toBe("100");
-    expect(result2).toBe("150");
+    expect(result2).toBe("100");
     expect(result3).toBe("150");
-    expect(result4).toBe("200");
+    expect(result4).toBe("150");
+    expect(result5).toBe("200");
   });
 
   test("if object passed to it has a serial number and is padded, this value should be modified by the padLead value", () => {
@@ -63,7 +65,7 @@ describe("createDataFieldCellValue()", () => {
       padLead: "0",
       padLength: 6,
     };
-    const result = createDataFieldCellValue(field, 3);
+    const result = createDataFieldCellValue(field, 4);
 
     expect(result).toBe("000150");
   });
@@ -78,7 +80,7 @@ describe("createDataFieldCellValue()", () => {
       padTrail: "X",
       padLength: 6,
     };
-    const result = createDataFieldCellValue(field, 3);
+    const result = createDataFieldCellValue(field, 4);
 
     expect(result).toBe("150XXX");
   });

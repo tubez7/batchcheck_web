@@ -44,6 +44,17 @@
         rowResize: true,
         // set style by passing in an object. Reactive background colours with grid references.
         style: styleSettings,
+        onchange: function(instance, cell, x, y, value) {
+          console.log("SOMETHING JUST CHANGED!!");
+          let cellName = jspreadsheet.getColumnNameFromId([x, y]);
+          console.log("cell name = ", cellName);
+          console.log("cell = ", cell);
+          console.log("x = ", x);
+          console.log("y = ", y);
+          console.log("value = ", value);
+
+          console.log("instance = ", instance);
+        }
       });
     }
   });

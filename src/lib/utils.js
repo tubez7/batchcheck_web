@@ -206,8 +206,25 @@ export function setTableStyle(rows, columns, darkMode) {
   return returnObj;
 }
 
+export function padSerial(startString, leading, character, length) {
+  if (leading) {
+    return startString.padStart(length, character);
+  } else {
+    return startString.padEnd(length, character);
+  }
+}
+
+export function calculateSerialNumber(
+  startNumber,
+  incrementBy,
+  row,
+  rowsPerIncrement
+) {
+  const multiplier = Math.floor((row - 1) / rowsPerIncrement);
+  return (startNumber + multiplier * incrementBy).toString();
+}
+
 export function createDataFieldCellValue(field, rowNumber) {
-  let returnString = "";
   let calculatedValue = "";
   const prefix = field.prefix || "";
   const suffix = field.suffix || "";
@@ -215,24 +232,23 @@ export function createDataFieldCellValue(field, rowNumber) {
   if (field?.hasSerial) {
     const incrementValue = field.incrementValue;
     const recordsPerIncrement = field.recordsPerIncrement;
-    const rowModifier = recordsPerIncrement !== 1 ? rowNumber : rowNumber - 1;
-    const multiplyValue = Math.floor(rowModifier / recordsPerIncrement);
-    calculatedValue = (
-      field.serial +
-      incrementValue * multiplyValue
-    ).toString();
+    const startNumber = field.serial;
+
+    calculatedValue = calculateSerialNumber(
+      startNumber,
+      incrementValue,
+      rowNumber,
+      recordsPerIncrement
+    );
 
     if (field?.serialPadded) {
       const padLength = field.padLength;
       const padChar = field.padLead || field.padTrail;
-      if (field?.padLead) {
-        calculatedValue = calculatedValue.padStart(padLength, padChar);
-      } else {
-        calculatedValue = calculatedValue.padEnd(padLength, padChar);
-      }
+      const padLead = field.padLead ? true : false;
+
+      calculatedValue = padSerial(calculatedValue, padLead, padChar, padLength);
     }
   }
-  returnString += prefix + calculatedValue + suffix;
 
-  return returnString;
+  return prefix + calculatedValue + suffix;
 }
