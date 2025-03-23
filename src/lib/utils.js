@@ -1,4 +1,5 @@
 import { isEqual } from "lodash-es";
+import QRCode from "qrcode";
 
 export const nonWhiteSpaceRegex = /\S/;
 export const globalNumericRegex = /\d/g;
@@ -170,8 +171,6 @@ export function parseTableColumns(fields) {
     }
     if (type.includes("QR")) {
       obj.type = "image";
-    } else if (type === "Scan" || type === "Composite Scan") {
-      obj.type = "color"; // this might need to be text - set min width in style
     } else {
       obj.type = "text";
     }
@@ -179,10 +178,10 @@ export function parseTableColumns(fields) {
   });
 }
 
-function iterateThroughRowsAndColumns(rows, fields, callback, ...args) {
+async function iterateThroughRowsAndColumns(rows, fields, callback, ...args) {
   for (let rowNumber = 1; rowNumber <= rows; rowNumber++) {
     for (let fieldsIndex = 0; fieldsIndex < fields.length; fieldsIndex++) {
-      callback(fields[fieldsIndex], rowNumber, fieldsIndex, ...args);
+      await Promise.resolve(callback(fields[fieldsIndex], rowNumber, fieldsIndex, ...args));
     }
   }
 }
@@ -216,9 +215,9 @@ function setCellStyle(field, rowNumber, columnIndex, darkMode, returnObj) {
   // e.g. - returnObj[columnId + rowNumberString] += ; font-weight: bolder;
 }
 
-export function createTableStyleObject(rows, fields, darkMode) {
+export async function createTableStyleObject(rows, fields, darkMode) {
   const objectToReturn = {};
-  iterateThroughRowsAndColumns(
+  await iterateThroughRowsAndColumns(
     rows,
     fields,
     setCellStyle,
@@ -341,9 +340,43 @@ function setCellLookUpData(field, rowNumber, columnIndex, returnObj, fields) {
   }
 }
 
-export function createValueMatchDataObject(rows, fields) {
+async function getQRUrl(cellValue) {
+  const opts = {
+    errorCorrectionLevel: 'H',
+    type: 'image/jpeg',
+    quality: 0.3,
+    margin: 1,
+    color: {
+      dark:"#010599FF",
+      light:"#FFBF60FF"
+    }
+  }
+  try {
+    const url = await QRCode.toDataURL(cellValue, opts);
+    //console.log("SUCCESS in getQRUrl! url = ", url);
+    return url;
+  } catch (err) {
+    console.error(err);
+    return "DEFAULT ERROR QR CODE;";
+  }
+}
+
+// function getQRUrl(cellValue) {
+//   // returns a url string that is passed into the values array.
+//   return QRCode.toDataURL(cellValue)
+//     .then((url) => {
+//       console.log("SUCCESS in getQRUrl! url = ", url);
+//       return url;
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//       return "DEFAULT ERROR QR CODE;";
+//     });
+// }
+
+export async function createValueMatchDataObject(rows, fields) {
   const objectToReturn = {};
-  iterateThroughRowsAndColumns(
+  await iterateThroughRowsAndColumns(
     rows,
     fields,
     setCellLookUpData,
@@ -354,7 +387,7 @@ export function createValueMatchDataObject(rows, fields) {
   return objectToReturn;
 }
 
-function createRowData(
+async function createRowData(
   field,
   rowNumber,
   fieldIndex,
@@ -366,6 +399,9 @@ function createRowData(
   const type = field.type;
   if (type === "Data") {
     rowData.push(createDataFieldCellValue(field, rowNumber));
+  } else if (type == "QR") {
+    let url = await getQRUrl(createDataFieldCellValue(field, rowNumber));
+    rowData.push(url);
   } else {
     rowData.push("");
   }
@@ -378,11 +414,11 @@ function createRowData(
   }
 }
 
-export function createTableData(rows, fields) {
+export async function createTableData(rows, fields) {
   const rowData = [];
   const tableData = [];
   const lastColumnIndex = fields.length - 1;
-  iterateThroughRowsAndColumns(
+  await iterateThroughRowsAndColumns(
     rows,
     fields,
     createRowData,
@@ -393,3 +429,16 @@ export function createTableData(rows, fields) {
   //console.log("returned value = ", tableData);
   return tableData;
 }
+
+// function getQRUrl(cellValue) {
+//   // returns a url string that is passed into the values array.
+//   QRCode.toDataURL(cellValue)
+//     .then((url) => {
+//       console.log("SUCCESS in getQRUrl! url = ", url);
+//       return url;
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//       return "DEFAULT ERROR QR CODE;";
+//     });
+// }

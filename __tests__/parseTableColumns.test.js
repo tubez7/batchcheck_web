@@ -40,22 +40,6 @@ describe("parseTableColumns()", () => {
     });
   });
 
-  test('if an object has a property type property value of "Scan" or "Composite Scan" it should return an object with a type of "color"', () => {
-    const input = [
-      { name: "name1", type: "data" },
-      { name: "name 2", type: "Composite QR" },
-      { name: "name1", type: "Composite Scan" },
-      { name: "name 2", type: "Scan" },
-    ];
-    const expected = parseTableColumns(input);
-
-    expected.forEach((element, i) => {
-      if (input[i].type === "Scan" || input[i].type === "Composite Scan") {
-        expect(element.type).toBe("color");
-      }
-    });
-  });
-
   test("original array should not be mutated", () => {
     const input = [
       { name: "name1", type: "data" },
