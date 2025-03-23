@@ -149,9 +149,18 @@ export function amendFieldExpanded(array, index) {
   return arrayClone;
 }
 
-export function parseTableColumns(array) {
-  if (!array) return [];
-  return array.map((element) => {
+export function getColumnId(number) {
+  let returnString = "";
+  while (number >= 0) {
+    returnString = String.fromCharCode((number % 26) + 65) + returnString;
+    number = Math.floor(number / 26) - 1;
+  }
+  return returnString;
+}
+
+export function parseTableColumns(fields) {
+  if (!fields) return [];
+  return fields.map((element) => {
     const obj = {};
     let type = "";
     obj["title"] = element.name;
@@ -169,41 +178,45 @@ export function parseTableColumns(array) {
   });
 }
 
-export function getColumnId(number) {
-  let returnString = "";
-  while (number >= 0) {
-    returnString = String.fromCharCode((number % 26) + 65) + returnString;
-    number = Math.floor(number / 26) - 1;
+function iterateThroughRowsAndColumns(rows, fields, callback, ...args) {
+  for (let rowNumber = 1; rowNumber <= rows; rowNumber++) {
+    for (let fieldsIndex = 0; fieldsIndex < fields.length; fieldsIndex++) {
+      callback(fields[fieldsIndex], rowNumber, fieldsIndex, ...args);
+    }
   }
-  return returnString;
 }
 
-export function setTableStyle(rows, columns, darkMode) {
-  const returnObj = {};
-  let numberString;
-  let columnId;
+function setCellBackgroundColour(type, darkMode) {
   const lightModeColour = "background-color: White";
   const darkModeColour = "background-color: #3e3e3e";
   const defaultColour = darkMode ? darkModeColour : lightModeColour;
   let backgroundColour;
 
-  for (let row = 1; row <= rows; row++) {
-    numberString = row.toString();
-    let typeString = "";
-
-    columns.forEach((column, i) => {
-      typeString = column.type.toUpperCase();
-      columnId = getColumnId(i);
-      if (typeString.includes("SCAN")) {
-        backgroundColour = "background-color: rgb(250, 128, 128)";
-      } else {
-        backgroundColour = defaultColour;
-      }
-      returnObj[columnId + numberString] = backgroundColour;
-    });
+  if (type.includes("SCAN")) {
+    backgroundColour = "background-color: rgb(250, 128, 128)";
+  } else {
+    backgroundColour = defaultColour;
   }
 
-  return returnObj;
+  return backgroundColour;
+}
+
+function setCellStyle(field, rowNumber, columnIndex, darkMode, returnObj) {
+  const columnId = getColumnId(columnIndex);
+  const rowNumberString = rowNumber.toString();
+  const fieldType = field.type.toUpperCase();
+
+  returnObj[columnId + rowNumberString] = setCellBackgroundColour(
+    fieldType,
+    darkMode
+  );
+}
+
+export function createTableStyleObject(rows, fields, darkMode) {
+  const objectToReturn = {};
+  iterateThroughRowsAndColumns(rows, fields, setCellStyle, darkMode, objectToReturn);
+
+  return objectToReturn;
 }
 
 export function padSerial(startString, leading, character, length) {
@@ -252,3 +265,53 @@ export function createDataFieldCellValue(field, rowNumber) {
 
   return prefix + calculatedValue + suffix;
 }
+
+// function setCellLookUpData(field, rowNumber, columnIndex, returnObj) {
+//   let columnId = getColumnId(columnIndex);
+//   let rowNumberString = rowNumber.toString();
+//   let typeString;
+//
+//  typeString = field.type.toUpperCase();
+//  if (typeString.includes("SCAN") {
+//   returnObj[columnId + rowNumberString] = createDataFieldCellValue(
+//     field,
+//     rowNumber
+//   );
+//  }
+// }
+
+
+export function createValueMatchDataObject(rows, fields) {
+  //return an object of cell values to match
+  //e.g. return {A1: "value to scan match", C3: "another value"};
+
+  //const objectToReturn = {};
+  //iterateThroughRowsAndColumns(rows, fields, setCellLookUpData, objectToReturn);
+
+  //return objectToReturn;
+
+}
+
+// function createRowData(field, rowNumber, fieldIndex, tableData, rowData, lastColumnIndex) {
+// let clonedArray = [];
+// rowData.push(createDataFieldCellValue(field, rowNumber));
+
+// if (fieldIndex === lastColumnIndex) {
+//  clonedArray = [...rowData];
+// tableData.push(clonedArray);
+// rowData.length = 0;
+// }
+
+
+// }
+
+//export function createTableData(rows, fields) {
+  // const rowData = [];
+  // const tableData = [];
+  // const lastColumnIndex = fields.length - 1;
+  // iterateThroughRowsAndColumns(rows, fields, createRowData, tableData, rowData, lastColumnIndex);
+
+  // return tableData;
+//}
+
+

@@ -1,8 +1,8 @@
-import { setTableStyle } from "../src/lib/utils";
+import { createTableStyleObject } from "../src/lib/utils";
 
-describe("setTableStyle()", () => {
+describe("createTableStyleObject()", () => {
   it("should return an object", () => {
-    const result = setTableStyle(0, [], false);
+    const result = createTableStyleObject(0, [], false);
 
     expect(typeof result === "object" && !Array.isArray(result)).toBe(true);
   });
@@ -14,7 +14,7 @@ describe("setTableStyle()", () => {
       A2: "background-color: White",
       A3: "background-color: White",
     };
-    const result = setTableStyle(3, input, false);
+    const result = createTableStyleObject(3, input, false);
 
     expect(result).toEqual(expected);
   });
@@ -26,7 +26,7 @@ describe("setTableStyle()", () => {
       B1: "background-color: White",
       C1: "background-color: White",
     };
-    const result = setTableStyle(1, input, false);
+    const result = createTableStyleObject(1, input, false);
 
     expect(result).toEqual(expected);
   });
@@ -38,7 +38,7 @@ describe("setTableStyle()", () => {
       B1: "background-color: #3e3e3e",
       C1: "background-color: #3e3e3e",
     };
-    const result = setTableStyle(1, input, true);
+    const result = createTableStyleObject(1, input, true);
 
     expect(result).toEqual(expected);
   });
@@ -54,7 +54,7 @@ describe("setTableStyle()", () => {
       B1: "background-color: rgb(250, 128, 128)",
       C1: "background-color: rgb(250, 128, 128)",
     };
-    const result = setTableStyle(1, input, false);
+    const result = createTableStyleObject(1, input, false);
 
     expect(result).toEqual(expected);
   });
@@ -67,7 +67,7 @@ describe("setTableStyle()", () => {
       B1: "background-color: rgb(250, 128, 128)",
       C1: "background-color: White",
     };
-    const result = setTableStyle(1, input, false);
+    const result = createTableStyleObject(1, input, false);
 
     expect(result).toEqual(expected);
   });

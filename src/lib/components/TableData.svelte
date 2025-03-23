@@ -2,7 +2,7 @@
   // IMPORTS
   import { goto } from "$app/navigation";
   import { tableStoreData, totalRowsStored } from "$lib/stores";
-  import { parseTableColumns, setTableStyle } from "$lib/utils.js";
+  import { parseTableColumns, createTableStyleObject } from "$lib/utils.js";
   import { get } from "svelte/store";
   // COMPONENTS
   import Jspreadsheet from "$lib/components/Jspreadsheet.svelte";
@@ -16,7 +16,7 @@
   $: darkMode = false;
   $: buttonText = darkMode ? "LIGHT MODE" : "DARK MODE";
   let columns = parseTableColumns(receivedData);
-  let styleSettings = setTableStyle(totalRows, receivedData, darkMode);
+  let styleSettings = createTableStyleObject(totalRows, receivedData, darkMode);
 
   //console.log(columns);
 
