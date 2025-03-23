@@ -1,6 +1,6 @@
 <script>
   // IMPORTS
-  import { tableStoreData } from "$lib/stores";
+  import { tableStoreData, totalRowsStored } from "$lib/stores";
   import { onMount } from "svelte";
   import { get } from "svelte/store";
   // COMPONENTS
@@ -17,7 +17,8 @@
   // VARIABLES
   let fields = [];
   let receivedData;
-  let records = 1;
+  // let records = 1;
+  let records;
   let editPanelVisible = false;
   let warningPopUpVisible = false;
   let tableGeneratePopUp = false;
@@ -39,6 +40,7 @@
   onMount(() => {
     tableGeneratePopUp = false;
     receivedData = get(tableStoreData);
+    records = get(totalRowsStored);
     fieldsClone = receivedData.length > 0 ? receivedData : fieldsClone;
     fields = receivedData.length > 0 ? receivedData : fields;
   });
@@ -64,7 +66,7 @@
 
   {#if tableGeneratePopUp}
     <PopUp header="Table Name" --colour="rgb(80, 162, 171)">
-      <GenerateTable bind:tableGeneratePopUp {fields} />
+      <GenerateTable bind:tableGeneratePopUp {fields} {records} />
     </PopUp>
   {/if}
 

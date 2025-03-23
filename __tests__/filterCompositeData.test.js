@@ -43,8 +43,8 @@ describe("filterCompositeData", () => {
   });
 
   test("function should not mutate input array", () => {
-    const input = createData(createDataArray);
-    const expected = createData(createDataArray);
+    const input = createData(createDataArray, createDataArray);
+    const expected = createData(createDataArray, createDataArray);
 
     filterCompositeData(input, 2);
     expect(input).toEqual(expected);

@@ -1,7 +1,6 @@
 <script>
   // COMPONENTS
   import FieldItemStyle from "$lib/components/FieldItemStyle.svelte";
-  import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
 
   // PROPS
   export let padLead;
