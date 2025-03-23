@@ -32,42 +32,6 @@ describe("createTableData()", () => {
     expect(result).toEqual(expected);
   });
 
-  it("should pass a composite value to the array if the field type is a Composite Scan field", () => {
-    const input = [
-      { type: "Scan", prefix: "One", id: 1 },
-      { type: "Scan", prefix: "Two", id: 2 },
-      { type: "Scan", prefix: "Three", id: 3 },
-      {
-        type: "Composite Scan",
-        id: 4,
-        compositeData: [{ id: 1 }, { id: 2 }, { id: 3 }],
-        compositeSeparator: "",
-      },
-    ];
-    const expected = [["", "", "", "OneTwoThree"]];
-    const result = createTableData(1, input);
-
-    expect(result).toEqual(expected);
-  });
-
-  it("should pass a composite value appended with the separator value to the array if the field type is a Composite Scan field", () => {
-    const input = [
-      { type: "Scan", prefix: "One", id: 1 },
-      { type: "Scan", prefix: "Two", id: 2 },
-      { type: "Scan", prefix: "Three", id: 3 },
-      {
-        type: "Composite Scan",
-        id: 4,
-        compositeData: [{ id: 1 }, { id: 2 }, { id: 3 }],
-        compositeSeparator: "||",
-      },
-    ];
-    const expected = [["", "", "", "One||Two||Three"]];
-    const result = createTableData(1, input);
-
-    expect(result).toEqual(expected);
-  });
-
   it("should not mutate the input array", () => {
     const input = [
       { type: "Scan", prefix: "One", id: 1 },

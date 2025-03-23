@@ -2,7 +2,7 @@
   // IMPORTS
   import { goto } from "$app/navigation";
   import { tableStoreData, totalRowsStored } from "$lib/stores";
-  import { parseTableColumns, createTableStyleObject } from "$lib/utils.js";
+  import { parseTableColumns, createTableStyleObject, createTableData, createValueMatchDataObject } from "$lib/utils.js";
   import { get } from "svelte/store";
   // COMPONENTS
   import Jspreadsheet from "$lib/components/Jspreadsheet.svelte";
@@ -17,13 +17,8 @@
   $: buttonText = darkMode ? "LIGHT MODE" : "DARK MODE";
   let columns = parseTableColumns(receivedData);
   let styleSettings = createTableStyleObject(totalRows, receivedData, darkMode);
-
-  //console.log(columns);
-
-  let tableData = [
-    ["ROW 1 - VALUE 1", "ROW 1 - VALUE 2"],
-    ["ROW 2 - VALUE 1", "ROW 2 - VALUE 2"],
-  ];
+  let tableData = createTableData(totalRows, receivedData);
+  let matchValuesData = createValueMatchDataObject(totalRows, receivedData);
 
   // FUNCTIONS
   function toggleTheme(e) {
@@ -39,16 +34,8 @@
 </script>
 
 <h1>Table: {data.tableName}</h1>
-<p>This part of the app is still under construction. Please check back soon!</p>
-{#each receivedData as column, i}
-  <ul>
-    <li>
-      <p>{i} - {column.name}</p>
-    </li>
-  </ul>
-{/each}
 
-<Jspreadsheet {columns} {tableData} {styleSettings} />
+<Jspreadsheet {columns} {tableData} {styleSettings} {matchValuesData} />
 
 <div>
   <button on:click={toggleTheme}>{buttonText}</button>

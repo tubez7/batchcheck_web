@@ -50,21 +50,68 @@ describe("createValueLookUpData()", () => {
     expect(result).toEqual(expected);
   });
 
-  test("testing with all field types", () => {
+  test("testing with non composite field types", () => {
     const input = [
       { type: "Scan", prefix: "One" },
       { type: "Data", prefix: "Two" },
       { type: "Scan", prefix: "Three" },
       { type: "QR", prefix: "Four" },
       { type: "Visible data scan", prefix: "Five" },
-      { type: "Composite QR", prefix: "Six" },
-      { type: "Composite Scan", prefix: "Seven" },
     ];
     const expected = {
       A1: "One",
       C1: "Three",
       E1: "Five",
-      G1: "Seven",
+    };
+    const result = createValueMatchDataObject(1, input);
+
+    expect(result).toEqual(expected);
+  });
+
+  test("testing with composite field types", () => {
+    const input = [
+      { type: "Scan", prefix: "One", id: 1 },
+      { type: "Data", prefix: "Two", id: 2 },
+      { type: "Scan", prefix: "Three", id: 3 },
+      { type: "QR", prefix: "Four", id: 4 },
+      { type: "Visible data scan", prefix: "Five", id: 5 },
+      {
+        type: "Composite Scan",
+        id: 6,
+        compositeData: [{ id: 1 }, { id: 2 }, { id: 3 }],
+        compositeSeparator: "",
+      },
+    ];
+    const expected = {
+      A1: "One",
+      C1: "Three",
+      E1: "Five",
+      F1: "OneTwoThree",
+    };
+    const result = createValueMatchDataObject(1, input);
+
+    expect(result).toEqual(expected);
+  });
+
+  test("testing with composite field types with separators", () => {
+    const input = [
+      { type: "Scan", prefix: "One", id: 1 },
+      { type: "Data", prefix: "Two", id: 2 },
+      { type: "Scan", prefix: "Three", id: 3 },
+      { type: "QR", prefix: "Four", id: 4 },
+      { type: "Visible data scan", prefix: "Five", id: 5 },
+      {
+        type: "Composite Scan",
+        id: 6,
+        compositeData: [{ id: 1 }, { id: 2 }, { id: 3 }],
+        compositeSeparator: "||",
+      },
+    ];
+    const expected = {
+      A1: "One",
+      C1: "Three",
+      E1: "Five",
+      F1: "One||Two||Three",
     };
     const result = createValueMatchDataObject(1, input);
 
@@ -73,23 +120,31 @@ describe("createValueLookUpData()", () => {
 
   it("should not mutate the input array", () => {
     const input = [
-      { type: "Scan", prefix: "One" },
-      { type: "Data", prefix: "Two" },
-      { type: "Scan", prefix: "Three" },
-      { type: "QR", prefix: "Four" },
-      { type: "Visible data scan", prefix: "Five" },
-      { type: "Composite QR", prefix: "Six" },
-      { type: "Composite Scan", prefix: "Seven" },
+      { type: "Scan", prefix: "One", id: 1 },
+      { type: "Data", prefix: "Two", id: 2 },
+      { type: "Scan", prefix: "Three", id: 3 },
+      { type: "QR", prefix: "Four", id: 4 },
+      { type: "Visible data scan", prefix: "Five", id: 5 },
+      {
+        type: "Composite Scan",
+        id: 6,
+        compositeData: [{ id: 1 }, { id: 2 }, { id: 3 }],
+        compositeSeparator: "",
+      },
     ];
 
     const expected = [
-      { type: "Scan", prefix: "One" },
-      { type: "Data", prefix: "Two" },
-      { type: "Scan", prefix: "Three" },
-      { type: "QR", prefix: "Four" },
-      { type: "Visible data scan", prefix: "Five" },
-      { type: "Composite QR", prefix: "Six" },
-      { type: "Composite Scan", prefix: "Seven" },
+      { type: "Scan", prefix: "One", id: 1 },
+      { type: "Data", prefix: "Two", id: 2 },
+      { type: "Scan", prefix: "Three", id: 3 },
+      { type: "QR", prefix: "Four", id: 4 },
+      { type: "Visible data scan", prefix: "Five", id: 5 },
+      {
+        type: "Composite Scan",
+        id: 6,
+        compositeData: [{ id: 1 }, { id: 2 }, { id: 3 }],
+        compositeSeparator: "",
+      },
     ];
 
     createValueMatchDataObject(1, input);

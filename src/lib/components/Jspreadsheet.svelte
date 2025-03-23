@@ -10,6 +10,7 @@
   export let tableData;
   export let columns;
   export let styleSettings;
+  export let matchValuesData;
   //export let darkMode;
 
   // VARIABLES
@@ -20,6 +21,7 @@
     let cellName = jspreadsheet.getColumnNameFromId([x, y]);
     console.log("instance = ", instance); // the div element
     console.log("value to check = ", value); // value to check for scan fields
+    console.log("matchValues = ", matchValuesData) // check values;
     styleSettings[cellName] = "background-color: Pink;";
     table.setStyle(styleSettings);
   }

@@ -276,27 +276,6 @@ export function createDataFieldCellValue(field, rowNumber) {
   return prefix + calculatedValue + suffix;
 }
 
-function setCellLookUpData(field, rowNumber, columnIndex, returnObj) {
-  let columnId = getColumnId(columnIndex);
-  let rowNumberString = rowNumber.toString();
-  let typeString;
-
-  typeString = field.type.toUpperCase();
-  if (typeString.includes("SCAN")) {
-    returnObj[columnId + rowNumberString] = createDataFieldCellValue(
-      field,
-      rowNumber
-    );
-  }
-}
-
-export function createValueMatchDataObject(rows, fields) {
-  const objectToReturn = {};
-  iterateThroughRowsAndColumns(rows, fields, setCellLookUpData, objectToReturn);
-
-  return objectToReturn;
-}
-
 export function getUniqueIdNumbers(array) {
   const uniqueIds = [];
   let id;
@@ -327,16 +306,52 @@ function createCompositeValue(compositeData, fields, rowNumber, separator) {
   let foundField;
   const lastIndex = compositeData.length - 1;
   let appendValue;
-  
+
   compositeData.forEach((fieldToParse, i) => {
     appendValue = i === lastIndex ? "" : separator;
     foundField = fieldsList.find(
       (uniqueField) => fieldToParse.id === uniqueField.id
     );
-    parsedValue += createDataFieldCellValue(foundField, rowNumber) + appendValue;
+    parsedValue +=
+      createDataFieldCellValue(foundField, rowNumber) + appendValue;
   });
 
   return parsedValue;
+}
+
+function setCellLookUpData(field, rowNumber, columnIndex, returnObj, fields) {
+  let columnId = getColumnId(columnIndex);
+  let rowNumberString = rowNumber.toString();
+  const type = field.type.toUpperCase();
+
+  if (type === "COMPOSITE SCAN") {
+    const separator = field.compositeSeparator;
+    const compValue = createCompositeValue(
+      field.compositeData,
+      fields,
+      rowNumber,
+      separator
+    );
+    returnObj[columnId + rowNumberString] = compValue;
+  } else if (type.includes("SCAN")) {
+    returnObj[columnId + rowNumberString] = createDataFieldCellValue(
+      field,
+      rowNumber
+    );
+  }
+}
+
+export function createValueMatchDataObject(rows, fields) {
+  const objectToReturn = {};
+  iterateThroughRowsAndColumns(
+    rows,
+    fields,
+    setCellLookUpData,
+    objectToReturn,
+    fields
+  );
+
+  return objectToReturn;
 }
 
 function createRowData(
@@ -345,21 +360,17 @@ function createRowData(
   fieldIndex,
   tableData,
   rowData,
-  lastColumnIndex,
-  fields
+  lastColumnIndex
 ) {
   let clonedArray = [];
-  let type = field.type;
+  const type = field.type;
   if (type === "Data") {
     rowData.push(createDataFieldCellValue(field, rowNumber));
-  } else if (type === "Composite Scan") {
-    const separator = field.compositeSeparator;
-    const compositeValue = createCompositeValue(field.compositeData, fields, rowNumber, separator);
-    rowData.push(compositeValue);
   } else {
     rowData.push("");
   }
 
+  // push to the parent array at end of the row
   if (fieldIndex === lastColumnIndex) {
     clonedArray = [...rowData];
     tableData.push(clonedArray);
@@ -377,10 +388,8 @@ export function createTableData(rows, fields) {
     createRowData,
     tableData,
     rowData,
-    lastColumnIndex,
-    fields
+    lastColumnIndex
   );
-
-  console.log("returned value = ", tableData);
+  //console.log("returned value = ", tableData);
   return tableData;
 }
