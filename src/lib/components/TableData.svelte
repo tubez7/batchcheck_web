@@ -35,6 +35,9 @@
 
 <h1>Table: {data.tableName}</h1>
 
+<p>THIS PART OF THE APP IS STILL UNDER CONSTRUCTION AND IS NOT FULLY FUNCTIONAL.</p>
+<p>Please check back once completed alpha build is completed and available for testing.</p>
+
 <Jspreadsheet {columns} {tableData} {styleSettings} {matchValuesData} />
 
 <div>
