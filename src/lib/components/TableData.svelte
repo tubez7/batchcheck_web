@@ -42,7 +42,9 @@
 <p>This part of the app is still under construction. Please check back soon!</p>
 {#each receivedData as column, i}
   <ul>
-    <li>{i} - {column.name}</li>
+    <li>
+      <p>{i} - {column.name}</p>
+    </li>
   </ul>
 {/each}
 

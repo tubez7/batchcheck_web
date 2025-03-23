@@ -159,6 +159,7 @@ export function getColumnId(number) {
 }
 
 export function parseTableColumns(fields) {
+  // might need to adapt to set a width property based on column type
   if (!fields) return [];
   return fields.map((element) => {
     const obj = {};
@@ -170,7 +171,7 @@ export function parseTableColumns(fields) {
     if (type.includes("QR")) {
       obj.type = "image";
     } else if (type === "Scan" || type === "Composite Scan") {
-      obj.type = "color";
+      obj.type = "color"; // this might need to be text - set min width in style
     } else {
       obj.type = "text";
     }
@@ -210,11 +211,20 @@ function setCellStyle(field, rowNumber, columnIndex, darkMode, returnObj) {
     fieldType,
     darkMode
   );
+
+  // append additional styles here
+  // e.g. - returnObj[columnId + rowNumberString] += ; font-weight: bolder;
 }
 
 export function createTableStyleObject(rows, fields, darkMode) {
   const objectToReturn = {};
-  iterateThroughRowsAndColumns(rows, fields, setCellStyle, darkMode, objectToReturn);
+  iterateThroughRowsAndColumns(
+    rows,
+    fields,
+    setCellStyle,
+    darkMode,
+    objectToReturn
+  );
 
   return objectToReturn;
 }
@@ -266,52 +276,111 @@ export function createDataFieldCellValue(field, rowNumber) {
   return prefix + calculatedValue + suffix;
 }
 
-// function setCellLookUpData(field, rowNumber, columnIndex, returnObj) {
-//   let columnId = getColumnId(columnIndex);
-//   let rowNumberString = rowNumber.toString();
-//   let typeString;
-//
-//  typeString = field.type.toUpperCase();
-//  if (typeString.includes("SCAN") {
-//   returnObj[columnId + rowNumberString] = createDataFieldCellValue(
-//     field,
-//     rowNumber
-//   );
-//  }
-// }
+function setCellLookUpData(field, rowNumber, columnIndex, returnObj) {
+  let columnId = getColumnId(columnIndex);
+  let rowNumberString = rowNumber.toString();
+  let typeString;
 
-
-export function createValueMatchDataObject(rows, fields) {
-  //return an object of cell values to match
-  //e.g. return {A1: "value to scan match", C3: "another value"};
-
-  //const objectToReturn = {};
-  //iterateThroughRowsAndColumns(rows, fields, setCellLookUpData, objectToReturn);
-
-  //return objectToReturn;
-
+  typeString = field.type.toUpperCase();
+  if (typeString.includes("SCAN")) {
+    returnObj[columnId + rowNumberString] = createDataFieldCellValue(
+      field,
+      rowNumber
+    );
+  }
 }
 
-// function createRowData(field, rowNumber, fieldIndex, tableData, rowData, lastColumnIndex) {
-// let clonedArray = [];
-// rowData.push(createDataFieldCellValue(field, rowNumber));
+export function createValueMatchDataObject(rows, fields) {
+  const objectToReturn = {};
+  iterateThroughRowsAndColumns(rows, fields, setCellLookUpData, objectToReturn);
 
-// if (fieldIndex === lastColumnIndex) {
-//  clonedArray = [...rowData];
-// tableData.push(clonedArray);
-// rowData.length = 0;
-// }
+  return objectToReturn;
+}
 
+export function getUniqueIdNumbers(array) {
+  const uniqueIds = [];
+  let id;
 
-// }
+  array.forEach((item) => {
+    id = item.id;
+    if (!uniqueIds.includes(id)) {
+      uniqueIds.push(id);
+    }
+  });
 
-//export function createTableData(rows, fields) {
-  // const rowData = [];
-  // const tableData = [];
-  // const lastColumnIndex = fields.length - 1;
-  // iterateThroughRowsAndColumns(rows, fields, createRowData, tableData, rowData, lastColumnIndex);
+  return uniqueIds;
+}
 
-  // return tableData;
-//}
+export function getUniqueFields(uniqueNumbers, fields) {
+  const returnArray = [];
+  uniqueNumbers.forEach((number) => {
+    returnArray.push(fields.find((field) => field.id === number));
+  });
 
+  return returnArray;
+}
 
+function createCompositeValue(compositeData, fields, rowNumber, separator) {
+  const uniqueIds = getUniqueIdNumbers(compositeData);
+  const fieldsList = getUniqueFields(uniqueIds, fields);
+  let parsedValue = "";
+  let foundField;
+  const lastIndex = compositeData.length - 1;
+  let appendValue;
+  
+  compositeData.forEach((fieldToParse, i) => {
+    appendValue = i === lastIndex ? "" : separator;
+    foundField = fieldsList.find(
+      (uniqueField) => fieldToParse.id === uniqueField.id
+    );
+    parsedValue += createDataFieldCellValue(foundField, rowNumber) + appendValue;
+  });
+
+  return parsedValue;
+}
+
+function createRowData(
+  field,
+  rowNumber,
+  fieldIndex,
+  tableData,
+  rowData,
+  lastColumnIndex,
+  fields
+) {
+  let clonedArray = [];
+  let type = field.type;
+  if (type === "Data") {
+    rowData.push(createDataFieldCellValue(field, rowNumber));
+  } else if (type === "Composite Scan") {
+    const separator = field.compositeSeparator;
+    const compositeValue = createCompositeValue(field.compositeData, fields, rowNumber, separator);
+    rowData.push(compositeValue);
+  } else {
+    rowData.push("");
+  }
+
+  if (fieldIndex === lastColumnIndex) {
+    clonedArray = [...rowData];
+    tableData.push(clonedArray);
+    rowData.length = 0;
+  }
+}
+
+export function createTableData(rows, fields) {
+  const rowData = [];
+  const tableData = [];
+  const lastColumnIndex = fields.length - 1;
+  iterateThroughRowsAndColumns(
+    rows,
+    fields,
+    createRowData,
+    tableData,
+    rowData,
+    lastColumnIndex,
+    fields
+  );
+
+  console.log("returned value = ", tableData);
+  return tableData;
+}
