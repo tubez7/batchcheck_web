@@ -28,8 +28,10 @@ describe("parseTableColumns()", () => {
 
   test('if an object in the input array has a type property value including the string "QR", it should return an object with a type of "image"', () => {
     const input = [
-      { name: "name1", type: "data" },
+      { name: "name1", type: "Data" },
       { name: "name 2", type: "Composite QR" },
+      { name: "name 3", type: "QR" },
+      { name: "name 4", type: "Visible data scan" },
     ];
     const expected = parseTableColumns(input);
 
@@ -42,21 +44,43 @@ describe("parseTableColumns()", () => {
 
   test("original array should not be mutated", () => {
     const input = [
-      { name: "name1", type: "data" },
+      { name: "name1", type: "Data" },
       { name: "name 2", type: "Composite QR" },
-      { name: "name1", type: "Composite Scan" },
-      { name: "name 2", type: "Scan" },
+      { name: "name3", type: "Composite Scan" },
+      { name: "name 4", type: "Scan" },
     ];
 
     const expected = [
-      { name: "name1", type: "data" },
+      { name: "name1", type: "Data" },
       { name: "name 2", type: "Composite QR" },
-      { name: "name1", type: "Composite Scan" },
-      { name: "name 2", type: "Scan" },
+      { name: "name3", type: "Composite Scan" },
+      { name: "name 4", type: "Scan" },
     ];
 
     parseTableColumns(input);
 
     expect(input).toEqual(expected);
+  });
+
+  test("returned column object should have a readOnly property set to true, unless corresponding field object is a scan type", () => {
+    const input = [
+      { name: "name1", type: "Data" },
+      { name: "name 2", type: "Composite QR" },
+      { name: "name3", type: "Composite Scan" },
+      { name: "name 4", type: "QR" },
+      { name: "name 5", type: "Visible data scan" },
+      { name: "name 6", type: "Scan" },
+    ];
+
+    const expected = parseTableColumns(input);
+
+    let typeCheck;
+
+    expected.forEach((element, i) => {
+      typeCheck = input[i].type.toUpperCase();
+      if (!typeCheck.includes("SCAN")) {
+        expect(element.readOnly).toBe(true);
+      }
+    });
   });
 });

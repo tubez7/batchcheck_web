@@ -11,19 +11,35 @@
   export let columns;
   export let styleSettings;
   export let matchValuesData;
-  //export let darkMode;
+  export let fieldTypes;
+  export let darkMode;
 
   // VARIABLES
   let spreadsheetContainer; // BIND DIV TO VARIABLE
   let table; // table instance
+  $: defaultTextColour = darkMode ? "white" : "black";
+
+  // DO A FIND AND REPLACE ON color: lightModeColor to color: darkMode color when darkMode changes. Handle in a func see if immediately changes styles - otherwise table.setStyle(styleSettings);
 
   function changeAndCheckValues(instance, cell, x, y, value) {
     let cellName = jspreadsheet.getColumnNameFromId([x, y]);
     console.log("instance = ", instance); // the div element
     console.log("value to check = ", value); // value to check for scan fields
     console.log("matchValues = ", matchValuesData); // check values;
-    styleSettings[cellName] = "background-color: Pink;";
-    table.setStyle(styleSettings);
+    console.log("cell = ", cell);
+    console.log("x = ", x);
+    console.log("y = ", y);
+    console.log("fieldTypes in func = ", fieldTypes);
+    console.log("darkMode = ", darkMode);
+
+    if (value === matchValuesData[cellName]) {
+      if (fieldTypes[x] === "Visible data scan") {
+        styleSettings[cellName] = `background-color: Green; color: ${defaultTextColour};`;
+      } else {
+        styleSettings[cellName] = "background-color: Green; color: transparent;";
+      }
+      table.setStyle(styleSettings);
+    }
   }
 
   let options = {
@@ -34,6 +50,8 @@
     //autoWidth: true,
     columnResize: true,
     rowResize: true,
+    allowInsertColumn: false,
+    allowInsertRow: false,
     // set style by passing in an object. Reactive background colours with grid references.
     style: styleSettings,
     tableHeight: "auto",

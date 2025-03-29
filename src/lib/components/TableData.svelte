@@ -22,16 +22,20 @@
   $: darkMode = false;
   $: buttonText = darkMode ? "LIGHT MODE" : "DARK MODE";
   let columns = parseTableColumns(receivedData);
+  let fieldTypes = receivedData.map((field) => field.type);
+  //console.log("fieldTypes = ", fieldTypes);
+ // $: columns = parseTableColumns(receivedData);
+  //console.log("loaded cols ", columns);
   let styleSettings;
   let tableData;
   let matchValuesData;
   $: dataLoaded = false;
 
-  $: console.log("data loaded = ", dataLoaded);
-  $: console.log("columns = ", columns);
-  $: console.log("tableData = ", tableData);
-  $: console.log("matchValuesData = ", matchValuesData);
-  $: console.log("styleSettings = ", styleSettings);
+  // $: console.log("data loaded = ", dataLoaded);
+  // $: console.log("columns = ", columns);
+  // $: console.log("tableData = ", tableData);
+  // $: console.log("matchValuesData = ", matchValuesData);
+  // $: console.log("styleSettings = ", styleSettings);
 
   async function loadData() {
     tableData = await createTableData(totalRows, receivedData);
@@ -72,7 +76,7 @@
 </p>
 
 {#if dataLoaded}
-  <Jspreadsheet {columns} {tableData} {styleSettings} {matchValuesData} />
+  <Jspreadsheet {columns} {tableData} {styleSettings} {matchValuesData} {fieldTypes} {darkMode} />
 {/if}
 
 <div>

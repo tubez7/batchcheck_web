@@ -167,13 +167,17 @@ export function parseTableColumns(fields) {
     let type = "";
     obj["title"] = element.name;
     if (element?.type) {
-      type = element.type;
+      type = element.type.toUpperCase();
     }
     if (type.includes("QR")) {
       obj.type = "image";
     } else {
       obj.type = "text";
     }
+    if (!type.includes("SCAN")) {
+      obj.readOnly = true;
+    }
+
     return obj;
   });
 }
@@ -187,13 +191,13 @@ async function iterateThroughRowsAndColumns(rows, fields, callback, ...args) {
 }
 
 function setCellBackgroundColour(type, darkMode) {
-  const lightModeColour = "background-color: White";
-  const darkModeColour = "background-color: #3e3e3e";
+  const lightModeColour = "background-color: White;";
+  const darkModeColour = "background-color: #3e3e3e;";
   const defaultColour = darkMode ? darkModeColour : lightModeColour;
   let backgroundColour;
 
   if (type.includes("SCAN")) {
-    backgroundColour = "background-color: rgb(250, 128, 128)";
+    backgroundColour = "background-color: rgb(250, 128, 128);";
   } else {
     backgroundColour = defaultColour;
   }
@@ -211,8 +215,13 @@ function setCellStyle(field, rowNumber, columnIndex, darkMode, returnObj) {
     darkMode
   );
 
-  // append additional styles here
-  // e.g. - returnObj[columnId + rowNumberString] += ; font-weight: bolder;
+  if (fieldType === "SCAN" || fieldType === "COMPOSITE SCAN") {
+    returnObj[columnId + rowNumberString] += " color: transparent;";
+  } else if (!darkMode) {
+    returnObj[columnId + rowNumberString] += " color: black;";
+  } else {
+    returnObj[columnId + rowNumberString] += " color: white;";
+  }
 }
 
 export async function createTableStyleObject(rows, fields, darkMode) {
@@ -357,7 +366,7 @@ async function getQRUrl(cellValue) {
     return url;
   } catch (err) {
     console.error(err);
-    return "DEFAULT ERROR QR CODE;";
+    return "DEFAULT ERROR QR CODE";
   }
 }
 
@@ -393,14 +402,22 @@ async function createRowData(
   fieldIndex,
   tableData,
   rowData,
-  lastColumnIndex
+  lastColumnIndex,
+  fields
 ) {
   let clonedArray = [];
   const type = field.type;
+  let url;
+
+  // need to build in comp QR
   if (type === "Data") {
     rowData.push(createDataFieldCellValue(field, rowNumber));
-  } else if (type == "QR") {
-    let url = await getQRUrl(createDataFieldCellValue(field, rowNumber));
+  } else if (type === "QR") {
+    url = await getQRUrl(createDataFieldCellValue(field, rowNumber));
+    rowData.push(url);
+  } else if (type === "Composite QR") {
+    const separator = field.compositeSeparator;
+    url = await getQRUrl(createCompositeValue(field.compositeData, fields, rowNumber, separator));
     rowData.push(url);
   } else {
     rowData.push("");
@@ -424,11 +441,13 @@ export async function createTableData(rows, fields) {
     createRowData,
     tableData,
     rowData,
-    lastColumnIndex
+    lastColumnIndex,
+    fields
   );
   //console.log("returned value = ", tableData);
   return tableData;
 }
+
 
 // function getQRUrl(cellValue) {
 //   // returns a url string that is passed into the values array.
