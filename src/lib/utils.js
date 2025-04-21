@@ -1,4 +1,5 @@
 import { isEqual } from "lodash-es";
+import QRCode from "qrcode";
 
 export const nonWhiteSpaceRegex = /\S/;
 export const globalNumericRegex = /\d/g;
@@ -147,4 +148,299 @@ export function amendFieldExpanded(array, index) {
   });
 
   return arrayClone;
+}
+
+export function getColumnId(number) {
+  let returnString = "";
+  while (number >= 0) {
+    returnString = String.fromCharCode((number % 26) + 65) + returnString;
+    number = Math.floor(number / 26) - 1;
+  }
+  return returnString;
+}
+
+export function parseTableColumns(fields) {
+  // might need to adapt to set a width property based on column type
+  if (!fields) return [];
+  return fields.map((element) => {
+    const obj = {};
+    let type = "";
+    obj["title"] = element.name;
+    if (element?.type) {
+      type = element.type.toUpperCase();
+    }
+    if (type.includes("QR")) {
+      obj.type = "image";
+    } else {
+      obj.type = "text";
+    }
+    if (!type.includes("SCAN")) {
+      obj.readOnly = true;
+    }
+
+    return obj;
+  });
+}
+
+async function iterateThroughRowsAndColumns(rows, fields, callback, ...args) {
+  for (let rowNumber = 1; rowNumber <= rows; rowNumber++) {
+    for (let fieldsIndex = 0; fieldsIndex < fields.length; fieldsIndex++) {
+      await Promise.resolve(
+        callback(fields[fieldsIndex], rowNumber, fieldsIndex, ...args)
+      );
+    }
+  }
+}
+
+function setCellBackgroundColour(type, darkMode) {
+  const lightModeColour = "background-color: White;";
+  const darkModeColour = "background-color: #3e3e3e;";
+  const defaultColour = darkMode ? darkModeColour : lightModeColour;
+  let backgroundColour;
+
+  if (type.includes("SCAN")) {
+    backgroundColour = "background-color: rgb(250, 128, 128);";
+  } else {
+    backgroundColour = defaultColour;
+  }
+
+  return backgroundColour;
+}
+
+function setCellStyle(field, rowNumber, columnIndex, darkMode, returnObj) {
+  const columnId = getColumnId(columnIndex);
+  const rowNumberString = rowNumber.toString();
+  const fieldType = field.type.toUpperCase();
+
+  returnObj[columnId + rowNumberString] = setCellBackgroundColour(
+    fieldType,
+    darkMode
+  );
+
+  if (fieldType === "SCAN" || fieldType === "COMPOSITE SCAN") {
+    returnObj[columnId + rowNumberString] += " color: transparent;";
+  } else if (!darkMode) {
+    returnObj[columnId + rowNumberString] += " color: black;";
+  } else {
+    returnObj[columnId + rowNumberString] += " color: white;";
+  }
+}
+
+export async function createTableStyleObject(rows, fields, darkMode) {
+  const objectToReturn = {};
+  await iterateThroughRowsAndColumns(
+    rows,
+    fields,
+    setCellStyle,
+    darkMode,
+    objectToReturn
+  );
+
+  return objectToReturn;
+}
+
+export function padSerial(startString, leading, character, length) {
+  if (leading) {
+    return startString.padStart(length, character);
+  } else {
+    return startString.padEnd(length, character);
+  }
+}
+
+export function calculateSerialNumber(
+  startNumber,
+  incrementBy,
+  row,
+  rowsPerIncrement
+) {
+  const multiplier = Math.floor((row - 1) / rowsPerIncrement);
+  return (startNumber + multiplier * incrementBy).toString();
+}
+
+export function createDataFieldCellValue(field, rowNumber) {
+  let calculatedValue = "";
+  const prefix = field.prefix || "";
+  const suffix = field.suffix || "";
+
+  if (field?.hasSerial) {
+    const incrementValue = field.incrementValue;
+    const recordsPerIncrement = field.recordsPerIncrement;
+    const startNumber = field.serial;
+
+    calculatedValue = calculateSerialNumber(
+      startNumber,
+      incrementValue,
+      rowNumber,
+      recordsPerIncrement
+    );
+
+    if (field?.serialPadded) {
+      const padLength = field.padLength;
+      const padChar = field.padLead || field.padTrail;
+      const padLead = field.padLead ? true : false;
+
+      calculatedValue = padSerial(calculatedValue, padLead, padChar, padLength);
+    }
+  }
+
+  return prefix + calculatedValue + suffix;
+}
+
+export function getUniqueIdNumbers(array) {
+  const uniqueIds = [];
+  let id;
+
+  array.forEach((item) => {
+    id = item.id;
+    if (!uniqueIds.includes(id)) {
+      uniqueIds.push(id);
+    }
+  });
+
+  return uniqueIds;
+}
+
+export function getUniqueFields(uniqueNumbers, fields) {
+  const returnArray = [];
+  uniqueNumbers.forEach((number) => {
+    returnArray.push(fields.find((field) => field.id === number));
+  });
+
+  return returnArray;
+}
+
+function createCompositeValue(compositeData, fields, rowNumber, separator) {
+  const uniqueIds = getUniqueIdNumbers(compositeData);
+  const fieldsList = getUniqueFields(uniqueIds, fields);
+  let parsedValue = "";
+  let foundField;
+  const lastIndex = compositeData.length - 1;
+  let appendValue;
+
+  compositeData.forEach((fieldToParse, i) => {
+    appendValue = i === lastIndex ? "" : separator;
+    foundField = fieldsList.find(
+      (uniqueField) => fieldToParse.id === uniqueField.id
+    );
+    parsedValue +=
+      createDataFieldCellValue(foundField, rowNumber) + appendValue;
+  });
+
+  return parsedValue;
+}
+
+function setCellLookUpData(field, rowNumber, columnIndex, returnObj, fields) {
+  let columnId = getColumnId(columnIndex);
+  let rowNumberString = rowNumber.toString();
+  const type = field.type.toUpperCase();
+
+  if (type === "COMPOSITE SCAN") {
+    const separator = field.compositeSeparator;
+    const compValue = createCompositeValue(
+      field.compositeData,
+      fields,
+      rowNumber,
+      separator
+    );
+    returnObj[columnId + rowNumberString] = compValue;
+  } else if (type.includes("SCAN")) {
+    returnObj[columnId + rowNumberString] = createDataFieldCellValue(
+      field,
+      rowNumber
+    );
+  }
+}
+
+async function getQRUrl(cellValue) {
+  const options = {
+    errorCorrectionLevel: "M",
+    type: "image/webp",
+    margin: 1,
+  };
+  try {
+    const url = await QRCode.toDataURL(cellValue, options);
+    return url;
+  } catch (err) {
+    console.error(err);
+    return "DEFAULT ERROR QR CODE";
+  }
+}
+
+// function getQRUrl(cellValue) {
+//   // returns a url string that is passed into the values array.
+//   return QRCode.toDataURL(cellValue)
+//     .then((url) => {
+//       console.log("SUCCESS in getQRUrl! url = ", url);
+//       return url;
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//       return "DEFAULT ERROR QR CODE;";
+//     });
+// }
+
+export async function createValueMatchDataObject(rows, fields) {
+  const objectToReturn = {};
+  await iterateThroughRowsAndColumns(
+    rows,
+    fields,
+    setCellLookUpData,
+    objectToReturn,
+    fields
+  );
+
+  return objectToReturn;
+}
+
+async function createRowData(
+  field,
+  rowNumber,
+  fieldIndex,
+  tableData,
+  rowData,
+  lastColumnIndex,
+  fields
+) {
+  let clonedArray = [];
+  const type = field.type;
+  let url;
+
+  // need to build in comp QR
+  if (type === "Data") {
+    rowData.push(createDataFieldCellValue(field, rowNumber));
+  } else if (type === "QR") {
+    url = await getQRUrl(createDataFieldCellValue(field, rowNumber));
+    rowData.push(url);
+  } else if (type === "Composite QR") {
+    const separator = field.compositeSeparator;
+    url = await getQRUrl(
+      createCompositeValue(field.compositeData, fields, rowNumber, separator)
+    );
+    rowData.push(url);
+  } else {
+    rowData.push("");
+  }
+
+  // push to the parent array at end of the row
+  if (fieldIndex === lastColumnIndex) {
+    clonedArray = [...rowData];
+    tableData.push(clonedArray);
+    rowData.length = 0;
+  }
+}
+
+export async function createTableData(rows, fields) {
+  const rowData = [];
+  const tableData = [];
+  const lastColumnIndex = fields.length - 1;
+  await iterateThroughRowsAndColumns(
+    rows,
+    fields,
+    createRowData,
+    tableData,
+    rowData,
+    lastColumnIndex,
+    fields
+  );
+  return tableData;
 }

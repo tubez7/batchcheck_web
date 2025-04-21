@@ -51,14 +51,14 @@
   function handleSave(e) {
     e.preventDefault();
     undo = false;
-    alert = "Previous field data will be permanently overwritten.";
+    alert = "Previous field data will be permanently overwritten";
     warningPopUpVisible = true;
   }
 
   function handleUndo(e) {
     e.preventDefault();
     undo = true;
-    alert = "All changes to fields will be permanently lost.";
+    alert = "All changes to fields will be permanently lost";
     warningPopUpVisible = true;
   }
 

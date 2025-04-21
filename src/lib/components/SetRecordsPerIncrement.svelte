@@ -1,7 +1,7 @@
 <script>
   // IMPORTS
   import { handleKeyDown } from "$lib/utils.js";
-  
+
   // COMPONENTS
   import FieldItemStyle from "$lib/components/FieldItemStyle.svelte";
 

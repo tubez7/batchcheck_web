@@ -1,29 +1,170 @@
 <script>
   // IMPORTS
   import { goto } from "$app/navigation";
-  import { tableStoreData } from "$lib/stores";
+  import { tableStoreData, totalRowsStored } from "$lib/stores";
+  import {
+    createTableData,
+    createTableStyleObject,
+    createValueMatchDataObject,
+    parseTableColumns,
+  } from "$lib/utils.js";
+  import { onMount } from "svelte";
   import { get } from "svelte/store";
+  // COMPONENTS
+  import Jspreadsheet from "$lib/components/Jspreadsheet.svelte";
+  import PopUp from "$lib/components/PopUp.svelte";
+  import WarningAlert from "$lib/components/WarningAlert.svelte";
 
   // PROPS
   export let data;
 
   // VARIABLES
   let receivedData = get(tableStoreData);
+  let totalRows = get(totalRowsStored);
+  let darkMode = false;
+  let columns = parseTableColumns(receivedData);
+  let fieldTypes = receivedData.map((field) => field.type);
+  let styleSettings;
+  let tableData;
+  let matchValuesData;
+  $: dataLoaded = false;
+  let userCreatedData = receivedData.length > 0;
+  $: warningPopUpVisible = false;
+  let userConfirmation = false;
+  let alert = "All table data will be permanently lost";
 
-  // FUNCTIONS
+  async function loadData() {
+    tableData = await createTableData(totalRows, receivedData);
+    styleSettings = await createTableStyleObject(
+      totalRows,
+      receivedData,
+      darkMode
+    );
+    matchValuesData = await createValueMatchDataObject(totalRows, receivedData);
+    dataLoaded = true;
+  }
+
+  onMount(() => {
+    loadData();
+  });
+
   function goBack(e) {
     e.preventDefault();
     goto("/");
   }
 
-  console.log("received", receivedData);
+  function restart(e) {
+    e.preventDefault();
+    warningPopUpVisible = true;
+  }
+
+  function userConfirmed(confirmed) {
+    if (confirmed) {
+      tableStoreData.set([]);
+      totalRowsStored.set(1);
+      goto("/");
+    }
+  }
+
+  $: userConfirmation, userConfirmed(userConfirmation);
 </script>
 
-<h1>Table: {data.tableName}</h1>
-<p>This part of the app is still under construction. Please check back soon!</p>
-{#each receivedData as column, i}
-  <ul>
-    <li>{i} - {column.name}</li>
-  </ul>
-{/each}
-<button on:click={goBack}>RETURN TO EDITOR</button>
+<div id="background-colour"></div>
+
+{#if warningPopUpVisible}
+  <div id="opaque-filter"></div>
+  <PopUp --colour="rgb(250, 128, 128)" header="WARNING!">
+    <WarningAlert bind:warningPopUpVisible bind:userConfirmation {alert} />
+  </PopUp>
+{/if}
+
+<main class="app-window">
+  {#if userCreatedData}
+    <h1>{data.tableName}</h1>
+  {/if}
+  <div class="button-block">
+    <button id="back" on:click={goBack}>EDIT TABLE DATA</button>
+    <button id="restart" on:click={restart}>START AGAIN</button>
+  </div>
+
+  {#if dataLoaded && userCreatedData}
+    <div class="table-container">
+      <Jspreadsheet
+        {columns}
+        {tableData}
+        {styleSettings}
+        {matchValuesData}
+        {fieldTypes}
+        {darkMode}
+      />
+    </div>
+  {:else if dataLoaded}
+    <h1>ERROR: TABLE DATA HAS NOT BEEN GENERATED</h1>
+    <p>Please create table data via the Batch-Check Constructor</p>
+  {:else if userCreatedData}
+    <h1>ERROR: TABLE DATA HAS NOT BEEN LOADED</h1>
+    <p>
+      There was a problem loading your table data. Please return to the editor
+      and regenerate the table.
+    </p>
+  {/if}
+</main>
+
+<style>
+  button {
+    height: 5em;
+    width: 15em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    border-radius: 1em;
+    cursor: pointer;
+    box-shadow: 0 5px #999;
+    background-color: rgb(255, 188, 122);
+  }
+
+  #back:hover {
+    background-color: var(--hover1, rgb(210, 153, 96));
+  }
+
+  #restart:hover {
+    background-color: var(--hover1, rgb(250, 128, 128));
+  }
+
+  .table-container {
+    margin: 1rem;
+    margin-left: 0;
+    background-color: rgb(228, 201, 162);
+    padding: 1em;
+    padding-top: 1.25em;
+    width: fit-content;
+    border-style: dotted;
+    border-radius: 5px;
+  }
+
+  #background-colour {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-color: rgb(245, 245, 220);
+    margin: 0;
+    padding: 0;
+  }
+
+  #opaque-filter {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    background-color: black;
+    filter: opacity(85%);
+  }
+</style>

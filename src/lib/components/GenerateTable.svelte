@@ -1,7 +1,7 @@
 <script>
   // IMPORTS
   import { goto } from "$app/navigation";
-  import { tableStoreData } from "$lib/stores";
+  import { tableStoreData, totalRowsStored } from "$lib/stores";
   // COMPONENTS
   import FieldItemStyle from "$lib/components/FieldItemStyle.svelte";
   import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
@@ -11,6 +11,7 @@
   // PROPS
   export let tableGeneratePopUp;
   export let fields;
+  export let records;
 
   // VARIABLES
   let tableName;
@@ -20,6 +21,7 @@
     e.preventDefault();
     tableName = encodeURIComponent(tableName);
     tableStoreData.set(fields);
+    totalRowsStored.set(records);    
     goto(`/${tableName}`);
   }
 

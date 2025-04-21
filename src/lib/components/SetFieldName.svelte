@@ -17,11 +17,6 @@
 
   // FUNCTIONS
   function checkFieldName() {
-    // if (!validFieldName) {
-    //   fieldNameError = true;
-    // } else {
-    //   fieldNameError = false;
-    // }
     fieldNameError = !validFieldName;
   }
 </script>

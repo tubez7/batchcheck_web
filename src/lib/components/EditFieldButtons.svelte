@@ -93,7 +93,7 @@
         value="recordsPerIncrement"
       />
     {/if}
-    
+
     <EditFieldButton
       bind:editFieldName
       bind:editSerial
@@ -145,8 +145,6 @@
     display: flex;
     flex-direction: column;
     align-items: start;
-    /* border-style: solid;
-    border-color: red; */
     box-sizing: border-box;
   }
 </style>

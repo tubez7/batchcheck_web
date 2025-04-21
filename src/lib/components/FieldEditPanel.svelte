@@ -22,7 +22,7 @@
   let headerText;
 
   // ALERT VARIABLES
-  let alert = "Any unsaved changes will be permanently lost.";
+  let alert = "Any unsaved changes will be permanently lost";
   let userConfirmation = false;
 
   // FIELD NAME VARIABLES
