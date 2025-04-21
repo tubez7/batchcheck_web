@@ -16,7 +16,6 @@
   function checkTableName() {
     tableNameError = !validName;
   }
-
 </script>
 
 <FieldItemStyle>

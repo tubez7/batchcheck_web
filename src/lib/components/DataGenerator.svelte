@@ -4,11 +4,10 @@
   import { onMount } from "svelte";
   import { get } from "svelte/store";
   // COMPONENTS
+  import ActionButtons from "$lib/components/ActionButtons.svelte";
   import CreateFields from "$lib/components/CreateFields.svelte";
   import EditFields from "$lib/components/EditFields.svelte";
   import FieldEditPanel from "$lib/components/FieldEditPanel.svelte";
-  //import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
-  import ActionButtons from "$lib/components/ActionButtons.svelte";
   import GenerateTable from "$lib/components/GenerateTable.svelte";
   import Headers from "$lib/components/Headers.svelte";
   import PopUp from "$lib/components/PopUp.svelte";
@@ -17,7 +16,6 @@
   // VARIABLES
   let fields = [];
   let receivedData;
-  // let records = 1;
   let records;
   let editPanelVisible = false;
   let warningPopUpVisible = false;
@@ -44,19 +42,6 @@
     fieldsClone = receivedData.length > 0 ? receivedData : fieldsClone;
     fields = receivedData.length > 0 ? receivedData : fields;
   });
-
-  // function toggleEditMode(e) {
-  //   e.preventDefault();
-  //   editMode = !editMode;
-  // }
-
-  // DEBUG WATCHERS
-  // $: console.log("Records = ", records);
-  //$: console.log("Fields has changed!...", fields);
-  //$: console.log("fieldsClone has changed!...", fieldsClone);
-  // $: console.log("formValidated = ", formValidated);
-  // $: console.log("indexToEdit = ", indexToEdit);
-  //$: console.log("fieldToEdit = ", fieldToEdit);
 </script>
 
 <main class="app-window">
@@ -70,7 +55,7 @@
     </PopUp>
   {/if}
 
-  <h1>BATCH-CHECK v1.0</h1>
+  <h1>BATCH-CHECK alpha (v1.0)</h1>
   <div class="app-container">
     <Headers />
     <ActionButtons
@@ -159,9 +144,4 @@
     background-color: black;
     filter: opacity(85%);
   }
-
-  /* .note {
-    align-self: baseline;
-    margin-bottom: 0;
-  } */
 </style>

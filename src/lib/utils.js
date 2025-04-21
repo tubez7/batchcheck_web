@@ -185,7 +185,9 @@ export function parseTableColumns(fields) {
 async function iterateThroughRowsAndColumns(rows, fields, callback, ...args) {
   for (let rowNumber = 1; rowNumber <= rows; rowNumber++) {
     for (let fieldsIndex = 0; fieldsIndex < fields.length; fieldsIndex++) {
-      await Promise.resolve(callback(fields[fieldsIndex], rowNumber, fieldsIndex, ...args));
+      await Promise.resolve(
+        callback(fields[fieldsIndex], rowNumber, fieldsIndex, ...args)
+      );
     }
   }
 }
@@ -350,19 +352,13 @@ function setCellLookUpData(field, rowNumber, columnIndex, returnObj, fields) {
 }
 
 async function getQRUrl(cellValue) {
-  const opts = {
-    errorCorrectionLevel: 'H',
-    type: 'image/jpeg',
-    quality: 0.3,
+  const options = {
+    errorCorrectionLevel: "M",
+    type: "image/webp",
     margin: 1,
-    color: {
-      dark:"#010599FF",
-      light:"#FFBF60FF"
-    }
-  }
+  };
   try {
-    const url = await QRCode.toDataURL(cellValue, opts);
-    //console.log("SUCCESS in getQRUrl! url = ", url);
+    const url = await QRCode.toDataURL(cellValue, options);
     return url;
   } catch (err) {
     console.error(err);
@@ -417,7 +413,9 @@ async function createRowData(
     rowData.push(url);
   } else if (type === "Composite QR") {
     const separator = field.compositeSeparator;
-    url = await getQRUrl(createCompositeValue(field.compositeData, fields, rowNumber, separator));
+    url = await getQRUrl(
+      createCompositeValue(field.compositeData, fields, rowNumber, separator)
+    );
     rowData.push(url);
   } else {
     rowData.push("");
@@ -444,20 +442,5 @@ export async function createTableData(rows, fields) {
     lastColumnIndex,
     fields
   );
-  //console.log("returned value = ", tableData);
   return tableData;
 }
-
-
-// function getQRUrl(cellValue) {
-//   // returns a url string that is passed into the values array.
-//   QRCode.toDataURL(cellValue)
-//     .then((url) => {
-//       console.log("SUCCESS in getQRUrl! url = ", url);
-//       return url;
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//       return "DEFAULT ERROR QR CODE;";
-//     });
-// }

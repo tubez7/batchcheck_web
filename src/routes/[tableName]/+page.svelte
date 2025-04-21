@@ -6,4 +6,3 @@
 </script>
 
 <TableData {data} />
-

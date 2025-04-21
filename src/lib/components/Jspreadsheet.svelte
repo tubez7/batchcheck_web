@@ -2,9 +2,8 @@
   // IMPORTS
   import jspreadsheet from "jspreadsheet-ce";
   import "jsuites/dist/jsuites.css";
-  import "../styles/jspreadsheet.css";
-  //import "jspreadsheet-ce/dist/jspreadsheet.theme.css";
   import { onMount } from "svelte";
+  import "../styles/jspreadsheet.css";
 
   // PROPS
   export let tableData;
@@ -17,26 +16,18 @@
   // VARIABLES
   let spreadsheetContainer; // BIND DIV TO VARIABLE
   let table; // table instance
-  $: defaultTextColour = darkMode ? "white" : "black";
-
-  // DO A FIND AND REPLACE ON color: lightModeColor to color: darkMode color when darkMode changes. Handle in a func see if immediately changes styles - otherwise table.setStyle(styleSettings);
+  $: currentDefaultTextColour = darkMode ? "white" : "black";
 
   function changeAndCheckValues(instance, cell, x, y, value) {
     let cellName = jspreadsheet.getColumnNameFromId([x, y]);
-    console.log("instance = ", instance); // the div element
-    console.log("value to check = ", value); // value to check for scan fields
-    console.log("matchValues = ", matchValuesData); // check values;
-    console.log("cell = ", cell);
-    console.log("x = ", x);
-    console.log("y = ", y);
-    console.log("fieldTypes in func = ", fieldTypes);
-    console.log("darkMode = ", darkMode);
 
     if (value === matchValuesData[cellName]) {
       if (fieldTypes[x] === "Visible data scan") {
-        styleSettings[cellName] = `background-color: Green; color: ${defaultTextColour};`;
+        styleSettings[cellName] =
+          `background-color: rgb(66, 237, 180); color: ${currentDefaultTextColour};`;
       } else {
-        styleSettings[cellName] = "background-color: Green; color: transparent;";
+        styleSettings[cellName] =
+          "background-color: rgb(66, 237, 180); color: transparent;";
       }
       table.setStyle(styleSettings);
     }
@@ -52,21 +43,13 @@
     rowResize: true,
     allowInsertColumn: false,
     allowInsertRow: false,
-    // set style by passing in an object. Reactive background colours with grid references.
     style: styleSettings,
     tableHeight: "auto",
     onchange: changeAndCheckValues,
   };
 
-  // PASS STYLE OBJECT INTO COMPONENT AS A PROP. SET FROM FUNCTION ON TableData component
-
-  //   if (darkMode) {
-  //     console.log("do something please");
-  //   }
-
   onMount(() => {
     table = jspreadsheet(spreadsheetContainer, options);
-    //console.log("table = ", table);
   });
 </script>
 
@@ -74,7 +57,7 @@
 
 <style>
   #spreadsheet {
-    /* width: 100%; */
-    font-size: 14px;
+    font-size: 16px;
+    margin: 0;
   }
 </style>
