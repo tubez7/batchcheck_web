@@ -34,6 +34,7 @@
       type2="button"
     />
   </div>
+  <!-- <button>LOAD TABLE DATA FILE</button> -->
 </FieldsetStyle>
 
 <style>

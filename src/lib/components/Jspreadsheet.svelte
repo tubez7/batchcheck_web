@@ -12,11 +12,30 @@
   export let matchValuesData;
   export let fieldTypes;
   export let darkMode;
+  export let jsonSaveData;
+  export let exportData;
+  export let updateCompleted;
 
   // VARIABLES
   let spreadsheetContainer; // BIND DIV TO VARIABLE
   let table; // table instance
   $: currentDefaultTextColour = darkMode ? "white" : "black";
+
+  function createJSONObject(clicked) {
+    if (clicked) {
+      //console.log("I HAVE BEEN CLICKED");
+      const returnObject = {};
+      returnObject.tableData = table.getData();
+      returnObject.columns = columns;
+      returnObject.styleSettings = styleSettings;
+      returnObject.fieldTypes = fieldTypes;
+      returnObject.matchValuesData = matchValuesData;
+      jsonSaveData = returnObject;
+      //console.log("jsonSaveData", jsonSaveData);
+      exportData = false;
+      updateCompleted = true;
+    }
+  }
 
   function changeAndCheckValues(instance, cell, x, y, value) {
     let cellName = jspreadsheet.getColumnNameFromId([x, y]);
@@ -47,6 +66,8 @@
     tableHeight: "auto",
     onchange: changeAndCheckValues,
   };
+
+  $: exportData, createJSONObject(exportData);
 
   onMount(() => {
     table = jspreadsheet(spreadsheetContainer, options);

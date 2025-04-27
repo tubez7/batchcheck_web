@@ -16,13 +16,16 @@
   // VARIABLES
   let tableName;
   let validName;
+  let cleanedName;
 
   function generateTable(e) {
     e.preventDefault();
-    tableName = encodeURIComponent(tableName);
+    //tableName = encodeURIComponent(tableName);
+    cleanedName = encodeURIComponent(tableName);
     tableStoreData.set(fields);
     totalRowsStored.set(records);    
-    goto(`/${tableName}`);
+    //goto(`/${tableName}`);
+    goto(`/${cleanedName}`);
   }
 
   function cancelAndClose(e) {
