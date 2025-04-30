@@ -35,10 +35,9 @@
   let jsonSaveData;
   let exportData = false;
   let updateCompleted = false;
-  //let userSaveError = false;
-  $: disabled = warningPopUpVisible;
 
   async function loadData() {
+    // if loaded from generator
     tableData = await createTableData(totalRows, receivedData);
     styleSettings = await createTableStyleObject(
       totalRows,
@@ -46,13 +45,15 @@
       darkMode
     );
     matchValuesData = await createValueMatchDataObject(totalRows, receivedData);
+    // else if loaded from file
+    //tableData = await....
+    // styleSettings =
+    // matchValuesData =
     dataLoaded = true;
   }
 
   onMount(() => {
-    // bool here if loaded via generator loadData()
     loadData();
-    // else if table data file loaded loadFile();
   });
 
   function goBack(e) {
@@ -60,9 +61,13 @@
     goto("/");
   }
 
-  function restart(e) {
+  function reset(e) {
     e.preventDefault();
-    warningPopUpVisible = true;
+    if (dataLoaded && userCreatedData) {
+      warningPopUpVisible = true;
+    } else {
+      userConfirmed(true);
+    }
   }
 
   function userConfirmed(confirmed) {
@@ -78,6 +83,17 @@
     exportData = true;
   }
 
+  function downloadJSONBlob(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
   async function createAndExportJSON(updated) {
     if (updated) {
       jsonSaveData.tableName = `${data.tableName}.json`;
@@ -85,38 +101,32 @@
       const blob = new Blob([jsonString], { type: "application/json" });
 
       if (window.showSaveFilePicker) {
-        const options = {};
-        options.startIn = "downloads";
-        options.suggestedName = data.tableName;
-        options.types = [
-          {
-            description: "JSON file",
-            accept: { "application/json": [".json"] },
-          },
-        ];
+        // if browser supports
+        const options = {
+          startIn: "downloads",
+          suggestedName: data.tableName,
+          types: [
+            {
+              description: "JSON file",
+              accept: { "application/json": [".json"] },
+            },
+          ],
+        };
         try {
           const fileHandle = await window.showSaveFilePicker(options);
-          if (!fileHandle.name.toLowerCase().endsWith(".json")) {
-            console.error("NAUGHTY TAUGHTY");
-            //alert("You must save the file with a .json extension!");
-            //userSaveError = true;
-            return;
-          }
           const fileStream = await fileHandle.createWritable();
           await fileStream.write(blob);
           await fileStream.close();
         } catch (error) {
-          console.error("File save cancelled or failed:", error);
+          if (error.code !== 20) {
+            console.error("File save failed:", error);
+          } else {
+            console.log("file save aborted by user");
+          }
         }
       } else {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `${data.tableName}.json`;
-        document.body.appendChild(a); // required for Firefox
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+        // Fallback for unsupported browsers
+        downloadJSONBlob(blob, `${data.tableName}.json`);
       }
       updateCompleted = false;
     }
@@ -140,9 +150,11 @@
     <h1>{data.tableName}</h1>
   {/if}
   <div class="button-block">
-    <button id="back" on:click={goBack} {disabled}>EDIT TABLE DATA</button>
-    <button id="restart" on:click={restart} {disabled}>START AGAIN</button>
-    <button id="save" on:click={confirmExport} {disabled}
+    <button id="back" on:click={goBack} {warningPopUpVisible}
+      >EDIT TABLE DATA</button
+    >
+    <button id="reset" on:click={reset} {warningPopUpVisible}>RESET</button>
+    <button id="save" on:click={confirmExport} {warningPopUpVisible}
       >EXPORT TABLE DATA</button
     >
   </div>
@@ -189,7 +201,7 @@
     background-color: var(--hover1, rgb(210, 153, 96));
   }
 
-  #restart:hover {
+  #reset:hover {
     background-color: var(--hover1, rgb(250, 128, 128));
   }
 

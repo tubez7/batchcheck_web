@@ -23,7 +23,6 @@
 
   function createJSONObject(clicked) {
     if (clicked) {
-      //console.log("I HAVE BEEN CLICKED");
       const returnObject = {};
       returnObject.tableData = table.getData();
       returnObject.columns = columns;
@@ -31,7 +30,6 @@
       returnObject.fieldTypes = fieldTypes;
       returnObject.matchValuesData = matchValuesData;
       jsonSaveData = returnObject;
-      //console.log("jsonSaveData", jsonSaveData);
       exportData = false;
       updateCompleted = true;
     }

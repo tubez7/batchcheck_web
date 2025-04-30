@@ -20,11 +20,9 @@
 
   function generateTable(e) {
     e.preventDefault();
-    //tableName = encodeURIComponent(tableName);
     cleanedName = encodeURIComponent(tableName);
     tableStoreData.set(fields);
-    totalRowsStored.set(records);    
-    //goto(`/${tableName}`);
+    totalRowsStored.set(records);
     goto(`/${cleanedName}`);
   }
 
