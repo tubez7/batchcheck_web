@@ -32,8 +32,12 @@
   $: warningPopUpVisible = false;
   let userConfirmation = false;
   let alert = "All table data will be permanently lost";
+  let jsonSaveData;
+  let exportData = false;
+  let updateCompleted = false;
 
   async function loadData() {
+    // if loaded from generator
     tableData = await createTableData(totalRows, receivedData);
     styleSettings = await createTableStyleObject(
       totalRows,
@@ -41,6 +45,10 @@
       darkMode
     );
     matchValuesData = await createValueMatchDataObject(totalRows, receivedData);
+    // else if loaded from file
+    //tableData = await....
+    // styleSettings =
+    // matchValuesData =
     dataLoaded = true;
   }
 
@@ -53,9 +61,13 @@
     goto("/");
   }
 
-  function restart(e) {
+  function reset(e) {
     e.preventDefault();
-    warningPopUpVisible = true;
+    if (dataLoaded && userCreatedData) {
+      warningPopUpVisible = true;
+    } else {
+      userConfirmed(true);
+    }
   }
 
   function userConfirmed(confirmed) {
@@ -66,7 +78,62 @@
     }
   }
 
+  function confirmExport(e) {
+    e.preventDefault();
+    exportData = true;
+  }
+
+  function downloadJSONBlob(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  async function createAndExportJSON(updated) {
+    if (updated) {
+      jsonSaveData.tableName = `${data.tableName}.json`;
+      const jsonString = JSON.stringify(jsonSaveData, null, 2);
+      const blob = new Blob([jsonString], { type: "application/json" });
+
+      if (window.showSaveFilePicker) {
+        // if browser supports
+        const options = {
+          startIn: "downloads",
+          suggestedName: data.tableName,
+          types: [
+            {
+              description: "JSON file",
+              accept: { "application/json": [".json"] },
+            },
+          ],
+        };
+        try {
+          const fileHandle = await window.showSaveFilePicker(options);
+          const fileStream = await fileHandle.createWritable();
+          await fileStream.write(blob);
+          await fileStream.close();
+        } catch (error) {
+          if (error.code !== 20) {
+            console.error("File save failed:", error);
+          } else {
+            console.log("file save aborted by user");
+          }
+        }
+      } else {
+        // Fallback for unsupported browsers
+        downloadJSONBlob(blob, `${data.tableName}.json`);
+      }
+      updateCompleted = false;
+    }
+  }
+
   $: userConfirmation, userConfirmed(userConfirmation);
+  $: updateCompleted, createAndExportJSON(updateCompleted);
 </script>
 
 <div id="background-colour"></div>
@@ -83,8 +150,13 @@
     <h1>{data.tableName}</h1>
   {/if}
   <div class="button-block">
-    <button id="back" on:click={goBack}>EDIT TABLE DATA</button>
-    <button id="restart" on:click={restart}>START AGAIN</button>
+    <button id="back" on:click={goBack} {warningPopUpVisible}
+      >EDIT TABLE DATA</button
+    >
+    <button id="reset" on:click={reset} {warningPopUpVisible}>RESET</button>
+    <button id="save" on:click={confirmExport} {warningPopUpVisible}
+      >EXPORT TABLE DATA</button
+    >
   </div>
 
   {#if dataLoaded && userCreatedData}
@@ -96,6 +168,9 @@
         {matchValuesData}
         {fieldTypes}
         {darkMode}
+        bind:jsonSaveData
+        bind:exportData
+        bind:updateCompleted
       />
     </div>
   {:else if dataLoaded}
@@ -126,7 +201,7 @@
     background-color: var(--hover1, rgb(210, 153, 96));
   }
 
-  #restart:hover {
+  #reset:hover {
     background-color: var(--hover1, rgb(250, 128, 128));
   }
 
