@@ -1,7 +1,14 @@
 <script>
   // IMPORTS
   import { goto } from "$app/navigation";
-  import { tableStoreData, totalRowsStored } from "$lib/stores";
+  import {
+    dataImported,
+    savedMatchValuesData,
+    savedStyleSettings,
+    savedTableValues,
+    tableStoreData,
+    totalRowsStored,
+  } from "$lib/stores";
   import {
     createTableData,
     createTableStyleObject,
@@ -21,6 +28,7 @@
   // VARIABLES
   let receivedData = get(tableStoreData);
   let totalRows = get(totalRowsStored);
+  let dataFromFile = get(dataImported);
   let darkMode = false;
   let columns = parseTableColumns(receivedData);
   let fieldTypes = receivedData.map((field) => field.type);
@@ -37,18 +45,22 @@
   let updateCompleted = false;
 
   async function loadData() {
-    // if loaded from generator
-    tableData = await createTableData(totalRows, receivedData);
-    styleSettings = await createTableStyleObject(
-      totalRows,
-      receivedData,
-      darkMode
-    );
-    matchValuesData = await createValueMatchDataObject(totalRows, receivedData);
-    // else if loaded from file
-    //tableData = await....
-    // styleSettings =
-    // matchValuesData =
+    if (!dataFromFile) {
+      tableData = await createTableData(totalRows, receivedData);
+      styleSettings = await createTableStyleObject(
+        totalRows,
+        receivedData,
+        darkMode
+      );
+      matchValuesData = await createValueMatchDataObject(
+        totalRows,
+        receivedData
+      );
+    } else {
+      tableData = get(savedTableValues);
+      styleSettings = get(savedStyleSettings);
+      matchValuesData = get(savedMatchValuesData);
+    }
     dataLoaded = true;
   }
 
@@ -97,6 +109,8 @@
   async function createAndExportJSON(updated) {
     if (updated) {
       jsonSaveData.tableName = `${data.tableName}.json`;
+      jsonSaveData.fields = receivedData;
+      jsonSaveData.totalRows = totalRows;
       const jsonString = JSON.stringify(jsonSaveData, null, 2);
       const blob = new Blob([jsonString], { type: "application/json" });
 
@@ -179,9 +193,11 @@
   {:else if userCreatedData}
     <h1>ERROR: TABLE DATA HAS NOT BEEN LOADED</h1>
     <p>
-      There was a problem loading your table data. Please return to the editor
-      and regenerate the table.
+      There was a problem loading your table. Please return to the editor and
+      regenerate/re-load the table data.
     </p>
+  {:else if !dataLoaded}
+    <p>Loading your table. Please wait....</p>
   {/if}
 </main>
 
