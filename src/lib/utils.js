@@ -444,3 +444,28 @@ export async function createTableData(rows, fields) {
   );
   return tableData;
 }
+
+function checkObjectKeys(object) {
+  const checkValues = [
+    "tableData",
+    "columns",
+    "styleSettings",
+    "fieldTypes",
+    "matchValuesData",
+    "tableName",
+    "fields",
+    "totalRows",
+  ].sort();
+  const keys = Object.keys(object).sort();
+  return !isEqual(checkValues, keys);
+}
+
+export function validateJsonFile(jsonObject) {
+  if (typeof jsonObject !== "object" || Array.isArray(jsonObject)) {
+    return false;
+  } else if (checkObjectKeys(jsonObject)) {
+    return false;
+  } else {
+    return true;
+  }
+}

@@ -9,6 +9,7 @@
     tableStoreData,
     totalRowsStored,
   } from "$lib/stores";
+  import { validateJsonFile } from "$lib/utils.js";
   // COMPONENTS
   import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
   import TwoButtons from "$lib/components/TwoButtons.svelte";
@@ -28,7 +29,7 @@
   let importedStyleData;
   let importedMatchValuesData;
   let fileInputElement;
-  let dataValidated = false;
+  let dataValidated;
   let errorMsg = "";
   $: fileError = errorMsg.length > 0;
 
@@ -73,12 +74,12 @@
         reader.onload = (event) => {
           try {
             const jsonData = JSON.parse(event.target.result);
-            console.log("JSON data = ", jsonData);
+            console.log("JSON data = ", jsonData); // delete after tests complete
             // VALIDATE HELPER FUNCTION HERE
             // check props of the saved data object
             // check has properties
             // check values of properties are what is expected
-            // dataValidated = validateLoadedData(jsonData);
+            dataValidated = validateJsonFile(jsonData);
             if (dataValidated) {
               importedName = jsonData.tableName;
               importedFields = jsonData.fields;
@@ -105,8 +106,11 @@
 
 <FieldsetStyle --background="rgb(222, 222, 177)">
   <div class="button-block">
-    <button id="load-button" type="button" on:click={triggerFileLoad} disabled={editMode}
-      >LOAD DATA</button
+    <button
+      id="load-button"
+      type="button"
+      on:click={triggerFileLoad}
+      disabled={editMode}>LOAD DATA</button
     >
     <TwoButtons
       callbackFunc1={openTableNamePopUp}
