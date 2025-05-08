@@ -460,10 +460,53 @@ function checkObjectKeys(object) {
   return !isEqual(checkValues, keys);
 }
 
+function testTableData(tableDataArray) {
+  for (let i = 0; i < tableDataArray.length; i++) {
+    if (!Array.isArray(tableDataArray[i])) {
+      return true;
+    }
+    for (let j = 0; j < tableDataArray[i].length; j++) {
+      if (typeof tableDataArray[i][j] !== "string") {
+        return true;
+      }
+    }
+  }
+}
+
+function checkObjectProperties(object) {
+  // check the value of each property AND the properties/contents of nested objects & arrays individually
+  if (typeof object.tableName !== "string") {
+    return true;
+  }
+  if (!Array.isArray(object.tableData)) {
+    return true;
+  }
+  if (testTableData(object.tableData)) {
+    return true;
+  }
+  // test columns - columns is an array. Each element is an object.
+
+  // properties of each object
+  // {
+  //   "title": "SCAN CHECK",
+  //   "type": "text",
+  //   "name": "1",
+  //   "source": [],
+  //   "options": [],
+  //   "editor": null,
+  //   "allowEmpty": false,
+  //   "width": 50,
+  //   "align": "center"
+  // }
+
+}
+
 export function validateJsonFile(jsonObject) {
   if (typeof jsonObject !== "object" || Array.isArray(jsonObject)) {
     return false;
   } else if (checkObjectKeys(jsonObject)) {
+    return false;
+  } else if (checkObjectProperties(jsonObject)) {
     return false;
   } else {
     return true;

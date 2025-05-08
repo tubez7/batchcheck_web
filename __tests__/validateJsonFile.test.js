@@ -86,4 +86,150 @@ describe("validateJsonFile()", () => {
 
     expect(result).toBe(false);
   });
+
+  test("function will test that the tableName property value is a string and return false if it isn't", () => {
+    const object1 = {};
+    const object2 = {};
+    const object3 = {};
+
+    const falseKeys = [
+      "tableData",
+      "columns",
+      "styleSettings",
+      "fieldTypes",
+      "matchValuesData",
+      "tableName",
+      "fields",
+      "totalRows",
+    ];
+    falseKeys.forEach((key) => {
+      if (key === "tableName") {
+        object1[key] = 0;
+      } else {
+        object1[key] = "";
+      }
+    });
+
+    falseKeys.forEach((key) => {
+      if (key === "tableName") {
+        object2[key] = [];
+      } else {
+        object2[key] = "";
+      }
+    });
+
+    falseKeys.forEach((key) => {
+      if (key === "tableName") {
+        object3[key] = {};
+      } else {
+        object3[key] = "";
+      }
+    });
+    const result1 = validateJsonFile(object1);
+    const result2 = validateJsonFile(object2);
+    const result3 = validateJsonFile(object3);
+
+    expect(result1).toBe(false);
+    expect(result2).toBe(false);
+    expect(result3).toBe(false);
+  });
+
+  test("function will test that the tableData property value is an array and return false if it isn't", () => {
+    const object1 = {};
+    const object2 = {};
+    const object3 = {};
+
+    const falseKeys = [
+      "tableData",
+      "columns",
+      "styleSettings",
+      "fieldTypes",
+      "matchValuesData",
+      "tableName",
+      "fields",
+      "totalRows",
+    ];
+    falseKeys.forEach((key) => {
+      if (key === "tableData") {
+        object1[key] = 0;
+      } else {
+        object1[key] = "";
+      }
+    });
+
+    falseKeys.forEach((key) => {
+      if (key === "tableData") {
+        object2[key] = "";
+      }
+    });
+
+    falseKeys.forEach((key) => {
+      if (key === "tableName") {
+        object3[key] = {};
+      } else {
+        object3[key] = "";
+      }
+    });
+    const result1 = validateJsonFile(object1);
+    const result2 = validateJsonFile(object2);
+    const result3 = validateJsonFile(object3);
+
+    expect(result1).toBe(false);
+    expect(result2).toBe(false);
+    expect(result3).toBe(false);
+  });
+
+  test("function will test that the tableData array contains only sub-arrays", () => {
+    const object = {};
+    const tableData = [["sub-array"], [1], "string"];
+    const falseKeys = [
+      "tableData",
+      "columns",
+      "styleSettings",
+      "fieldTypes",
+      "matchValuesData",
+      "tableName",
+      "fields",
+      "totalRows",
+    ];
+    falseKeys.forEach((key) => {
+      if (key === "tableData") {
+        object[key] = tableData;
+      } else {
+        object[key] = "";
+      }
+    });
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will test that the tableData array sub-arrays contain string values only", () => {
+    const object = {};
+    const tableData = [
+      ["", "sub-array"],
+      ["string", []],
+      ["string", ""],
+    ];
+    const falseKeys = [
+      "tableData",
+      "columns",
+      "styleSettings",
+      "fieldTypes",
+      "matchValuesData",
+      "tableName",
+      "fields",
+      "totalRows",
+    ];
+    falseKeys.forEach((key) => {
+      if (key === "tableData") {
+        object[key] = tableData;
+      } else {
+        object[key] = "";
+      }
+    });
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
 });

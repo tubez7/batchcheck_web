@@ -108,7 +108,8 @@
 
   async function createAndExportJSON(updated) {
     if (updated) {
-      jsonSaveData.tableName = `${data.tableName}.json`;
+      jsonSaveData.tableName = `${data.tableName}.json`; //?
+      //jsonSaveData.tableName = data.tableName; // or this - test
       jsonSaveData.fields = receivedData;
       jsonSaveData.totalRows = totalRows;
       const jsonString = JSON.stringify(jsonSaveData, null, 2);

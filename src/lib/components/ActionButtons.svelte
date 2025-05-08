@@ -74,7 +74,7 @@
         reader.onload = (event) => {
           try {
             const jsonData = JSON.parse(event.target.result);
-            console.log("JSON data = ", jsonData); // delete after tests complete
+            //console.log("JSON data = ", jsonData); // delete after tests complete
             // VALIDATE HELPER FUNCTION HERE
             // check props of the saved data object
             // check has properties
