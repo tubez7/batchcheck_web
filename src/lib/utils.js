@@ -445,17 +445,8 @@ export async function createTableData(rows, fields) {
   return tableData;
 }
 
-function checkObjectKeys(object) {
-  const checkValues = [
-    "tableData",
-    "columns",
-    "styleSettings",
-    "fieldTypes",
-    "matchValuesData",
-    "tableName",
-    "fields",
-    "totalRows",
-  ].sort();
+function checkObjectKeys(object, referenceKeys) {
+  const checkValues = referenceKeys.sort();
   const keys = Object.keys(object).sort();
   return !isEqual(checkValues, keys);
 }
@@ -473,38 +464,140 @@ function testTableData(tableDataArray) {
   }
 }
 
+function testColumnProperties(column) {
+  const {
+    title,
+    type,
+    name,
+    source,
+    options,
+    editor,
+    allowEmpty,
+    width,
+    align,
+  } = column;
+  const convertedName = Number(name);
+  if (typeof title !== "string") {
+    return true;
+  }
+  if (typeof type !== "string") {
+    return true;
+  }
+  if (typeof name !== "string") {
+    return true;
+  }
+  if (!Number.isInteger(convertedName)) {
+    return true;
+  }
+  if (!Array.isArray(source)) {
+    return true;
+  }
+  if (!Array.isArray(options)) {
+    return true;
+  }
+  if (editor !== null) {
+    return true;
+  }
+  if (typeof allowEmpty !== "boolean") {
+    return true;
+  }
+  if (typeof width !== "number") {
+    return true;
+  }
+  if (typeof align !== "string") {
+    return true;
+  }
+}
+
+function testTableColumns(tableColumnsArray) {
+  const validColumnKeys = [
+    "title",
+    "type",
+    "name",
+    "source",
+    "options",
+    "editor",
+    "allowEmpty",
+    "width",
+    "align",
+  ];
+  for (let i = 0; i < tableColumnsArray.length; i++) {
+    const element = tableColumnsArray[i];
+    if (typeof element !== "object" || Array.isArray(element)) {
+      return true;
+    }
+    if (checkObjectKeys(element, validColumnKeys)) {
+      return true;
+    }
+    if (testColumnProperties(element)) {
+      return true;
+    }
+  }
+}
+
+function checkFieldTypes(fieldTypesArray) {
+  if (fieldTypesArray.length < 1) return true;
+  const validFieldTypes = [
+    "Data",
+    "QR",
+    "Scan",
+    "Visible data scan",
+    "Composite QR",
+    "Composite Scan",
+  ];
+  for (let i = 0; i < fieldTypesArray.length; i++) {
+    if (!validFieldTypes.includes(fieldTypesArray[i])) {
+      return true;
+    }
+  }
+}
+
 function checkObjectProperties(object) {
-  // check the value of each property AND the properties/contents of nested objects & arrays individually
-  if (typeof object.tableName !== "string") {
+  const { tableName, tableData, columns, styleSettings, fieldTypes } = object;
+  if (typeof tableName !== "string") {
     return true;
   }
-  if (!Array.isArray(object.tableData)) {
+  if (!Array.isArray(tableData)) {
     return true;
   }
-  if (testTableData(object.tableData)) {
+  if (testTableData(tableData)) {
     return true;
   }
-  // test columns - columns is an array. Each element is an object.
-
-  // properties of each object
-  // {
-  //   "title": "SCAN CHECK",
-  //   "type": "text",
-  //   "name": "1",
-  //   "source": [],
-  //   "options": [],
-  //   "editor": null,
-  //   "allowEmpty": false,
-  //   "width": 50,
-  //   "align": "center"
-  // }
-
+  if (!Array.isArray(columns)) {
+    return true;
+  }
+  if (testTableColumns(columns)) {
+    return true;
+  }
+  if (typeof styleSettings !== "object" || Array.isArray(styleSettings)) {
+    return true;
+  }
+  if (!Array.isArray(fieldTypes)) {
+    return true;
+  }
+  if (checkFieldTypes(fieldTypes)) {
+    return true;
+  }
+  // test matchValuesData next
+  // test fields
+  // test fieldTypes length === columns length === fields length
+  // test total rows
 }
 
 export function validateJsonFile(jsonObject) {
+  const validJsonKeys = [
+    "tableData",
+    "columns",
+    "styleSettings",
+    "fieldTypes",
+    "matchValuesData",
+    "tableName",
+    "fields",
+    "totalRows",
+  ];
   if (typeof jsonObject !== "object" || Array.isArray(jsonObject)) {
     return false;
-  } else if (checkObjectKeys(jsonObject)) {
+  } else if (checkObjectKeys(jsonObject, validJsonKeys)) {
     return false;
   } else if (checkObjectProperties(jsonObject)) {
     return false;
