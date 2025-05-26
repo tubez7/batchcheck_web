@@ -1,0 +1,150 @@
+{
+  "tableData": [
+    [
+      "MY TEXTFIELD",
+      "SCAN CHECK"
+    ],
+    [
+      "MY TEXTFIELD",
+      "SCANCHECK"
+    ],
+    [
+      "MY TEXTFIELD",
+      "A LOAF OF BOLLIX"
+    ],
+    [
+      "MY TEXTFIELD",
+      ""
+    ],
+    [
+      "MY TEXTFIELD",
+      ""
+    ],
+    [
+      "MY TEXTFIELD",
+      ""
+    ],
+    [
+      "MY TEXTFIELD",
+      ""
+    ],
+    [
+      "MY TEXTFIELD",
+      ""
+    ],
+    [
+      "MY TEXTFIELD",
+      ""
+    ],
+    [
+      "MY TEXTFIELD",
+      ""
+    ]
+  ],
+  "columns": [
+    {
+      "title": "TEXT FIELD",
+      "type": "text",
+      "readOnly": true,
+      "name": "0",
+      "source": [],
+      "options": [],
+      "editor": null,
+      "allowEmpty": false,
+      "width": 50,
+      "align": "center"
+    },
+    {
+      "title": "SCAN CHECK",
+      "type": "text",
+      "readOnly": false,
+      "name": "1",
+      "source": [],
+      "options": [],
+      "editor": null,
+      "allowEmpty": false,
+      "width": 50,
+      "align": "center"
+    }
+  ],
+  "styleSettings": {
+    "A1": "background-color: White; color: black;",
+    "B1": "background-color: rgb(250, 128, 128); color: black;",
+    "A2": "background-color: White; color: black;",
+    "B2": "background-color: rgb(66, 237, 180); color: black;",
+    "A3": "background-color: White; color: black;",
+    "B3": "background-color: rgb(250, 128, 128); color: black;",
+    "A4": "background-color: White; color: black;",
+    "B4": "background-color: rgb(250, 128, 128); color: black;",
+    "A5": "background-color: White; color: black;",
+    "B5": "background-color: rgb(250, 128, 128); color: black;",
+    "A6": "background-color: White; color: black;",
+    "B6": "background-color: rgb(250, 128, 128); color: black;",
+    "A7": "background-color: White; color: black;",
+    "B7": "background-color: rgb(250, 128, 128); color: black;",
+    "A8": "background-color: White; color: black;",
+    "B8": "background-color: rgb(250, 128, 128); color: black;",
+    "A9": "background-color: White; color: black;",
+    "B9": "background-color: rgb(250, 128, 128); color: black;",
+    "A10": "background-color: White; color: black;",
+    "B10": "background-color: rgb(250, 128, 128); color: black;"
+  },
+  "fieldTypes": [
+    "Data",
+    "Visible data scan"
+  ],
+  "matchValuesData": {
+    "B1": "SCANCHECK",
+    "B2": "SCANCHECK",
+    "B3": "SCANCHECK",
+    "B4": "SCANCHECK",
+    "B5": "SCANCHECK",
+    "B6": "SCANCHECK",
+    "B7": "SCANCHECK",
+    "B8": "SCANCHECK",
+    "B9": "SCANCHECK",
+    "B10": "SCANCHECK"
+  },
+  "tableName": "ANOTHER TEST.json",
+  "fields": [
+    {
+      "name": "TEXT FIELD",
+      "hasSerial": false,
+      "serial": null,
+      "incrementValue": 0,
+      "recordsPerIncrement": 1,
+      "serialPadded": false,
+      "padLength": null,
+      "padLead": "",
+      "padTrail": "",
+      "prefix": "MY TEXT",
+      "suffix": "FIELD",
+      "type": "Data",
+      "fieldNumber": 1,
+      "id": 1,
+      "compositeData": [],
+      "compositeSeparator": "",
+      "expanded": false
+    },
+    {
+      "name": "SCAN CHECK",
+      "hasSerial": false,
+      "serial": null,
+      "incrementValue": 0,
+      "recordsPerIncrement": 1,
+      "serialPadded": false,
+      "padLength": null,
+      "padLead": "",
+      "padTrail": "",
+      "prefix": "SCAN",
+      "suffix": "CHECK",
+      "type": "Visible data scan",
+      "fieldNumber": 2,
+      "id": 1,
+      "compositeData": [],
+      "compositeSeparator": "",
+      "expanded": false
+    }
+  ],
+  "totalRows": 10
+}

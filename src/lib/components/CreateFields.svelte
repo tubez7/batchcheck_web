@@ -24,7 +24,7 @@
 
   // VARIABLES
   let initialised = false;
-  $: fieldId = fields.length < 1 ? 1 : fieldId;
+  $: fieldId = fields.length < 1 ? 1 : fieldId; // maybe set as 0. Increment when added so 1st is always 1.
   $: fieldNumber = fields.length + 1;
 
   // Set FieldName
@@ -114,6 +114,7 @@
 
   function handleSubmit(e) {
     e.preventDefault();
+    // fieldId++; maybe add here instead
     padLength = serialPadded ? padLength || minimumPadLength : null;
     serial = hasSerial ? serial || 0 : null;
     padLead = serialPadded
@@ -139,7 +140,7 @@
       fieldId
     );
     addField(field);
-    fieldId++;
+    fieldId++; // maybe remove here?
     handleReset();
   }
 

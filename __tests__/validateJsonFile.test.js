@@ -1,3 +1,4 @@
+import json from "../src/lib/sampleJSON.json";
 import { validateJsonFile } from "../src/lib/utils";
 
 describe("validateJsonFile()", () => {
@@ -91,47 +92,33 @@ describe("validateJsonFile()", () => {
     const object1 = {};
     const object2 = {};
     const object3 = {};
+    const object4 = {};
 
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
+    const keys = Object.keys(json);
+
     keys.forEach((key) => {
       if (key === "tableName") {
         object1[key] = 0;
-      } else {
-        object1[key] = "";
-      }
-    });
-
-    keys.forEach((key) => {
-      if (key === "tableName") {
         object2[key] = [];
+        object3[key] = {};
+        object4[key] = true;
       } else {
-        object2[key] = "";
+        object1[key] = json[key];
+        object2[key] = json[key];
+        object3[key] = json[key];
+        object4[key] = json[key];
       }
     });
 
-    keys.forEach((key) => {
-      if (key === "tableName") {
-        object3[key] = {};
-      } else {
-        object3[key] = "";
-      }
-    });
     const result1 = validateJsonFile(object1);
     const result2 = validateJsonFile(object2);
     const result3 = validateJsonFile(object3);
+    const result4 = validateJsonFile(object4);
 
     expect(result1).toBe(false);
     expect(result2).toBe(false);
     expect(result3).toBe(false);
+    expect(result4).toBe(false);
   });
 
   test("function will test that the tableData property value is an array and return false if it isn't", () => {
@@ -139,35 +126,20 @@ describe("validateJsonFile()", () => {
     const object2 = {};
     const object3 = {};
 
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
+    const keys = Object.keys(json);
+
     keys.forEach((key) => {
       if (key === "tableData") {
         object1[key] = 0;
-      } else {
-        object1[key] = "";
-      }
-    });
-
-    keys.forEach((key) => {
-      object2[key] = "";
-    });
-
-    keys.forEach((key) => {
-      if (key === "tableData") {
+        object2[key] = "";
         object3[key] = {};
       } else {
-        object3[key] = "";
+        object1[key] = json[key];
+        object2[key] = json[key];
+        object3[key] = json[key];
       }
     });
+
     const result1 = validateJsonFile(object1);
     const result2 = validateJsonFile(object2);
     const result3 = validateJsonFile(object3);
@@ -180,21 +152,13 @@ describe("validateJsonFile()", () => {
   test("function will test that the tableData array contains only sub-arrays", () => {
     const object = {};
     const tableData = [["sub-array"], [1], "string"];
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
+    const keys = Object.keys(json);
+
     keys.forEach((key) => {
       if (key === "tableData") {
         object[key] = tableData;
       } else {
-        object[key] = "";
+        object[key] = json[key];
       }
     });
     const result = validateJsonFile(object);
@@ -209,21 +173,13 @@ describe("validateJsonFile()", () => {
       ["string", []],
       ["string", ""],
     ];
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
+    const keys = Object.keys(json);
+
     keys.forEach((key) => {
       if (key === "tableData") {
         object[key] = tableData;
       } else {
-        object[key] = "";
+        object[key] = json[key];
       }
     });
     const result = validateJsonFile(object);
@@ -236,51 +192,19 @@ describe("validateJsonFile()", () => {
     const object2 = {};
     const object3 = {};
 
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
+    const keys = Object.keys(json);
     keys.forEach((key) => {
-      if (key === "tableName") {
-        object1[key] = "name";
-      } else if (key === "tableData") {
-        object1[key] = [[""]];
-      } else if (key === "columns") {
+      if (key === "columns") {
         object1[key] = "string";
-      } else {
-        object1[key] = null;
-      }
-    });
-
-    keys.forEach((key) => {
-      if (key === "tableName") {
-        object2[key] = "name";
-      } else if (key === "tableData") {
-        object2[key] = [[""]];
-      } else if (key === "columns") {
         object2[key] = 0;
-      } else {
-        object2[key] = null;
-      }
-    });
-
-    keys.forEach((key) => {
-      if (key === "tableName") {
-        object3[key] = "name";
-      } else if (key === "tableData") {
-        object3[key] = [[""]];
-      } else if (key === "columns") {
         object3[key] = {};
       } else {
-        object3[key] = null;
+        object1[key] = json[key];
+        object2[key] = json[key];
+        object3[key] = json[key];
       }
     });
+
     const result1 = validateJsonFile(object1);
     const result2 = validateJsonFile(object2);
     const result3 = validateJsonFile(object3);
@@ -299,51 +223,19 @@ describe("validateJsonFile()", () => {
     const columns2 = [[], {}, {}];
     const columns3 = [{}, {}, 0];
 
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
+    const keys = Object.keys(json);
     keys.forEach((key) => {
-      if (key === "tableName") {
-        object1[key] = "name";
-      } else if (key === "tableData") {
-        object1[key] = [[""]];
-      } else if (key === "columns") {
+      if (key === "columns") {
         object1[key] = columns1;
-      } else {
-        object1[key] = null;
-      }
-    });
-
-    keys.forEach((key) => {
-      if (key === "tableName") {
-        object2[key] = "name";
-      } else if (key === "tableData") {
-        object2[key] = [[""]];
-      } else if (key === "columns") {
         object2[key] = columns2;
-      } else {
-        object2[key] = null;
-      }
-    });
-
-    keys.forEach((key) => {
-      if (key === "tableName") {
-        object3[key] = "name";
-      } else if (key === "tableData") {
-        object3[key] = [[""]];
-      } else if (key === "columns") {
         object3[key] = columns3;
       } else {
-        object3[key] = null;
+        object1[key] = json[key];
+        object2[key] = json[key];
+        object3[key] = json[key];
       }
     });
+
     const result1 = validateJsonFile(object1);
     const result2 = validateJsonFile(object2);
     const result3 = validateJsonFile(object3);
@@ -355,31 +247,13 @@ describe("validateJsonFile()", () => {
 
   test("function will test all the properties of the column data objects match expected values and will return false if they don't - MISSING KEY", () => {
     const object = {};
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
+    const keys = Object.keys(json);
     const columns = [];
-    const validColumnKeys = [
-      "title",
-      "type",
-      "name",
-      "source",
-      "options",
-      "editor",
-      "allowEmpty",
-      "width",
-      "align",
-    ];
+    const validColumnKeys = Object.keys(json.columns[0]);
     const keysMissingKey = [
       "title",
       "type",
+      "readOnly",
       "name",
       "source",
       "options",
@@ -402,14 +276,10 @@ describe("validateJsonFile()", () => {
     columns.push(validColumnObject, invalidColumnObject);
 
     keys.forEach((key) => {
-      if (key === "tableName") {
-        object[key] = "name";
-      } else if (key === "tableData") {
-        object[key] = [[""]];
-      } else if (key === "columns") {
+      if (key === "columns") {
         object[key] = columns;
       } else {
-        object[key] = null;
+        object[key] = json[key];
       }
     });
 
@@ -420,31 +290,13 @@ describe("validateJsonFile()", () => {
 
   test("function will test all the properties of the column data objects match expected values and will return false if they don't - EXTRA KEY", () => {
     const object = {};
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
+    const keys = Object.keys(json);
     const columns = [];
-    const validColumnKeys = [
-      "title",
-      "type",
-      "name",
-      "source",
-      "options",
-      "editor",
-      "allowEmpty",
-      "width",
-      "align",
-    ];
+    const validColumnKeys = Object.keys(json.columns[0]);
     const keysExtraKey = [
       "title",
       "type",
+      "readOnly",
       "name",
       "I AM AN EXTRA KEY",
       "source",
@@ -474,14 +326,10 @@ describe("validateJsonFile()", () => {
     );
 
     keys.forEach((key) => {
-      if (key === "tableName") {
-        object[key] = "name";
-      } else if (key === "tableData") {
-        object[key] = [[""]];
-      } else if (key === "columns") {
+      if (key === "columns") {
         object[key] = columns;
       } else {
-        object[key] = null;
+        object[key] = json[key];
       }
     });
 
@@ -492,31 +340,13 @@ describe("validateJsonFile()", () => {
 
   test("function will test all the properties of the column data objects match expected values and will return false if they don't - WRONG KEY", () => {
     const object = {};
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
+    const keys = Object.keys(json);
     const columns = [];
-    const validColumnKeys = [
-      "title",
-      "type",
-      "name",
-      "source",
-      "options",
-      "editor",
-      "allowEmpty",
-      "width",
-      "align",
-    ];
+    const validColumnKeys = Object.keys(json.columns[0]);
     const keysWrongKey = [
       "title",
       "type",
+      "readOnly",
       "name",
       "source",
       "options",
@@ -545,14 +375,10 @@ describe("validateJsonFile()", () => {
     );
 
     keys.forEach((key) => {
-      if (key === "tableName") {
-        object[key] = "name";
-      } else if (key === "tableData") {
-        object[key] = [[""]];
-      } else if (key === "columns") {
+      if (key === "columns") {
         object[key] = columns;
       } else {
-        object[key] = null;
+        object[key] = json[key];
       }
     });
 
@@ -563,29 +389,11 @@ describe("validateJsonFile()", () => {
 
   test("function will check that the title property of the column data object is a string", () => {
     const object = {};
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
+    const keys = Object.keys(json);
     const columns = [];
     const columnObject = {};
-    const columnKeys = [
-      "title",
-      "type",
-      "name",
-      "source",
-      "options",
-      "editor",
-      "allowEmpty",
-      "width",
-      "align",
-    ];
+
+    const columnKeys = Object.keys(json.columns[0]);
 
     columnKeys.forEach((key) => {
       columnObject[key] = null;
@@ -594,14 +402,10 @@ describe("validateJsonFile()", () => {
     columns.push(columnObject);
 
     keys.forEach((key) => {
-      if (key === "tableName") {
-        object[key] = "name";
-      } else if (key === "tableData") {
-        object[key] = [[""]];
-      } else if (key === "columns") {
+      if (key === "columns") {
         object[key] = columns;
       } else {
-        object[key] = null;
+        object[key] = json[key];
       }
     });
 
@@ -612,49 +416,58 @@ describe("validateJsonFile()", () => {
 
   test("function will check that the type property of the column data object is a string", () => {
     const object = {};
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
+    const keys = Object.keys(json);
     const columns = [];
     const columnObject = {};
-    const columnKeys = [
-      "title",
-      "type",
-      "name",
-      "source",
-      "options",
-      "editor",
-      "allowEmpty",
-      "width",
-      "align",
-    ];
+    const column = json.columns[0];
+    const columnKeys = Object.keys(column);
 
     columnKeys.forEach((key) => {
-      if (key === "title") {
-        columnObject[key] = "title";
-      } else {
+      if (key === "type") {
         columnObject[key] = null;
+      } else {
+        columnObject[key] = column[key];
       }
     });
 
     columns.push(columnObject);
 
     keys.forEach((key) => {
-      if (key === "tableName") {
-        object[key] = "name";
-      } else if (key === "tableData") {
-        object[key] = [[""]];
-      } else if (key === "columns") {
+      if (key === "columns") {
         object[key] = columns;
       } else {
-        object[key] = null;
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that the readOnly property of the column data object is a boolean", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const columns = [];
+    const columnObject = {};
+    const column = json.columns[0];
+    const columnKeys = Object.keys(column);
+
+    columnKeys.forEach((key) => {
+      if (key === "readOnly") {
+        columnObject[key] = null;
+      } else {
+        columnObject[key] = column[key];
+      }
+    });
+
+    columns.push(columnObject);
+
+    keys.forEach((key) => {
+      if (key === "columns") {
+        object[key] = columns;
+      } else {
+        object[key] = json[key];
       }
     });
 
@@ -665,51 +478,27 @@ describe("validateJsonFile()", () => {
 
   test("function will check that the name property of the column data object is a string", () => {
     const object = {};
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
+    const keys = Object.keys(json);
     const columns = [];
     const columnObject = {};
-    const columnKeys = [
-      "title",
-      "type",
-      "name",
-      "source",
-      "options",
-      "editor",
-      "allowEmpty",
-      "width",
-      "align",
-    ];
+    const column = json.columns[0];
+    const columnKeys = Object.keys(column);
 
     columnKeys.forEach((key) => {
-      if (key === "title") {
-        columnObject[key] = "title";
-      } else if (key === "type") {
-        columnObject[key] = "type";
-      } else {
+      if (key === "name") {
         columnObject[key] = null;
+      } else {
+        columnObject[key] = column[key];
       }
     });
 
     columns.push(columnObject);
 
     keys.forEach((key) => {
-      if (key === "tableName") {
-        object[key] = "name";
-      } else if (key === "tableData") {
-        object[key] = [[""]];
-      } else if (key === "columns") {
+      if (key === "columns") {
         object[key] = columns;
       } else {
-        object[key] = null;
+        object[key] = json[key];
       }
     });
 
@@ -720,53 +509,27 @@ describe("validateJsonFile()", () => {
 
   test("function will check that the name property of the column data object is a string that is also an integer", () => {
     const object = {};
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
+    const keys = Object.keys(json);
     const columns = [];
     const columnObject = {};
-    const columnKeys = [
-      "title",
-      "type",
-      "name",
-      "source",
-      "options",
-      "editor",
-      "allowEmpty",
-      "width",
-      "align",
-    ];
+    const column = json.columns[0];
+    const columnKeys = Object.keys(column);
 
     columnKeys.forEach((key) => {
-      if (key === "title") {
-        columnObject[key] = "title";
-      } else if (key === "type") {
-        columnObject[key] = "type";
-      } else if (key === "name") {
+      if (key === "name") {
         columnObject[key] = "name";
       } else {
-        columnObject[key] = null;
+        columnObject[key] = column[key];
       }
     });
 
     columns.push(columnObject);
 
     keys.forEach((key) => {
-      if (key === "tableName") {
-        object[key] = "name";
-      } else if (key === "tableData") {
-        object[key] = [[""]];
-      } else if (key === "columns") {
+      if (key === "columns") {
         object[key] = columns;
       } else {
-        object[key] = null;
+        object[key] = json[key];
       }
     });
 
@@ -777,110 +540,27 @@ describe("validateJsonFile()", () => {
 
   test("function will check that the source property of the column data object is an array", () => {
     const object = {};
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
+    const keys = Object.keys(json);
     const columns = [];
     const columnObject = {};
-    const columnKeys = [
-      "title",
-      "type",
-      "name",
-      "source",
-      "options",
-      "editor",
-      "allowEmpty",
-      "width",
-      "align",
-    ];
+    const column = json.columns[0];
+    const columnKeys = Object.keys(column);
 
     columnKeys.forEach((key) => {
-      if (key === "title") {
-        columnObject[key] = "title";
-      } else if (key === "type") {
-        columnObject[key] = "type";
-      } else if (key === "name") {
-        columnObject[key] = "1";
+      if (key === "source") {
+        columnObject[key] = {};
       } else {
-        columnObject[key] = null;
+        columnObject[key] = column[key];
       }
     });
 
     columns.push(columnObject);
 
     keys.forEach((key) => {
-      if (key === "tableName") {
-        object[key] = "name";
-      } else if (key === "tableData") {
-        object[key] = [[""]];
-      } else if (key === "columns") {
+      if (key === "columns") {
         object[key] = columns;
       } else {
-        object[key] = null;
-      }
-    });
-
-    const result = validateJsonFile(object);
-
-    expect(result).toBe(false);
-  });
-
-  test("function will check that the source property of the column data object is an array", () => {
-    const object = {};
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
-    const columns = [];
-    const columnObject = {};
-    const columnKeys = [
-      "title",
-      "type",
-      "name",
-      "source",
-      "options",
-      "editor",
-      "allowEmpty",
-      "width",
-      "align",
-    ];
-
-    columnKeys.forEach((key) => {
-      if (key === "title") {
-        columnObject[key] = "title";
-      } else if (key === "type") {
-        columnObject[key] = "type";
-      } else if (key === "name") {
-        columnObject[key] = "1";
-      } else {
-        columnObject[key] = null;
-      }
-    });
-
-    columns.push(columnObject);
-
-    keys.forEach((key) => {
-      if (key === "tableName") {
-        object[key] = "name";
-      } else if (key === "tableData") {
-        object[key] = [[""]];
-      } else if (key === "columns") {
-        object[key] = columns;
-      } else {
-        object[key] = null;
+        object[key] = json[key];
       }
     });
 
@@ -891,55 +571,27 @@ describe("validateJsonFile()", () => {
 
   test("function will check that the options property of the column data object is an array", () => {
     const object = {};
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
+    const keys = Object.keys(json);
     const columns = [];
     const columnObject = {};
-    const columnKeys = [
-      "title",
-      "type",
-      "name",
-      "source",
-      "options",
-      "editor",
-      "allowEmpty",
-      "width",
-      "align",
-    ];
+    const column = json.columns[0];
+    const columnKeys = Object.keys(column);
 
     columnKeys.forEach((key) => {
-      if (key === "title") {
-        columnObject[key] = "title";
-      } else if (key === "type") {
-        columnObject[key] = "type";
-      } else if (key === "name") {
-        columnObject[key] = "1";
-      } else if (key === "source") {
-        columnObject[key] = [];
+      if (key === "options") {
+        columnObject[key] = {};
       } else {
-        columnObject[key] = null;
+        columnObject[key] = column[key];
       }
     });
 
     columns.push(columnObject);
 
     keys.forEach((key) => {
-      if (key === "tableName") {
-        object[key] = "name";
-      } else if (key === "tableData") {
-        object[key] = [[""]];
-      } else if (key === "columns") {
+      if (key === "columns") {
         object[key] = columns;
       } else {
-        object[key] = null;
+        object[key] = json[key];
       }
     });
 
@@ -950,59 +602,27 @@ describe("validateJsonFile()", () => {
 
   test("function will check that the editor property of the column data object is null", () => {
     const object = {};
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
+    const keys = Object.keys(json);
     const columns = [];
     const columnObject = {};
-    const columnKeys = [
-      "title",
-      "type",
-      "name",
-      "source",
-      "options",
-      "editor",
-      "allowEmpty",
-      "width",
-      "align",
-    ];
+    const column = json.columns[0];
+    const columnKeys = Object.keys(column);
 
     columnKeys.forEach((key) => {
-      if (key === "title") {
-        columnObject[key] = "title";
-      } else if (key === "type") {
-        columnObject[key] = "type";
-      } else if (key === "name") {
-        columnObject[key] = "1";
-      } else if (key === "source") {
-        columnObject[key] = [];
-      } else if (key === "options") {
-        columnObject[key] = [];
-      } else if (key === "editor") {
+      if (key === "editor") {
         columnObject[key] = undefined;
       } else {
-        columnObject[key] = null;
+        columnObject[key] = column[key];
       }
     });
 
     columns.push(columnObject);
 
     keys.forEach((key) => {
-      if (key === "tableName") {
-        object[key] = "name";
-      } else if (key === "tableData") {
-        object[key] = [[""]];
-      } else if (key === "columns") {
+      if (key === "columns") {
         object[key] = columns;
       } else {
-        object[key] = null;
+        object[key] = json[key];
       }
     });
 
@@ -1013,59 +633,27 @@ describe("validateJsonFile()", () => {
 
   test("function will check that the allowEmpty property of the column data object is a boolean", () => {
     const object = {};
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
+    const keys = Object.keys(json);
     const columns = [];
     const columnObject = {};
-    const columnKeys = [
-      "title",
-      "type",
-      "name",
-      "source",
-      "options",
-      "editor",
-      "allowEmpty",
-      "width",
-      "align",
-    ];
+    const column = json.columns[0];
+    const columnKeys = Object.keys(column);
 
     columnKeys.forEach((key) => {
-      if (key === "title") {
-        columnObject[key] = "title";
-      } else if (key === "type") {
-        columnObject[key] = "type";
-      } else if (key === "name") {
-        columnObject[key] = "1";
-      } else if (key === "source") {
-        columnObject[key] = [];
-      } else if (key === "options") {
-        columnObject[key] = [];
-      } else if (key === "editor") {
+      if (key === "allowEmpty") {
         columnObject[key] = null;
       } else {
-        columnObject[key] = null;
+        columnObject[key] = column[key];
       }
     });
 
     columns.push(columnObject);
 
     keys.forEach((key) => {
-      if (key === "tableName") {
-        object[key] = "name";
-      } else if (key === "tableData") {
-        object[key] = [[""]];
-      } else if (key === "columns") {
+      if (key === "columns") {
         object[key] = columns;
       } else {
-        object[key] = null;
+        object[key] = json[key];
       }
     });
 
@@ -1076,61 +664,27 @@ describe("validateJsonFile()", () => {
 
   test("function will check that the width property of the column data object is a number", () => {
     const object = {};
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
+    const keys = Object.keys(json);
     const columns = [];
     const columnObject = {};
-    const columnKeys = [
-      "title",
-      "type",
-      "name",
-      "source",
-      "options",
-      "editor",
-      "allowEmpty",
-      "width",
-      "align",
-    ];
+    const column = json.columns[0];
+    const columnKeys = Object.keys(column);
 
     columnKeys.forEach((key) => {
-      if (key === "title") {
-        columnObject[key] = "title";
-      } else if (key === "type") {
-        columnObject[key] = "type";
-      } else if (key === "name") {
-        columnObject[key] = "1";
-      } else if (key === "source") {
-        columnObject[key] = [];
-      } else if (key === "options") {
-        columnObject[key] = [];
-      } else if (key === "editor") {
+      if (key === "width") {
         columnObject[key] = null;
-      } else if (key === "allowEmpty") {
-        columnObject[key] = false;
       } else {
-        columnObject[key] = null;
+        columnObject[key] = column[key];
       }
     });
 
     columns.push(columnObject);
 
     keys.forEach((key) => {
-      if (key === "tableName") {
-        object[key] = "name";
-      } else if (key === "tableData") {
-        object[key] = [[""]];
-      } else if (key === "columns") {
+      if (key === "columns") {
         object[key] = columns;
       } else {
-        object[key] = null;
+        object[key] = json[key];
       }
     });
 
@@ -1141,63 +695,27 @@ describe("validateJsonFile()", () => {
 
   test("function will check that the align property of the column data object is a string", () => {
     const object = {};
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
+    const keys = Object.keys(json);
     const columns = [];
     const columnObject = {};
-    const columnKeys = [
-      "title",
-      "type",
-      "name",
-      "source",
-      "options",
-      "editor",
-      "allowEmpty",
-      "width",
-      "align",
-    ];
+    const column = json.columns[0];
+    const columnKeys = Object.keys(column);
 
     columnKeys.forEach((key) => {
-      if (key === "title") {
-        columnObject[key] = "title";
-      } else if (key === "type") {
-        columnObject[key] = "type";
-      } else if (key === "name") {
-        columnObject[key] = "1";
-      } else if (key === "source") {
-        columnObject[key] = [];
-      } else if (key === "options") {
-        columnObject[key] = [];
-      } else if (key === "editor") {
+      if (key === "align") {
         columnObject[key] = null;
-      } else if (key === "allowEmpty") {
-        columnObject[key] = false;
-      } else if (key === "width") {
-        columnObject[key] = 50;
       } else {
-        columnObject[key] = null;
+        columnObject[key] = column[key];
       }
     });
 
     columns.push(columnObject);
 
     keys.forEach((key) => {
-      if (key === "tableName") {
-        object[key] = "name";
-      } else if (key === "tableData") {
-        object[key] = [[""]];
-      } else if (key === "columns") {
+      if (key === "columns") {
         object[key] = columns;
       } else {
-        object[key] = null;
+        object[key] = json[key];
       }
     });
 
@@ -1208,42 +726,13 @@ describe("validateJsonFile()", () => {
 
   test("function will check that the styleSettings property of the JSON data object is an object", () => {
     const object = {};
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
-    const columns = [];
-    const columnObject = {};
-
-    columnObject.title = "title";
-    columnObject.type = "type";
-    columnObject.name = "1";
-    columnObject.source = [];
-    columnObject.options = [];
-    columnObject.editor = null;
-    columnObject.allowEmpty = false;
-    columnObject.width = 50;
-    columnObject.align = "center";
-
-    columns.push(columnObject);
+    const keys = Object.keys(json);
 
     keys.forEach((key) => {
-      if (key === "tableName") {
-        object[key] = "name";
-      } else if (key === "tableData") {
-        object[key] = [[""]];
-      } else if (key === "columns") {
-        object[key] = columns;
-      } else if (key === "styleSettings") {
+      if (key === "styleSettings") {
         object[key] = [];
       } else {
-        object[key] = null;
+        object[key] = json[key];
       }
     });
 
@@ -1254,44 +743,12 @@ describe("validateJsonFile()", () => {
 
   test("function will check that the fieldTypes property of the JSON data object is an array", () => {
     const object = {};
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
-    const columns = [];
-    const columnObject = {};
-
-    columnObject.title = "title";
-    columnObject.type = "type";
-    columnObject.name = "1";
-    columnObject.source = [];
-    columnObject.options = [];
-    columnObject.editor = null;
-    columnObject.allowEmpty = false;
-    columnObject.width = 50;
-    columnObject.align = "center";
-
-    columns.push(columnObject);
-
+    const keys = Object.keys(json);
     keys.forEach((key) => {
-      if (key === "tableName") {
-        object[key] = "name";
-      } else if (key === "tableData") {
-        object[key] = [[""]];
-      } else if (key === "columns") {
-        object[key] = columns;
-      } else if (key === "styleSettings") {
-        object[key] = {};
-      } else if (key === "fieldTypes") {
+      if (key === "fieldTypes") {
         object[key] = {};
       } else {
-        object[key] = null;
+        object[key] = json[key];
       }
     });
 
@@ -1303,58 +760,15 @@ describe("validateJsonFile()", () => {
   test("function will check that the contents of the fieldTypes array of the JSON data object match the expected values", () => {
     const object1 = {};
     const object2 = {};
-    const keys = [
-      "tableData",
-      "columns",
-      "styleSettings",
-      "fieldTypes",
-      "matchValuesData",
-      "tableName",
-      "fields",
-      "totalRows",
-    ];
-    const columns = [];
-    const columnObject = {};
-    columnObject.title = "title";
-    columnObject.type = "type";
-    columnObject.name = "1";
-    columnObject.source = [];
-    columnObject.options = [];
-    columnObject.editor = null;
-    columnObject.allowEmpty = false;
-    columnObject.width = 50;
-    columnObject.align = "center";
-    columns.push(columnObject);
+    const keys = Object.keys(json);
 
     keys.forEach((key) => {
-      if (key === "tableName") {
-        object1[key] = "name";
-      } else if (key === "tableData") {
-        object1[key] = [[""]];
-      } else if (key === "columns") {
-        object1[key] = columns;
-      } else if (key === "styleSettings") {
-        object1[key] = {};
-      } else if (key === "fieldTypes") {
+      if (key === "fieldTypes") {
         object1[key] = [];
-      } else {
-        object1[key] = null;
-      }
-    });
-
-    keys.forEach((key) => {
-      if (key === "tableName") {
-        object2[key] = "name";
-      } else if (key === "tableData") {
-        object2[key] = [[""]];
-      } else if (key === "columns") {
-        object2[key] = columns;
-      } else if (key === "styleSettings") {
-        object2[key] = {};
-      } else if (key === "fieldTypes") {
         object2[key] = ["Data", "FALSE VALUE"];
       } else {
-        object2[key] = null;
+        object1[key] = json[key];
+        object2[key] = json[key];
       }
     });
 
@@ -1363,5 +777,256 @@ describe("validateJsonFile()", () => {
 
     expect(result1).toBe(false);
     expect(result2).toBe(false);
+  });
+
+  test("function will check that the matchValuesData property of the JSON data object is an object", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    keys.forEach((key) => {
+      if (key === "matchValuesData") {
+        object[key] = [];
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that the fields property of the JSON data object is an array", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = {};
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that every element in the fields array is an object", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const fields = [{}, {}, [], {}];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that fields array has a length of at least 1", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const fields = [];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that all field objects match expected properties - MISSING KEY", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "TEXT FIELD",
+      hasSerial: false,
+      serial: null,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "MY TEXT",
+      suffix: "FIELD",
+      fieldNumber: 1,
+      id: 1,
+      compositeData: [],
+      compositeSeparator: "",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that all field objects match expected properties - EXTRA KEY", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "TEXT FIELD",
+      hasSerial: false,
+      serial: null,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "MY TEXT",
+      suffix: "FIELD",
+      "EXTRA-KEY": null,
+      type: "Data",
+      fieldNumber: 1,
+      id: 1,
+      compositeData: [],
+      compositeSeparator: "",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that all field objects match expected properties - WRONG KEY", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "TEXT FIELD",
+      hasSerial: false,
+      serial: null,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "MY TEXT",
+      WRONG: "FIELD",
+      type: "Data",
+      fieldNumber: 1,
+      id: 1,
+      compositeData: [],
+      compositeSeparator: "",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that name property of field object is a string", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: 0,
+      hasSerial: false,
+      serial: null,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "SCAN",
+      suffix: "CHECK",
+      type: "Visible data scan",
+      fieldNumber: 2,
+      id: 1,
+      compositeData: [],
+      compositeSeparator: "",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that hasSerial property of field object is a boolean", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: null,
+      serial: null,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "SCAN",
+      suffix: "CHECK",
+      type: "Visible data scan",
+      fieldNumber: 2,
+      id: 1,
+      compositeData: [],
+      compositeSeparator: "",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
   });
 });

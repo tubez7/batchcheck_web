@@ -1,5 +1,6 @@
 import { isEqual } from "lodash-es";
 import QRCode from "qrcode";
+import json from "./sampleJSON.json";
 
 export const nonWhiteSpaceRegex = /\S/;
 export const globalNumericRegex = /\d/g;
@@ -176,6 +177,8 @@ export function parseTableColumns(fields) {
     }
     if (!type.includes("SCAN")) {
       obj.readOnly = true;
+    } else {
+      obj.readOnly = false;
     }
 
     return obj;
@@ -452,6 +455,7 @@ function checkObjectKeys(object, referenceKeys) {
 }
 
 function testTableData(tableDataArray) {
+  if (!Array.isArray(tableDataArray)) return true;
   for (let i = 0; i < tableDataArray.length; i++) {
     if (!Array.isArray(tableDataArray[i])) {
       return true;
@@ -468,6 +472,7 @@ function testColumnProperties(column) {
   const {
     title,
     type,
+    readOnly,
     name,
     source,
     options,
@@ -481,6 +486,9 @@ function testColumnProperties(column) {
     return true;
   }
   if (typeof type !== "string") {
+    return true;
+  }
+  if (typeof readOnly !== "boolean") {
     return true;
   }
   if (typeof name !== "string") {
@@ -510,17 +518,9 @@ function testColumnProperties(column) {
 }
 
 function testTableColumns(tableColumnsArray) {
-  const validColumnKeys = [
-    "title",
-    "type",
-    "name",
-    "source",
-    "options",
-    "editor",
-    "allowEmpty",
-    "width",
-    "align",
-  ];
+  if (!Array.isArray(tableColumnsArray) || tableColumnsArray.length < 1)
+    return true;
+  const validColumnKeys = Object.keys(json.columns[0]);
   for (let i = 0; i < tableColumnsArray.length; i++) {
     const element = tableColumnsArray[i];
     if (typeof element !== "object" || Array.isArray(element)) {
@@ -536,7 +536,8 @@ function testTableColumns(tableColumnsArray) {
 }
 
 function checkFieldTypes(fieldTypesArray) {
-  if (fieldTypesArray.length < 1) return true;
+  if (!Array.isArray(fieldTypesArray) || fieldTypesArray.length < 1)
+    return true;
   const validFieldTypes = [
     "Data",
     "QR",
@@ -552,34 +553,72 @@ function checkFieldTypes(fieldTypesArray) {
   }
 }
 
-function checkObjectProperties(object) {
-  const { tableName, tableData, columns, styleSettings, fieldTypes } = object;
-  if (typeof tableName !== "string") {
+function checkDataObject(object) {
+  if (typeof object !== "object" || Array.isArray(object)) {
     return true;
   }
-  if (!Array.isArray(tableData)) {
+}
+
+function checkFieldProperties(field) {
+  const { name } = field;
+  if (typeof name !== "string") {
+    return true;
+  }
+}
+
+function checkFields(fields) {
+  if (!Array.isArray(fields) || fields.length < 1) {
+    return true;
+  }
+  const validKeys = Object.keys(json.fields[0]);
+  for (let i = 0; i < fields.length; i++) {
+    const field = fields[i];
+    if (typeof field !== "object" || Array.isArray(field)) {
+      return true;
+    }
+    if (checkObjectKeys(field, validKeys)) {
+      return true;
+    }
+    if (checkFieldProperties(field)) {
+      return true;
+    }
+  }
+}
+
+function checkObjectProperties(object) {
+  const {
+    tableName,
+    tableData,
+    columns,
+    styleSettings,
+    fieldTypes,
+    matchValuesData,
+    fields,
+  } = object;
+  if (typeof tableName !== "string") {
     return true;
   }
   if (testTableData(tableData)) {
     return true;
   }
-  if (!Array.isArray(columns)) {
-    return true;
-  }
   if (testTableColumns(columns)) {
     return true;
   }
-  if (typeof styleSettings !== "object" || Array.isArray(styleSettings)) {
-    return true;
-  }
-  if (!Array.isArray(fieldTypes)) {
+  if (checkDataObject(styleSettings)) {
     return true;
   }
   if (checkFieldTypes(fieldTypes)) {
     return true;
   }
-  // test matchValuesData next
+  if (checkDataObject(matchValuesData)) {
+    return true;
+  }
+  if (checkFields(fields)) {
+    return true;
+  }
   // test fields
+  // field id should always be unique. isn't in sample json -> INVESTIGATE.
+  // test each field property - current test written, not passed
   // test fieldTypes length === columns length === fields length
   // test total rows
 }
