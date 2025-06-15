@@ -1029,4 +1029,648 @@ describe("validateJsonFile()", () => {
 
     expect(result).toBe(false);
   });
+
+  test("function will check that serial property of field object is a number or null", () => {
+    const object = {};
+    const object2 = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: false,
+      serial: "null",
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "SCAN",
+      suffix: "CHECK",
+      type: "Visible data scan",
+      fieldNumber: 2,
+      id: 1,
+      compositeData: [],
+      compositeSeparator: "",
+      expanded: false,
+    };
+    const invalidField2 = {
+      name: "FIELD NAME",
+      hasSerial: true,
+      serial: "1",
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "SCAN",
+      suffix: "CHECK",
+      type: "Visible data scan",
+      fieldNumber: 2,
+      id: 1,
+      compositeData: [],
+      compositeSeparator: "",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    const fields2 = [validField, invalidField2];
+
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+        object2[key] = fields2;
+      } else {
+        object[key] = json[key];
+        object2[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+    const result2 = validateJsonFile(object2);
+
+    expect(result).toBe(false);
+    expect(result2).toBe(false);
+  });
+
+  test("function will check that incrementValue property of field object is a number", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: false,
+      serial: null,
+      incrementValue: "0",
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "SCAN",
+      suffix: "CHECK",
+      type: "Visible data scan",
+      fieldNumber: 2,
+      id: 1,
+      compositeData: [],
+      compositeSeparator: "",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that recordsPerIncrement property of field object is a number", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: false,
+      serial: null,
+      incrementValue: 0,
+      recordsPerIncrement: "1",
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "SCAN",
+      suffix: "CHECK",
+      type: "Visible data scan",
+      fieldNumber: 2,
+      id: 1,
+      compositeData: [],
+      compositeSeparator: "",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that serialPadded property of field object is a boolean", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: false,
+      serial: null,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: "false",
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "SCAN",
+      suffix: "CHECK",
+      type: "Visible data scan",
+      fieldNumber: 2,
+      id: 1,
+      compositeData: [],
+      compositeSeparator: "",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that padLength property of field object is either a number or null", () => {
+    const object = {};
+    const object2 = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: false,
+      serial: null,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: undefined,
+      padLead: "",
+      padTrail: "",
+      prefix: "SCAN",
+      suffix: "CHECK",
+      type: "Visible data scan",
+      fieldNumber: 2,
+      id: 1,
+      compositeData: [],
+      compositeSeparator: "",
+      expanded: false,
+    };
+    const invalidField2 = {
+      name: "FIELD NAME",
+      hasSerial: true,
+      serial: 1,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: "1",
+      padLead: "",
+      padTrail: "",
+      prefix: "SCAN",
+      suffix: "CHECK",
+      type: "Visible data scan",
+      fieldNumber: 2,
+      id: 1,
+      compositeData: [],
+      compositeSeparator: "",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    const fields2 = [validField, invalidField2];
+
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+        object2[key] = fields2;
+      } else {
+        object[key] = json[key];
+        object2[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+    const result2 = validateJsonFile(object2);
+
+    expect(result).toBe(false);
+    expect(result2).toBe(false);
+  });
+
+  test("function will check that padTrail property of field object is a string", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: false,
+      serial: null,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: 1,
+      prefix: "SCAN",
+      suffix: "CHECK",
+      type: "Visible data scan",
+      fieldNumber: 2,
+      id: 1,
+      compositeData: [],
+      compositeSeparator: "",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that prefix property of field object is a string", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: false,
+      serial: null,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: undefined,
+      suffix: "undefined",
+      type: "Visible data scan",
+      fieldNumber: 2,
+      id: 1,
+      compositeData: [],
+      compositeSeparator: "",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that suffix property of field object is a string", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: false,
+      serial: null,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "undefined",
+      suffix: undefined,
+      type: "Visible data scan",
+      fieldNumber: 2,
+      id: 1,
+      compositeData: [],
+      compositeSeparator: "",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that type property of field object is a string", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: false,
+      serial: null,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "",
+      suffix: "",
+      type: undefined,
+      fieldNumber: 2,
+      id: 1,
+      compositeData: [],
+      compositeSeparator: "",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that fieldNumber property of field object is a number", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: false,
+      serial: null,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "",
+      suffix: "",
+      type: "visible data scan",
+      fieldNumber: "2",
+      id: 1,
+      compositeData: [],
+      compositeSeparator: "",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that id property of field object is a number", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: false,
+      serial: null,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "",
+      suffix: "",
+      type: "visible data scan",
+      fieldNumber: 2,
+      id: "1",
+      compositeData: [],
+      compositeSeparator: "",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that compositeData property of field object is an array", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: false,
+      serial: null,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "",
+      suffix: "",
+      type: "visible data scan",
+      fieldNumber: 2,
+      id: 1,
+      compositeData: {},
+      compositeSeparator: "",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that compositeSeparator property of field object is a string", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: false,
+      serial: null,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "",
+      suffix: "",
+      type: "visible data scan",
+      fieldNumber: 2,
+      id: 1,
+      compositeData: [],
+      compositeSeparator: undefined,
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that expanded property of field object is a boolean", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: false,
+      serial: null,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "",
+      suffix: "",
+      type: "visible data scan",
+      fieldNumber: 2,
+      id: 1,
+      compositeData: [],
+      compositeSeparator: "||",
+      expanded: undefined,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that if hasSerial = true, serial property of field object is a number", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: true,
+      serial: null,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "",
+      suffix: "",
+      type: "visible data scan",
+      fieldNumber: 2,
+      id: 1,
+      compositeData: [],
+      compositeSeparator: "||",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
 });
+
+// test("function will check that if serialPadded is true, only padLead or padTrail has a length of 1", () => {
+//   const object = {};
+//   const keys = Object.keys(json);
+//   const validField = json.fields[0];
+//   const invalidField = {
+//     name: "FIELD NAME",
+//     hasSerial: true,
+//     serial: 1,
+//     incrementValue: 0,
+//     recordsPerIncrement: 1,
+//     serialPadded: true,
+//     padLength: 2,
+//     padLead: "1",
+//     padTrail: "1",
+//     prefix: "SCAN",
+//     suffix: "CHECK",
+//     type: "Visible data scan",
+//     fieldNumber: 2,
+//     id: 1,
+//     compositeData: [],
+//     compositeSeparator: "",
+//     expanded: false,
+//   };
+//   const fields = [validField, invalidField];
+//   keys.forEach((key) => {
+//     if (key === "fields") {
+//       object[key] = fields;
+//     } else {
+//       object[key] = json[key];
+//     }
+//   });
+
+//   const result = validateJsonFile(object);
+
+//   expect(result).toBe(false);
+// });

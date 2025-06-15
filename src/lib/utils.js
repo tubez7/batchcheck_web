@@ -559,9 +559,129 @@ function checkDataObject(object) {
   }
 }
 
-function checkFieldProperties(field) {
-  const { name } = field;
+function typeCheck(
+  name,
+  hasSerial,
+  serial,
+  incrementValue,
+  recordsPerIncrement,
+  serialPadded,
+  padLength,
+  padLead,
+  padTrail,
+  prefix,
+  suffix,
+  type,
+  fieldNumber,
+  id,
+  compositeData,
+  compositeSeparator,
+  expanded
+) {
   if (typeof name !== "string") {
+    return true;
+  }
+  if (typeof hasSerial !== "boolean") {
+    return true;
+  }
+  if (serial !== null && typeof serial !== "number") {
+    return true;
+  }
+  if (typeof incrementValue !== "number") {
+    return true;
+  }
+  if (typeof recordsPerIncrement !== "number") {
+    return true;
+  }
+  if (typeof serialPadded !== "boolean") {
+    return true;
+  }
+  if (padLength !== null && typeof padLength !== "number") {
+    return true;
+  }
+  if (typeof padLead !== "string") {
+    return true;
+  }
+  if (typeof padTrail !== "string") {
+    return true;
+  }
+  if (typeof prefix !== "string") {
+    return true;
+  }
+  if (typeof suffix !== "string") {
+    return true;
+  }
+  if (typeof type !== "string") {
+    return true;
+  }
+  if (typeof fieldNumber !== "number") {
+    return true;
+  }
+  if (typeof id !== "number") {
+    return true;
+  }
+  if (!Array.isArray(compositeData)) {
+    return true;
+  }
+  if (typeof compositeSeparator !== "string") {
+    return true;
+  }
+  if (typeof expanded !== "boolean") {
+    return true;
+  }
+}
+
+function checkSerialNumberFormat(hasSerial, serial) {
+  // continue work here
+}
+
+function checkFieldProperties(field) {
+  const {
+    name,
+    hasSerial,
+    serial,
+    incrementValue,
+    recordsPerIncrement,
+    serialPadded,
+    padLength,
+    padLead,
+    padTrail,
+    prefix,
+    suffix,
+    type,
+    fieldNumber,
+    id,
+    compositeData,
+    compositeSeparator,
+    expanded,
+  } = field;
+
+  if (
+    typeCheck(
+      name,
+      hasSerial,
+      serial,
+      incrementValue,
+      recordsPerIncrement,
+      serialPadded,
+      padLength,
+      padLead,
+      padTrail,
+      prefix,
+      suffix,
+      type,
+      fieldNumber,
+      id,
+      compositeData,
+      compositeSeparator,
+      expanded
+    )
+  ) {
+    return true;
+  }
+
+  if (checkSerialNumberFormat(hasSerial, serial)) {
+    // working inside here currently
     return true;
   }
 }
@@ -580,6 +700,7 @@ function checkFields(fields) {
       return true;
     }
     if (checkFieldProperties(field)) {
+      console.log("fields prop failed");
       return true;
     }
   }
@@ -614,11 +735,12 @@ function checkObjectProperties(object) {
     return true;
   }
   if (checkFields(fields)) {
+    console.log("failed fields check");
     return true;
   }
   // test fields
   // field id should always be unique. isn't in sample json -> INVESTIGATE.
-  // test each field property - current test written, not passed
+  // test each field property -> types checked. In depth checking. Next test to pass already written to be passed.
   // test fieldTypes length === columns length === fields length
   // test total rows
 }
@@ -635,10 +757,13 @@ export function validateJsonFile(jsonObject) {
     "totalRows",
   ];
   if (typeof jsonObject !== "object" || Array.isArray(jsonObject)) {
+    console.log("failed obj check");
     return false;
   } else if (checkObjectKeys(jsonObject, validJsonKeys)) {
+    console.log("failed keys check");
     return false;
   } else if (checkObjectProperties(jsonObject)) {
+    console.log("failed prop check");
     return false;
   } else {
     return true;
