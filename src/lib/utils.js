@@ -1,5 +1,6 @@
 import { isEqual } from "lodash-es";
 import QRCode from "qrcode";
+import compData from "./sampleCompData.json";
 import json from "./sampleJSON.json";
 
 export const nonWhiteSpaceRegex = /\S/;
@@ -451,6 +452,8 @@ export async function createTableData(rows, fields) {
 function checkObjectKeys(object, referenceKeys) {
   const checkValues = referenceKeys.sort();
   const keys = Object.keys(object).sort();
+  //console.log("reference = ", checkValues);
+  //console.log("checking = ", keys);
   return !isEqual(checkValues, keys);
 }
 
@@ -542,7 +545,7 @@ function checkFieldTypes(fieldTypesArray) {
     "Data",
     "QR",
     "Scan",
-    "Visible data scan",
+    "Visible Data Scan",
     "Composite QR",
     "Composite Scan",
   ];
@@ -562,11 +565,9 @@ function checkDataObject(object) {
 function typeCheck(
   name,
   hasSerial,
-  serial,
   incrementValue,
   recordsPerIncrement,
   serialPadded,
-  padLength,
   padLead,
   padTrail,
   prefix,
@@ -584,10 +585,6 @@ function typeCheck(
   if (typeof hasSerial !== "boolean") {
     return true;
   }
-  if (serial !== null && typeof serial !== "number") {
-    // can prob delete
-    return true;
-  }
   if (typeof incrementValue !== "number") {
     return true;
   }
@@ -595,10 +592,6 @@ function typeCheck(
     return true;
   }
   if (typeof serialPadded !== "boolean") {
-    return true;
-  }
-  if (padLength !== null && typeof padLength !== "number") {
-    // can prob delete
     return true;
   }
   if (typeof padLead !== "string") {
@@ -636,12 +629,10 @@ function typeCheck(
 function checkSerialNumberFormat(hasSerial, serial) {
   if (hasSerial) {
     if (typeof serial !== "number") {
-      console.log("serial aint a number");
       return true;
     }
   } else {
     if (serial !== null) {
-      console.log(serial, "serial isn't null m8");
       return true;
     }
   }
@@ -655,7 +646,6 @@ function checkPadFormat(padded, length, serial, hasSerial, lead, trail) {
       return true;
     }
     const minPadLength = serial.toString().length;
-    console.log(length, minPadLength);
     if (typeof length !== "number") {
       return true;
     }
@@ -675,21 +665,33 @@ function checkPadFormat(padded, length, serial, hasSerial, lead, trail) {
   }
 }
 
-function checkValidTypes(type) {
-  const validTypes = [
-    "Data",
-    "QR",
-    "Scan",
-    "Visible data scan",
-    "Composite QR",
-    "Composite Scan",
-  ];
-  if (!validTypes.includes(type)) {
+function checkValidValue(validValues, value) {
+  if (!validValues.includes(value)) {
     return true;
   }
 }
 
-function checkFieldProperties(field) {
+function checkFieldNumber(number, maximum) {
+  if (number > maximum) {
+    return true;
+  }
+}
+
+function checkCompData(array) {
+  const validCompDataKeys = Object.keys(compData.compositeData);
+  for (let i = 0; i < array.length; i++) {
+    const dataObject = array[i];
+    if (checkObjectKeys(dataObject, validCompDataKeys)) {
+      return true;
+    }
+    // continue from here
+    // get field id
+    // check that id exists in the fields array
+    // check the field type of the matching id is not a Composite Data type field
+  }
+}
+
+function checkFieldProperties(field, fieldsLength) {
   const {
     name,
     hasSerial,
@@ -710,15 +712,22 @@ function checkFieldProperties(field) {
     expanded,
   } = field;
 
+  const validTypes = [
+    "Data",
+    "QR",
+    "Scan",
+    "Visible Data Scan",
+    "Composite QR",
+    "Composite Scan",
+  ];
+
   if (
     typeCheck(
       name,
       hasSerial,
-      serial,
       incrementValue,
       recordsPerIncrement,
       serialPadded,
-      padLength,
       padLead,
       padTrail,
       prefix,
@@ -731,11 +740,9 @@ function checkFieldProperties(field) {
       expanded
     )
   ) {
-    console.log("typeCheck failed");
     return true;
   }
   if (checkSerialNumberFormat(hasSerial, serial)) {
-    console.log("serial format failed");
     return true;
   }
   if (
@@ -750,25 +757,37 @@ function checkFieldProperties(field) {
   ) {
     return true;
   }
-  if (checkValidTypes(type)) {
+  if (checkValidValue(validTypes, type)) {
+    return true;
+  }
+  if (checkFieldNumber(fieldNumber, fieldsLength)) {
+    return true;
+  }
+  if (checkCompData(compositeData)) {
     return true;
   }
 }
 
 function checkFields(fields) {
-  if (!Array.isArray(fields) || fields.length < 1) {
+  const length = fields.length;
+  if (!Array.isArray(fields) || length < 1) {
     return true;
   }
+  if (getUniqueIdNumbers(fields).length !== length) {
+    return true;
+  }
+
   const validKeys = Object.keys(json.fields[0]);
-  for (let i = 0; i < fields.length; i++) {
+  for (let i = 0; i < length; i++) {
     const field = fields[i];
-    if (typeof field !== "object" || Array.isArray(field)) {
+
+    if (checkDataObject(field)) {
       return true;
     }
     if (checkObjectKeys(field, validKeys)) {
       return true;
     }
-    if (checkFieldProperties(field)) {
+    if (checkFieldProperties(field, length)) {
       console.log("fields prop failed");
       return true;
     }
@@ -808,8 +827,7 @@ function checkObjectProperties(object) {
     return true;
   }
   // test fields
-  // field id should always be unique. isn't in sample json -> INVESTIGATE.
-  // test each field property -> types checked. In depth checking. Next test to pass already written to be passed.
+  // test each field property -> types checked. In depth checking. Next test to pass already written.
   // test fieldTypes length === columns length === fields length
   // test total rows
 }
@@ -825,7 +843,7 @@ export function validateJsonFile(jsonObject) {
     "fields",
     "totalRows",
   ];
-  if (typeof jsonObject !== "object" || Array.isArray(jsonObject)) {
+  if (checkDataObject(jsonObject)) {
     console.log("failed obj check");
     return false;
   } else if (checkObjectKeys(jsonObject, validJsonKeys)) {

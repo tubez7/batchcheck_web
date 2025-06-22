@@ -24,7 +24,7 @@ describe("createTableData()", () => {
       { type: "Scan", prefix: "One" },
       { type: "Data", prefix: "Two" },
       { type: "Scan", prefix: "Three" },
-      { type: "Visible data scan", prefix: "Four" },
+      { type: "Visible Data Scan", prefix: "Four" },
     ];
     const expected = [["", "Two", "", ""]];
     const result = await createTableData(1, input);
@@ -34,10 +34,9 @@ describe("createTableData()", () => {
 
   it("should pass a QR url into the array if the field type is a scan field", async () => {
     const input = [{ type: "QR", prefix: "Four" }];
-    //const expected = [[""]];
     const result = await createTableData(1, input);
 
-    expect(result[0][0].startsWith("<img src=data:image/png;base64")).toBe(true);
+    expect(result[0][0].startsWith("data:image/png;base64")).toBe(true);
   });
 
   it("should not mutate the input array", async () => {

@@ -56,7 +56,7 @@ describe("createValueMatchDataObject()", () => {
       { type: "Data", prefix: "Two" },
       { type: "Scan", prefix: "Three" },
       { type: "QR", prefix: "Four" },
-      { type: "Visible data scan", prefix: "Five" },
+      { type: "Visible Data Scan", prefix: "Five" },
     ];
     const expected = {
       A1: "One",
@@ -74,7 +74,7 @@ describe("createValueMatchDataObject()", () => {
       { type: "Data", prefix: "Two", id: 2 },
       { type: "Scan", prefix: "Three", id: 3 },
       { type: "QR", prefix: "Four", id: 4 },
-      { type: "Visible data scan", prefix: "Five", id: 5 },
+      { type: "Visible Data Scan", prefix: "Five", id: 5 },
       {
         type: "Composite Scan",
         id: 6,
@@ -99,7 +99,7 @@ describe("createValueMatchDataObject()", () => {
       { type: "Data", prefix: "Two", id: 2 },
       { type: "Scan", prefix: "Three", id: 3 },
       { type: "QR", prefix: "Four", id: 4 },
-      { type: "Visible data scan", prefix: "Five", id: 5 },
+      { type: "Visible Data Scan", prefix: "Five", id: 5 },
       {
         type: "Composite Scan",
         id: 6,
@@ -124,7 +124,7 @@ describe("createValueMatchDataObject()", () => {
       { type: "Data", prefix: "Two", id: 2 },
       { type: "Scan", prefix: "Three", id: 3 },
       { type: "QR", prefix: "Four", id: 4 },
-      { type: "Visible data scan", prefix: "Five", id: 5 },
+      { type: "Visible Data Scan", prefix: "Five", id: 5 },
       {
         type: "Composite Scan",
         id: 6,
@@ -138,7 +138,7 @@ describe("createValueMatchDataObject()", () => {
       { type: "Data", prefix: "Two", id: 2 },
       { type: "Scan", prefix: "Three", id: 3 },
       { type: "QR", prefix: "Four", id: 4 },
-      { type: "Visible data scan", prefix: "Five", id: 5 },
+      { type: "Visible Data Scan", prefix: "Five", id: 5 },
       {
         type: "Composite Scan",
         id: 6,

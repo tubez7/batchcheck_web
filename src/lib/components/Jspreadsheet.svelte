@@ -39,7 +39,7 @@
     let cellName = jspreadsheet.getColumnNameFromId([x, y]);
 
     if (value === matchValuesData[cellName]) {
-      if (fieldTypes[x] === "Visible data scan") {
+      if (fieldTypes[x] === "Visible Data Scan") {
         styleSettings[cellName] =
           `background-color: rgb(66, 237, 180); color: ${currentDefaultTextColour};`;
       } else {

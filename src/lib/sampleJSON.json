@@ -59,7 +59,7 @@
     "A10": "background-color: White; color: black;",
     "B10": "background-color: rgb(250, 128, 128); color: black;"
   },
-  "fieldTypes": ["Data", "Visible data scan"],
+  "fieldTypes": ["Data", "Visible Data Scan"],
   "matchValuesData": {
     "B1": "SCANCHECK",
     "B2": "SCANCHECK",
@@ -105,7 +105,7 @@
       "padTrail": "",
       "prefix": "SCAN",
       "suffix": "CHECK",
-      "type": "Visible data scan",
+      "type": "Visible Data Scan",
       "fieldNumber": 2,
       "id": 2,
       "compositeData": [],

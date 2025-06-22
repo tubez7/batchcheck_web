@@ -31,7 +31,7 @@ describe("parseTableColumns()", () => {
       { name: "name1", type: "Data" },
       { name: "name 2", type: "Composite QR" },
       { name: "name 3", type: "QR" },
-      { name: "name 4", type: "Visible data scan" },
+      { name: "name 4", type: "Visible Data Scan" },
     ];
     const expected = parseTableColumns(input);
 
@@ -68,7 +68,7 @@ describe("parseTableColumns()", () => {
       { name: "name 2", type: "Composite QR" },
       { name: "name3", type: "Composite Scan" },
       { name: "name 4", type: "QR" },
-      { name: "name 5", type: "Visible data scan" },
+      { name: "name 5", type: "Visible Data Scan" },
       { name: "name 6", type: "Scan" },
     ];
 
