@@ -769,3 +769,10 @@ export function validateJsonFile(jsonObject) {
     return true;
   }
 }
+
+export function getUniqueId(array) {
+  if (array.length < 1) {
+    return 1;
+  }
+  return Math.max(...array.map(elem => elem.id)) + 1;
+}
