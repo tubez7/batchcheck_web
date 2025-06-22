@@ -89,11 +89,14 @@
               importedMatchValuesData = jsonData.matchValuesData;
               setTableData();
             } else {
+              // throw an error here?
+              // throw inside validate func for more granular error?
               errorMsg =
                 "Invalid Batch-Check JSON data loaded. Please try loading another file.";
             }
           } catch (err) {
-            errorMsg = "Failed to read JSON file.";
+            //errorMsg = "Failed to read JSON file.";
+            console.log(errorMsg);
             console.error(err);
           }
         };

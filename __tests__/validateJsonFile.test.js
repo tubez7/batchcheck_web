@@ -861,8 +861,8 @@ describe("validateJsonFile()", () => {
       padTrail: "",
       prefix: "MY TEXT",
       suffix: "FIELD",
-      fieldNumber: 1,
-      id: 1,
+      fieldNumber: 2,
+      id: 2,
       compositeData: [],
       compositeSeparator: "",
       expanded: false,
@@ -899,8 +899,8 @@ describe("validateJsonFile()", () => {
       suffix: "FIELD",
       "EXTRA-KEY": null,
       type: "Data",
-      fieldNumber: 1,
-      id: 1,
+      fieldNumber: 2,
+      id: 2,
       compositeData: [],
       compositeSeparator: "",
       expanded: false,
@@ -936,8 +936,8 @@ describe("validateJsonFile()", () => {
       prefix: "MY TEXT",
       WRONG: "FIELD",
       type: "Data",
-      fieldNumber: 1,
-      id: 1,
+      fieldNumber: 2,
+      id: 2,
       compositeData: [],
       compositeSeparator: "",
       expanded: false,
@@ -974,7 +974,7 @@ describe("validateJsonFile()", () => {
       suffix: "CHECK",
       type: "Visible data scan",
       fieldNumber: 2,
-      id: 1,
+      id: 2,
       compositeData: [],
       compositeSeparator: "",
       expanded: false,
@@ -1011,7 +1011,7 @@ describe("validateJsonFile()", () => {
       suffix: "CHECK",
       type: "Visible data scan",
       fieldNumber: 2,
-      id: 1,
+      id: 2,
       compositeData: [],
       compositeSeparator: "",
       expanded: false,
@@ -1049,7 +1049,7 @@ describe("validateJsonFile()", () => {
       suffix: "CHECK",
       type: "Visible data scan",
       fieldNumber: 2,
-      id: 1,
+      id: 2,
       compositeData: [],
       compositeSeparator: "",
       expanded: false,
@@ -1068,7 +1068,7 @@ describe("validateJsonFile()", () => {
       suffix: "CHECK",
       type: "Visible data scan",
       fieldNumber: 2,
-      id: 1,
+      id: 2,
       compositeData: [],
       compositeSeparator: "",
       expanded: false,
@@ -1111,7 +1111,7 @@ describe("validateJsonFile()", () => {
       suffix: "CHECK",
       type: "Visible data scan",
       fieldNumber: 2,
-      id: 1,
+      id: 2,
       compositeData: [],
       compositeSeparator: "",
       expanded: false,
@@ -1148,7 +1148,7 @@ describe("validateJsonFile()", () => {
       suffix: "CHECK",
       type: "Visible data scan",
       fieldNumber: 2,
-      id: 1,
+      id: 2,
       compositeData: [],
       compositeSeparator: "",
       expanded: false,
@@ -1185,7 +1185,7 @@ describe("validateJsonFile()", () => {
       suffix: "CHECK",
       type: "Visible data scan",
       fieldNumber: 2,
-      id: 1,
+      id: 2,
       compositeData: [],
       compositeSeparator: "",
       expanded: false,
@@ -1242,7 +1242,7 @@ describe("validateJsonFile()", () => {
       suffix: "CHECK",
       type: "Visible data scan",
       fieldNumber: 2,
-      id: 1,
+      id: 2,
       compositeData: [],
       compositeSeparator: "",
       expanded: false,
@@ -1285,7 +1285,7 @@ describe("validateJsonFile()", () => {
       suffix: "CHECK",
       type: "Visible data scan",
       fieldNumber: 2,
-      id: 1,
+      id: 2,
       compositeData: [],
       compositeSeparator: "",
       expanded: false,
@@ -1322,7 +1322,7 @@ describe("validateJsonFile()", () => {
       suffix: "undefined",
       type: "Visible data scan",
       fieldNumber: 2,
-      id: 1,
+      id: 2,
       compositeData: [],
       compositeSeparator: "",
       expanded: false,
@@ -1359,7 +1359,7 @@ describe("validateJsonFile()", () => {
       suffix: undefined,
       type: "Visible data scan",
       fieldNumber: 2,
-      id: 1,
+      id: 2,
       compositeData: [],
       compositeSeparator: "",
       expanded: false,
@@ -1396,7 +1396,7 @@ describe("validateJsonFile()", () => {
       suffix: "",
       type: undefined,
       fieldNumber: 2,
-      id: 1,
+      id: 2,
       compositeData: [],
       compositeSeparator: "",
       expanded: false,
@@ -1433,7 +1433,7 @@ describe("validateJsonFile()", () => {
       suffix: "",
       type: "visible data scan",
       fieldNumber: "2",
-      id: 1,
+      id: 2,
       compositeData: [],
       compositeSeparator: "",
       expanded: false,
@@ -1470,7 +1470,7 @@ describe("validateJsonFile()", () => {
       suffix: "",
       type: "visible data scan",
       fieldNumber: 2,
-      id: "1",
+      id: "2",
       compositeData: [],
       compositeSeparator: "",
       expanded: false,
@@ -1507,7 +1507,7 @@ describe("validateJsonFile()", () => {
       suffix: "",
       type: "visible data scan",
       fieldNumber: 2,
-      id: 1,
+      id: 2,
       compositeData: {},
       compositeSeparator: "",
       expanded: false,
@@ -1544,7 +1544,7 @@ describe("validateJsonFile()", () => {
       suffix: "",
       type: "visible data scan",
       fieldNumber: 2,
-      id: 1,
+      id: 2,
       compositeData: [],
       compositeSeparator: undefined,
       expanded: false,
@@ -1581,7 +1581,7 @@ describe("validateJsonFile()", () => {
       suffix: "",
       type: "visible data scan",
       fieldNumber: 2,
-      id: 1,
+      id: 2,
       compositeData: [],
       compositeSeparator: "||",
       expanded: undefined,
@@ -1618,7 +1618,377 @@ describe("validateJsonFile()", () => {
       suffix: "",
       type: "visible data scan",
       fieldNumber: 2,
-      id: 1,
+      id: 2,
+      compositeData: [],
+      compositeSeparator: "||",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that if hasSerial = false, serial property of field object is null", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: false,
+      serial: 1,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "",
+      suffix: "",
+      type: "visible data scan",
+      fieldNumber: 2,
+      id: 2,
+      compositeData: [],
+      compositeSeparator: "||",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that if serialPadded = true, property value of padLength is a number", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: true,
+      serial: 1,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: true,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "",
+      suffix: "",
+      type: "visible data scan",
+      fieldNumber: 2,
+      id: 2,
+      compositeData: [],
+      compositeSeparator: "||",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that if serialPadded = false, property value of padLength is null", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: true,
+      serial: 1,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: 0,
+      padLead: "",
+      padTrail: "",
+      prefix: "",
+      suffix: "",
+      type: "visible data scan",
+      fieldNumber: 2,
+      id: 2,
+      compositeData: [],
+      compositeSeparator: "||",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that if serialPadded = true, value of padLength is not smaller than the minimum pad length", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: true,
+      serial: 10,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: true,
+      padLength: 1,
+      padLead: "",
+      padTrail: "",
+      prefix: "",
+      suffix: "",
+      type: "visible data scan",
+      fieldNumber: 2,
+      id: 2,
+      compositeData: [],
+      compositeSeparator: "||",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that if serialPadded = true, value of hasSerial is true", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: false,
+      serial: null,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: true,
+      padLength: 3,
+      padLead: "",
+      padTrail: "",
+      prefix: "",
+      suffix: "",
+      type: "visible data scan",
+      fieldNumber: 2,
+      id: 2,
+      compositeData: [],
+      compositeSeparator: "||",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+   test("function will check that if serialPadded = true, value of only padLead or only padTrail is a single character", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: true,
+      serial: 1,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: true,
+      padLength: 3,
+      padLead: "1",
+      padTrail: "1",
+      prefix: "",
+      suffix: "",
+      type: "visible data scan",
+      fieldNumber: 2,
+      id: 2,
+      compositeData: [],
+      compositeSeparator: "||",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that if serialPadded = true, value of only padLead or only padTrail is a single character - TEST 2", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: true,
+      serial: 1,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: true,
+      padLength: 3,
+      padLead: "10",
+      padTrail: "10",
+      prefix: "",
+      suffix: "",
+      type: "visible data scan",
+      fieldNumber: 2,
+      id: 2,
+      compositeData: [],
+      compositeSeparator: "||",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that if serialPadded = true, value of only padLead or only padTrail is a single character - TEST 3", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: true,
+      serial: 1,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: true,
+      padLength: 3,
+      padLead: "10",
+      padTrail: "",
+      prefix: "",
+      suffix: "",
+      type: "visible data scan",
+      fieldNumber: 2,
+      id: 2,
+      compositeData: [],
+      compositeSeparator: "||",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that if serialPadded = true, value of only padLead or only padTrail is a single character - TEST 4", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: true,
+      serial: 1,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: true,
+      padLength: 3,
+      padLead: "",
+      padTrail: "",
+      prefix: "",
+      suffix: "",
+      type: "visible data scan",
+      fieldNumber: 2,
+      id: 2,
+      compositeData: [],
+      compositeSeparator: "||",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that ifield type property is a valid type", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: true,
+      serial: 1,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "",
+      suffix: "",
+      type: "I AM WRONG",
+      fieldNumber: 2,
+      id: 2,
       compositeData: [],
       compositeSeparator: "||",
       expanded: false,

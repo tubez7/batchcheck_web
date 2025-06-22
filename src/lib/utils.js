@@ -585,6 +585,7 @@ function typeCheck(
     return true;
   }
   if (serial !== null && typeof serial !== "number") {
+    // can prob delete
     return true;
   }
   if (typeof incrementValue !== "number") {
@@ -597,6 +598,7 @@ function typeCheck(
     return true;
   }
   if (padLength !== null && typeof padLength !== "number") {
+    // can prob delete
     return true;
   }
   if (typeof padLead !== "string") {
@@ -632,7 +634,59 @@ function typeCheck(
 }
 
 function checkSerialNumberFormat(hasSerial, serial) {
-  // continue work here
+  if (hasSerial) {
+    if (typeof serial !== "number") {
+      console.log("serial aint a number");
+      return true;
+    }
+  } else {
+    if (serial !== null) {
+      console.log(serial, "serial isn't null m8");
+      return true;
+    }
+  }
+}
+
+function checkPadFormat(padded, length, serial, hasSerial, lead, trail) {
+  if (padded) {
+    const leadLength = lead.length;
+    const trailLength = trail.length;
+    if (!hasSerial) {
+      return true;
+    }
+    const minPadLength = serial.toString().length;
+    console.log(length, minPadLength);
+    if (typeof length !== "number") {
+      return true;
+    }
+    if (length < minPadLength) {
+      return true;
+    }
+    if (leadLength > 0 && trailLength > 0) {
+      return true;
+    }
+    if (leadLength !== 1 && trailLength !== 1) {
+      return true;
+    }
+  } else {
+    if (length !== null) {
+      return true;
+    }
+  }
+}
+
+function checkValidTypes(type) {
+  const validTypes = [
+    "Data",
+    "QR",
+    "Scan",
+    "Visible data scan",
+    "Composite QR",
+    "Composite Scan",
+  ];
+  if (!validTypes.includes(type)) {
+    return true;
+  }
 }
 
 function checkFieldProperties(field) {
@@ -677,11 +731,26 @@ function checkFieldProperties(field) {
       expanded
     )
   ) {
+    console.log("typeCheck failed");
     return true;
   }
-
   if (checkSerialNumberFormat(hasSerial, serial)) {
-    // working inside here currently
+    console.log("serial format failed");
+    return true;
+  }
+  if (
+    checkPadFormat(
+      serialPadded,
+      padLength,
+      serial,
+      hasSerial,
+      padLead,
+      padTrail
+    )
+  ) {
+    return true;
+  }
+  if (checkValidTypes(type)) {
     return true;
   }
 }
@@ -774,5 +843,5 @@ export function getUniqueId(array) {
   if (array.length < 1) {
     return 1;
   }
-  return Math.max(...array.map(elem => elem.id)) + 1;
+  return Math.max(...array.map((elem) => elem.id)) + 1;
 }

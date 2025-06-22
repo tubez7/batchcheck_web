@@ -1,45 +1,15 @@
 {
   "tableData": [
-    [
-      "MY TEXTFIELD",
-      "SCAN CHECK"
-    ],
-    [
-      "MY TEXTFIELD",
-      "SCANCHECK"
-    ],
-    [
-      "MY TEXTFIELD",
-      "A LOAF OF BOLLIX"
-    ],
-    [
-      "MY TEXTFIELD",
-      ""
-    ],
-    [
-      "MY TEXTFIELD",
-      ""
-    ],
-    [
-      "MY TEXTFIELD",
-      ""
-    ],
-    [
-      "MY TEXTFIELD",
-      ""
-    ],
-    [
-      "MY TEXTFIELD",
-      ""
-    ],
-    [
-      "MY TEXTFIELD",
-      ""
-    ],
-    [
-      "MY TEXTFIELD",
-      ""
-    ]
+    ["MY TEXTFIELD", "SCAN CHECK"],
+    ["MY TEXTFIELD", "SCANCHECK"],
+    ["MY TEXTFIELD", "A LOAF OF BOLLIX"],
+    ["MY TEXTFIELD", ""],
+    ["MY TEXTFIELD", ""],
+    ["MY TEXTFIELD", ""],
+    ["MY TEXTFIELD", ""],
+    ["MY TEXTFIELD", ""],
+    ["MY TEXTFIELD", ""],
+    ["MY TEXTFIELD", ""]
   ],
   "columns": [
     {
@@ -89,10 +59,7 @@
     "A10": "background-color: White; color: black;",
     "B10": "background-color: rgb(250, 128, 128); color: black;"
   },
-  "fieldTypes": [
-    "Data",
-    "Visible data scan"
-  ],
+  "fieldTypes": ["Data", "Visible data scan"],
   "matchValuesData": {
     "B1": "SCANCHECK",
     "B2": "SCANCHECK",
@@ -140,7 +107,7 @@
       "suffix": "CHECK",
       "type": "Visible data scan",
       "fieldNumber": 2,
-      "id": 1,
+      "id": 2,
       "compositeData": [],
       "compositeSeparator": "",
       "expanded": false

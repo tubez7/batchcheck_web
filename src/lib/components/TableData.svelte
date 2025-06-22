@@ -27,6 +27,7 @@
 
   // VARIABLES
   let receivedData = get(tableStoreData);
+  console.log(receivedData); // remove after validation testing complete
   let totalRows = get(totalRowsStored);
   let dataFromFile = get(dataImported);
   let darkMode = false;
