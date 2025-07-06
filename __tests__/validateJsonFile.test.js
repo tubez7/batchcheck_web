@@ -1,6 +1,7 @@
-import compData from "../src/lib/sampleCompData.json";
+import { cloneDeep } from "lodash-es";
 import json from "../src/lib/sampleJSON.json";
 import { validateJsonFile } from "../src/lib/utils";
+import validData from "../src/lib/validDataTemplates.json";
 
 describe("validateJsonFile()", () => {
   test("function should return a boolean", () => {
@@ -2082,11 +2083,67 @@ describe("validateJsonFile()", () => {
     expect(result).toBe(false);
   });
 
+  test("function will check that fieldNumber is correct in relation to the index", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const validField2 = {
+      name: "FIELD NAME",
+      hasSerial: true,
+      serial: 1,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "",
+      suffix: "",
+      type: "Data",
+      fieldNumber: 3,
+      id: 3,
+      compositeData: [],
+      compositeSeparator: "||",
+      expanded: false,
+    };
+    const invalidField = {
+      name: "FIELD NAME",
+      hasSerial: true,
+      serial: 1,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "",
+      suffix: "",
+      type: "Data",
+      fieldNumber: 3,
+      id: 2,
+      compositeData: [],
+      compositeSeparator: "||",
+      expanded: false,
+    };
+    const fields = [validField, invalidField, validField2];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
   test("function will check that Composite Data fields keys match the expected values - TEST EXTRA KEY", () => {
     const object = {};
     const keys = Object.keys(json);
     const validField = json.fields[0];
-    const validCompDataField = compData.compositeData;
+    const validCompDataField = validData.compositeData;
     const invalidCompDataField = {
       name: "name",
       id: 1,
@@ -2131,7 +2188,7 @@ describe("validateJsonFile()", () => {
     const object = {};
     const keys = Object.keys(json);
     const validField = json.fields[0];
-    const validCompDataField = compData.compositeData;
+    const validCompDataField = validData.compositeData;
     const invalidCompDataField = {
       name: "name",
       id: 1,
@@ -2174,7 +2231,7 @@ describe("validateJsonFile()", () => {
     const object = {};
     const keys = Object.keys(json);
     const validField = json.fields[0];
-    const validCompDataField = compData.compositeData;
+    const validCompDataField = validData.compositeData;
     const invalidCompDataField = {
       name: "name",
       id: 1,
@@ -2218,7 +2275,7 @@ describe("validateJsonFile()", () => {
     const object = {};
     const keys = Object.keys(json);
     const validField = json.fields[0];
-    const validCompDataField = compData.compositeData;
+    const validCompDataField = validData.compositeData;
     const invalidCompDataField = {
       name: "FIELD NAME",
       id: 7,
@@ -2262,7 +2319,7 @@ describe("validateJsonFile()", () => {
     const object = {};
     const keys = Object.keys(json);
     const validField = json.fields[0];
-    const validCompDataField = compData.compositeData;
+    const validCompDataField = validData.compositeData;
     const invalidCompDataField = {
       name: "FIELD NAME",
       id: 2,
@@ -2301,41 +2358,152 @@ describe("validateJsonFile()", () => {
 
     expect(result).toBe(false);
   });
+
+  test("function will check that Composite Data fields array fieldNumbers match the correct index", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const validCompDataField = validData.compositeData;
+    const invalidCompDataField = {
+      name: "FIELD NAME",
+      id: 1,
+      fieldNumber: 3,
+    };
+    const compDataArray = [validCompDataField, invalidCompDataField];
+    const invalidField = {
+      name: "COMPOSITE DATA FIELD",
+      hasSerial: false,
+      serial: null,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "",
+      suffix: "",
+      type: "Composite QR",
+      fieldNumber: 2,
+      id: 2,
+      compositeData: compDataArray,
+      compositeSeparator: "||",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that fieldTypes length, columns length, and fields length all match - TEST INVALID COLUMNS", () => {
+    const invalidJson = cloneDeep(json);
+    const columns = [
+      {
+        title: "TEXT FIELD",
+        type: "text",
+        readOnly: true,
+        name: "0",
+        source: [],
+        options: [],
+        editor: null,
+        allowEmpty: false,
+        width: 50,
+        align: "center",
+      },
+    ];
+    invalidJson.columns = columns;
+
+    const result = validateJsonFile(invalidJson);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that fieldTypes length, columns length, and fields length all match - TEST INVALID fieldTypes", () => {
+    const invalidJson = cloneDeep(json);
+    const fieldTypes = ["Data"];
+    invalidJson.fieldTypes = fieldTypes;
+
+    const result = validateJsonFile(invalidJson);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that fieldTypes length, columns length, and fields length all match - TEST INVALID fields", () => {
+    const invalidJson = cloneDeep(json);
+    const fields = [
+      {
+        name: "TEXT FIELD",
+        hasSerial: false,
+        serial: null,
+        incrementValue: 0,
+        recordsPerIncrement: 1,
+        serialPadded: false,
+        padLength: null,
+        padLead: "",
+        padTrail: "",
+        prefix: "MY TEXT",
+        suffix: "FIELD",
+        type: "Data",
+        fieldNumber: 1,
+        id: 1,
+        compositeData: [],
+        compositeSeparator: "",
+        expanded: false,
+      },
+    ];
+    invalidJson.fields = fields;
+
+    const result = validateJsonFile(invalidJson);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that tableData length matches the totalRows property", () => {
+    const invalidJson = cloneDeep(json);
+    const tableData = [
+      ["MY TEXTFIELD", "SCAN CHECK"],
+      ["MY TEXTFIELD", "SCANCHECK"],
+      ["MY TEXTFIELD", ""],
+      ["MY TEXTFIELD", ""],
+      ["MY TEXTFIELD", ""],
+      ["MY TEXTFIELD", ""],
+      ["MY TEXTFIELD", ""],
+      ["MY TEXTFIELD", ""],
+      ["MY TEXTFIELD", ""],
+    ];
+    invalidJson.tableData = tableData;
+
+    const result = validateJsonFile(invalidJson);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that the keys of the matchValuesData object match the columns of a Scan type field", () => {
+    const invalidJson = cloneDeep(json);
+    const matchValuesData = {
+      B1: "SCANCHECK",
+      B2: "SCANCHECK",
+      B3: "SCANCHECK",
+      B4: "SCANCHECK",
+      B5: "SCANCHECK",
+      B6: "SCANCHECK",
+      B7: "SCANCHECK",
+      B8: "SCANCHECK",
+      B9: "SCANCHECK",
+      A10: "SCANCHECK",
+    };
+    invalidJson.matchValuesData = matchValuesData;
+
+    const result = validateJsonFile(invalidJson);
+
+    expect(result).toBe(false);
+  });
 });
-
-// test("function will check that if serialPadded is true, only padLead or padTrail has a length of 1", () => {
-//   const object = {};
-//   const keys = Object.keys(json);
-//   const validField = json.fields[0];
-//   const invalidField = {
-//     name: "FIELD NAME",
-//     hasSerial: true,
-//     serial: 1,
-//     incrementValue: 0,
-//     recordsPerIncrement: 1,
-//     serialPadded: true,
-//     padLength: 2,
-//     padLead: "1",
-//     padTrail: "1",
-//     prefix: "SCAN",
-//     suffix: "CHECK",
-//     type: "Visible Data Scan",
-//     fieldNumber: 2,
-//     id: 1,
-//     compositeData: [],
-//     compositeSeparator: "",
-//     expanded: false,
-//   };
-//   const fields = [validField, invalidField];
-//   keys.forEach((key) => {
-//     if (key === "fields") {
-//       object[key] = fields;
-//     } else {
-//       object[key] = json[key];
-//     }
-//   });
-
-//   const result = validateJsonFile(object);
-
-//   expect(result).toBe(false);
-// });

@@ -1,0 +1,12 @@
+{
+  "validKeys": ["Backspace", "Delete", "Del", "Tab", "ArrowLeft", "ArrowRight"],
+  "compositeData": { "name": "name", "id": 1, "fieldNumber": 1 },
+  "fieldTypes": [
+    "Data",
+    "QR",
+    "Scan",
+    "Visible Data Scan",
+    "Composite QR",
+    "Composite Scan"
+  ]
+}

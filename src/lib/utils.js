@@ -1,7 +1,7 @@
 import { isEqual } from "lodash-es";
 import QRCode from "qrcode";
-import compData from "./sampleCompData.json";
 import json from "./sampleJSON.json";
+import validData from "./validDataTemplates.json";
 
 export const nonWhiteSpaceRegex = /\S/;
 export const globalNumericRegex = /\d/g;
@@ -9,14 +9,7 @@ export const globalNumericRegex = /\d/g;
 export function handleKeyDown(e) {
   const numericOnlyRegex = /\d/;
   const key = e.key;
-  const validKeys = [
-    "Backspace",
-    "Delete",
-    "Del",
-    "Tab",
-    "ArrowLeft",
-    "ArrowRight",
-  ];
+  const validKeys = validData.validKeys;
 
   if (!numericOnlyRegex.test(key) && !validKeys.includes(key)) {
     e.preventDefault();
@@ -291,7 +284,6 @@ export function createDataFieldCellValue(field, rowNumber) {
 }
 
 export function getUniqueIdNumbers(array) {
-  console.log("ARRAY IN GET UNIQUE ID NUMBERS = ", array);
   const uniqueIds = [];
   let id;
 
@@ -541,14 +533,8 @@ function testTableColumns(tableColumnsArray) {
 function checkFieldTypes(fieldTypesArray) {
   if (!Array.isArray(fieldTypesArray) || fieldTypesArray.length < 1)
     return true;
-  const validFieldTypes = [
-    "Data",
-    "QR",
-    "Scan",
-    "Visible Data Scan",
-    "Composite QR",
-    "Composite Scan",
-  ];
+
+  const validFieldTypes = validData.fieldTypes;
   for (let i = 0; i < fieldTypesArray.length; i++) {
     if (!validFieldTypes.includes(fieldTypesArray[i])) {
       return true;
@@ -556,9 +542,52 @@ function checkFieldTypes(fieldTypesArray) {
   }
 }
 
-function checkDataObject(object) {
+export function getColumnIndex(columnString) {
+  // let result = 0;
+  // for (let i = 0; i < columnString.length; i++) {
+  //   const letterValue = columnString.charCodeAt(i) - 65;
+  //   result = result * 26 + (letterValue + 1);
+  // }
+  // return result - 1;
+}
+
+function checkMatchValuesDataKeys(object) {
+  const keys = Object.keys(object);
+  const alphaOnlyRegex = /[A-Za-z]/;
+  let keyToCheck;
+  let columnId;
+  let char;
+  for (let i = 0; i < keys.length; i++) {
+    keyToCheck = keys[i];
+    columnId = "";
+    for (let j = 0; j < keyToCheck.length; j++) { // refactor without looping.
+      char = keyToCheck[j];
+      //console.log("checking char = ", char);
+      if (alphaOnlyRegex.test(char)) {
+        columnId += char;
+        //console.log("added char. ColumnId =", columnId);
+      } else {
+        //console.log("char isn't a letter. columnId =", columnId);
+        // call the columnId func here.
+        // check fields index here and return true if not a scan field
+        // if it is a scan field - break
+        break;
+      }
+    }
+  }
+  
+  //return true; // auto true whilst scaffolding logic
+}
+
+function checkDataObject(object, callback) {
   if (typeof object !== "object" || Array.isArray(object)) {
     return true;
+  }
+  if (callback) {
+    if (callback(object)) {
+      console.log("the callback func has returned true");
+      return true;
+    }
   }
 }
 
@@ -671,29 +700,36 @@ function checkValidValue(validValues, value) {
   }
 }
 
-function checkFieldNumber(number, maximum) {
-  if (number > maximum) {
+function checkFieldNumber(number, maximum, indexReference) {
+  if (number > maximum || number !== indexReference + 1) {
     return true;
   }
 }
 
-function checkCompData(array, validIds) {
-  const validCompDataKeys = Object.keys(compData.compositeData);
-  for (let i = 0; i < array.length; i++) {
+function checkCompData(array, validIds, fields) {
+  const validCompDataKeys = Object.keys(validData.compositeData);
+  const compDataLength = array.length;
+  for (let i = 0; i < compDataLength; i++) {
     const dataObject = array[i];
     if (checkObjectKeys(dataObject, validCompDataKeys)) {
+      return true;
+    }
+    const fieldNumber = dataObject.fieldNumber;
+    if (checkFieldNumber(fieldNumber, compDataLength, i)) {
       return true;
     }
     const idToCheck = dataObject.id;
     if (!validIds.includes(idToCheck)) {
       return true;
     }
-    // continue from here
-    // check the field type of the matching id is not a Composite Data type field
+    const fieldToCheck = fields.find((field) => field.id === idToCheck);
+    if (fieldToCheck.type.includes("Composite")) {
+      return true;
+    }
   }
 }
 
-function checkFieldProperties(field, fieldsLength, ids) {
+function checkFieldProperties(field, fieldsLength, ids, fields, index) {
   const {
     name,
     hasSerial,
@@ -714,14 +750,7 @@ function checkFieldProperties(field, fieldsLength, ids) {
     expanded,
   } = field;
 
-  const validTypes = [
-    "Data",
-    "QR",
-    "Scan",
-    "Visible Data Scan",
-    "Composite QR",
-    "Composite Scan",
-  ];
+  const validTypes = validData.fieldTypes;
 
   if (
     typeCheck(
@@ -762,10 +791,10 @@ function checkFieldProperties(field, fieldsLength, ids) {
   if (checkValidValue(validTypes, type)) {
     return true;
   }
-  if (checkFieldNumber(fieldNumber, fieldsLength)) {
+  if (checkFieldNumber(fieldNumber, fieldsLength, index)) {
     return true;
   }
-  if (checkCompData(compositeData, ids)) {
+  if (checkCompData(compositeData, ids, fields)) {
     return true;
   }
 }
@@ -790,7 +819,7 @@ function checkFields(fields) {
     if (checkObjectKeys(field, validKeys)) {
       return true;
     }
-    if (checkFieldProperties(field, length, uniqueIds)) {
+    if (checkFieldProperties(field, length, uniqueIds, fields, i)) {
       console.log("fields prop failed");
       return true;
     }
@@ -806,46 +835,50 @@ function checkObjectProperties(object) {
     fieldTypes,
     matchValuesData,
     fields,
+    totalRows,
   } = object;
   if (typeof tableName !== "string") {
     return true;
   }
   if (testTableData(tableData)) {
+    console.log("table data fail");
     return true;
   }
   if (testTableColumns(columns)) {
+    console.log("columns fail");
     return true;
   }
   if (checkDataObject(styleSettings)) {
+    console.log("check data obj fail - styleSettings");
     return true;
   }
   if (checkFieldTypes(fieldTypes)) {
+    console.log("maybe here?");
     return true;
   }
-  if (checkDataObject(matchValuesData)) {
+  if (checkDataObject(matchValuesData, checkMatchValuesDataKeys)) {
+    // will also need to pass in fields here too
+    console.log("check data obj fail - matchVals");
     return true;
   }
   if (checkFields(fields)) {
     console.log("failed fields check");
     return true;
   }
-  // test fields
-  // test each field property -> types checked. In depth checking. Next test to pass already written.
-  // test fieldTypes length === columns length === fields length
-  // test total rows
+  if (
+    columns.length !== fieldTypes.length ||
+    fieldTypes.length !== fields.length
+  ) {
+    return true;
+  }
+  if (totalRows !== tableData.length) {
+    return true;
+  }
+  // test matchValuesData cell names reference a "Scan" column
 }
 
 export function validateJsonFile(jsonObject) {
-  const validJsonKeys = [
-    "tableData",
-    "columns",
-    "styleSettings",
-    "fieldTypes",
-    "matchValuesData",
-    "tableName",
-    "fields",
-    "totalRows",
-  ];
+  const validJsonKeys = Object.keys(json);
   if (checkDataObject(jsonObject)) {
     console.log("failed obj check");
     return false;
@@ -856,6 +889,7 @@ export function validateJsonFile(jsonObject) {
     console.log("failed prop check");
     return false;
   } else {
+    console.log("file is fine babaaay!!");
     return true;
   }
 }
