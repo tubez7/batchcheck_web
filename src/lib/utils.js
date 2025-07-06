@@ -291,6 +291,7 @@ export function createDataFieldCellValue(field, rowNumber) {
 }
 
 export function getUniqueIdNumbers(array) {
+  console.log("ARRAY IN GET UNIQUE ID NUMBERS = ", array);
   const uniqueIds = [];
   let id;
 
@@ -409,7 +410,6 @@ async function createRowData(
   const type = field.type;
   let url;
 
-  // need to build in comp QR
   if (type === "Data") {
     rowData.push(createDataFieldCellValue(field, rowNumber));
   } else if (type === "QR") {
@@ -677,21 +677,23 @@ function checkFieldNumber(number, maximum) {
   }
 }
 
-function checkCompData(array) {
+function checkCompData(array, validIds) {
   const validCompDataKeys = Object.keys(compData.compositeData);
   for (let i = 0; i < array.length; i++) {
     const dataObject = array[i];
     if (checkObjectKeys(dataObject, validCompDataKeys)) {
       return true;
     }
+    const idToCheck = dataObject.id;
+    if (!validIds.includes(idToCheck)) {
+      return true;
+    }
     // continue from here
-    // get field id
-    // check that id exists in the fields array
     // check the field type of the matching id is not a Composite Data type field
   }
 }
 
-function checkFieldProperties(field, fieldsLength) {
+function checkFieldProperties(field, fieldsLength, ids) {
   const {
     name,
     hasSerial,
@@ -763,7 +765,7 @@ function checkFieldProperties(field, fieldsLength) {
   if (checkFieldNumber(fieldNumber, fieldsLength)) {
     return true;
   }
-  if (checkCompData(compositeData)) {
+  if (checkCompData(compositeData, ids)) {
     return true;
   }
 }
@@ -773,7 +775,8 @@ function checkFields(fields) {
   if (!Array.isArray(fields) || length < 1) {
     return true;
   }
-  if (getUniqueIdNumbers(fields).length !== length) {
+  const uniqueIds = getUniqueIdNumbers(fields);
+  if (uniqueIds.length !== length) {
     return true;
   }
 
@@ -787,7 +790,7 @@ function checkFields(fields) {
     if (checkObjectKeys(field, validKeys)) {
       return true;
     }
-    if (checkFieldProperties(field, length)) {
+    if (checkFieldProperties(field, length, uniqueIds)) {
       console.log("fields prop failed");
       return true;
     }

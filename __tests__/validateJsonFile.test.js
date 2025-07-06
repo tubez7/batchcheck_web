@@ -2096,8 +2096,8 @@ describe("validateJsonFile()", () => {
     const compDataArray = [validCompDataField, invalidCompDataField];
     const invalidField = {
       name: "COMPOSITE DATA FIELD",
-      hasSerial: true,
-      serial: 1,
+      hasSerial: false,
+      serial: null,
       incrementValue: 0,
       recordsPerIncrement: 1,
       serialPadded: false,
@@ -2139,8 +2139,8 @@ describe("validateJsonFile()", () => {
     const compDataArray = [validCompDataField, invalidCompDataField];
     const invalidField = {
       name: "COMPOSITE DATA FIELD",
-      hasSerial: true,
-      serial: 1,
+      hasSerial: false,
+      serial: null,
       incrementValue: 0,
       recordsPerIncrement: 1,
       serialPadded: false,
@@ -2183,8 +2183,8 @@ describe("validateJsonFile()", () => {
     const compDataArray = [validCompDataField, invalidCompDataField];
     const invalidField = {
       name: "COMPOSITE DATA FIELD",
-      hasSerial: true,
-      serial: 1,
+      hasSerial: false,
+      serial: null,
       incrementValue: 0,
       recordsPerIncrement: 1,
       serialPadded: false,
@@ -2227,8 +2227,52 @@ describe("validateJsonFile()", () => {
     const compDataArray = [validCompDataField, invalidCompDataField];
     const invalidField = {
       name: "COMPOSITE DATA FIELD",
-      hasSerial: true,
-      serial: 1,
+      hasSerial: false,
+      serial: null,
+      incrementValue: 0,
+      recordsPerIncrement: 1,
+      serialPadded: false,
+      padLength: null,
+      padLead: "",
+      padTrail: "",
+      prefix: "",
+      suffix: "",
+      type: "Composite QR",
+      fieldNumber: 2,
+      id: 2,
+      compositeData: compDataArray,
+      compositeSeparator: "||",
+      expanded: false,
+    };
+    const fields = [validField, invalidField];
+    keys.forEach((key) => {
+      if (key === "fields") {
+        object[key] = fields;
+      } else {
+        object[key] = json[key];
+      }
+    });
+
+    const result = validateJsonFile(object);
+
+    expect(result).toBe(false);
+  });
+
+  test("function will check that Composite Data fields id property is not a Composite Data field in fields array object", () => {
+    const object = {};
+    const keys = Object.keys(json);
+    const validField = json.fields[0];
+    const validCompDataField = compData.compositeData;
+    const invalidCompDataField = {
+      name: "FIELD NAME",
+      id: 2,
+      fieldNumber: 2,
+    };
+    const compDataArray = [validCompDataField, invalidCompDataField];
+    const invalidField = {
+      name: "COMPOSITE DATA FIELD",
+      hasSerial: false,
+      serial: null,
       incrementValue: 0,
       recordsPerIncrement: 1,
       serialPadded: false,
