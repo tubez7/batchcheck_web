@@ -29,7 +29,6 @@
   let importedStyleData;
   let importedMatchValuesData;
   let fileInputElement;
-  let dataValidated;
   let errorMsg = "";
   $: fileError = errorMsg.length > 0;
 
@@ -74,13 +73,7 @@
         reader.onload = (event) => {
           try {
             const jsonData = JSON.parse(event.target.result);
-            //console.log("JSON data = ", jsonData); // delete after tests complete
-            // VALIDATE HELPER FUNCTION HERE
-            // check props of the saved data object
-            // check has properties
-            // check values of properties are what is expected
-            dataValidated = validateJsonFile(jsonData);
-            if (dataValidated) {
+            if (validateJsonFile(jsonData)) {
               importedName = jsonData.tableName;
               importedFields = jsonData.fields;
               importedTotalRows = jsonData.totalRows;
@@ -89,14 +82,12 @@
               importedMatchValuesData = jsonData.matchValuesData;
               setTableData();
             } else {
-              // throw an error here?
-              // throw inside validate func for more granular error?
-              errorMsg =
-                "Invalid Batch-Check JSON data loaded. Please try loading another file.";
+              errorMsg = "Invalid Batch-Check JSON data loaded. Please try loading another file."
+              throw new Error(
+                "Invalid Batch-Check JSON data loaded. Please try loading another file."
+              );
             }
           } catch (err) {
-            //errorMsg = "Failed to read JSON file.";
-            console.log(errorMsg);
             console.error(err);
           }
         };

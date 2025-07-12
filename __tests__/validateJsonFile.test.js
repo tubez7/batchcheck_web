@@ -2403,6 +2403,16 @@ describe("validateJsonFile()", () => {
     expect(result).toBe(false);
   });
 
+  test("function will check that fieldTypes elements match the fields type property at the corresponding fields array index", () => {
+    const invalidJson = cloneDeep(json);
+    const fieldTypes = ["Data", "Data"];
+    invalidJson.fieldTypes = fieldTypes;
+
+    const result = validateJsonFile(invalidJson);
+
+    expect(result).toBe(false);
+  });
+
   test("function will check that fieldTypes length, columns length, and fields length all match - TEST INVALID COLUMNS", () => {
     const invalidJson = cloneDeep(json);
     const columns = [
@@ -2505,5 +2515,146 @@ describe("validateJsonFile()", () => {
     const result = validateJsonFile(invalidJson);
 
     expect(result).toBe(false);
+  });
+
+  test("function will check that the properties of the matchValuesData object are strings", () => {
+    const invalidJson = cloneDeep(json);
+    const matchValuesData = {
+      B1: "SCANCHECK",
+      B2: "SCANCHECK",
+      B3: "SCANCHECK",
+      B4: "SCANCHECK",
+      B5: "SCANCHECK",
+      B6: 1,
+      B7: "SCANCHECK",
+      B8: "SCANCHECK",
+      B9: "SCANCHECK",
+      B10: "SCANCHECK",
+    };
+    invalidJson.matchValuesData = matchValuesData;
+
+    const result = validateJsonFile(invalidJson);
+    expect(result).toBe(false);
+  });
+
+  test("function will check that the key format of the matchValuesData object keys are valid", () => {
+    const invalidJson = cloneDeep(json);
+    const matchValuesData = {
+      B1: "SCANCHECK",
+      B2: "SCANCHECK",
+      B3: "SCANCHECK",
+      B4: "SCANCHECK",
+      B5: "SCANCHECK",
+      B6: "1",
+      "7B": "SCANCHECK",
+      B8: "SCANCHECK",
+      B9: "SCANCHECK",
+      B10: "SCANCHECK",
+    };
+    invalidJson.matchValuesData = matchValuesData;
+
+    const result = validateJsonFile(invalidJson);
+    expect(result).toBe(false);
+
+    const invalidJson2 = cloneDeep(json);
+    const matchValuesData2 = {
+      B1: "SCANCHECK",
+      B2: "SCANCHECK",
+      B3: "SCANCHECK",
+      B4: "SCANCHECK",
+      B5: "SCANCHECK",
+      B6: "1",
+      b7: "SCANCHECK",
+      B8: "SCANCHECK",
+      B9: "SCANCHECK",
+      B10: "SCANCHECK",
+    };
+    invalidJson2.matchValuesData = matchValuesData2;
+
+    const result2 = validateJsonFile(invalidJson2);
+    expect(result2).toBe(false);
+
+    const invalidJson3 = cloneDeep(json);
+    const matchValuesData3 = {
+      B1: "SCANCHECK",
+      B2: "SCANCHECK",
+      B3: "SCANCHECK",
+      B4: "SCANCHECK",
+      B5: "SCANCHECK",
+      B6: "1",
+      B7B: "SCANCHECK",
+      B8: "SCANCHECK",
+      B9: "SCANCHECK",
+      B10: "SCANCHECK",
+    };
+    invalidJson3.matchValuesData = matchValuesData3;
+
+    const result3 = validateJsonFile(invalidJson3);
+    expect(result3).toBe(false);
+
+    const invalidJson4 = cloneDeep(json);
+    const matchValuesData4 = {
+      B1: "SCANCHECK",
+      B2: "SCANCHECK",
+      B3: "SCANCHECK",
+      B4: "SCANCHECK",
+      B5: "SCANCHECK",
+      B6: "1",
+      "!B7": "SCANCHECK",
+      B8: "SCANCHECK",
+      B9: "SCANCHECK",
+      B10: "SCANCHECK",
+    };
+    invalidJson4.matchValuesData = matchValuesData4;
+
+    const result4 = validateJsonFile(invalidJson4);
+
+    expect(result4).toBe(false);
+
+    const invalidJson5 = cloneDeep(json);
+    const matchValuesData5 = {
+      B1: "SCANCHECK",
+      B2: "SCANCHECK",
+      B3: "SCANCHECK",
+      B4: "SCANCHECK",
+      B5: "SCANCHECK",
+      B6: "1",
+      "B7 ": "SCANCHECK",
+      B8: "SCANCHECK",
+      B9: "SCANCHECK",
+      B10: "SCANCHECK",
+    };
+    invalidJson5.matchValuesData = matchValuesData5;
+
+    const result5 = validateJsonFile(invalidJson5);
+    expect(result5).toBe(false);
+  });
+
+  test("function will check that the cell value numbers of the matchValuesData keys are not greater than the total rows", () => {
+    const invalidJson = cloneDeep(json);
+    const matchValuesData = {
+      B1: "SCANCHECK",
+      B2: "SCANCHECK",
+      B3: "SCANCHECK",
+      B4: "SCANCHECK",
+      B5: "SCANCHECK",
+      B6: "SCANCHECK",
+      B7: "SCANCHECK",
+      B8: "SCANCHECK",
+      B9: "SCANCHECK",
+      B10: "SCANCHECK",
+      B11: "SCANCHECK",
+    };
+    invalidJson.matchValuesData = matchValuesData;
+
+    const result = validateJsonFile(invalidJson);
+    expect(result).toBe(false);
+  });
+
+  test("function will return true for a validated file", () => {
+    const validJson = cloneDeep(json);
+
+    const result = validateJsonFile(validJson);
+    expect(result).toBe(true);
   });
 });

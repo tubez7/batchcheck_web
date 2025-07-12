@@ -444,8 +444,6 @@ export async function createTableData(rows, fields) {
 function checkObjectKeys(object, referenceKeys) {
   const checkValues = referenceKeys.sort();
   const keys = Object.keys(object).sort();
-  //console.log("reference = ", checkValues);
-  //console.log("checking = ", keys);
   return !isEqual(checkValues, keys);
 }
 
@@ -530,7 +528,7 @@ function testTableColumns(tableColumnsArray) {
   }
 }
 
-function checkFieldTypes(fieldTypesArray) {
+function checkFieldTypes(fieldTypesArray, fields) {
   if (!Array.isArray(fieldTypesArray) || fieldTypesArray.length < 1)
     return true;
 
@@ -539,53 +537,76 @@ function checkFieldTypes(fieldTypesArray) {
     if (!validFieldTypes.includes(fieldTypesArray[i])) {
       return true;
     }
+    if (fieldTypesArray[i] !== fields[i]?.type) {
+      return true;
+    }
   }
 }
 
 export function getColumnIndex(columnString) {
-  // let result = 0;
-  // for (let i = 0; i < columnString.length; i++) {
-  //   const letterValue = columnString.charCodeAt(i) - 65;
-  //   result = result * 26 + (letterValue + 1);
-  // }
-  // return result - 1;
+  let result = 0;
+  let letterValue = "";
+  for (let i = 0; i < columnString.length; i++) {
+    letterValue = columnString.charCodeAt(i) - 65;
+    result = result * 26 + (letterValue + 1);
+  }
+  return result - 1;
 }
 
-function checkMatchValuesDataKeys(object) {
-  const keys = Object.keys(object);
-  const alphaOnlyRegex = /[A-Za-z]/;
+function checkMatchValuesData(object, fields, totalRows) {
+  const validKeyRegex = /^[A-Z]+[0-9]+$/;
   let keyToCheck;
   let columnId;
   let char;
-  for (let i = 0; i < keys.length; i++) {
-    keyToCheck = keys[i];
+  let indexToCheck;
+  let fieldType;
+  let rowId;
+  
+  for (const key in object) {
+    keyToCheck = `${key}`;
+    if (!validKeyRegex.test(keyToCheck)) {
+      return true;
+    }
+    if (typeof object[key] !== "string") {
+      return true;
+    }
+
     columnId = "";
-    for (let j = 0; j < keyToCheck.length; j++) { // refactor without looping.
+    rowId = "";
+    for (let j = 0; j < keyToCheck.length; j++) {
       char = keyToCheck[j];
-      //console.log("checking char = ", char);
-      if (alphaOnlyRegex.test(char)) {
+      if (char >= "A" && char <= "Z") {
         columnId += char;
-        //console.log("added char. ColumnId =", columnId);
       } else {
-        //console.log("char isn't a letter. columnId =", columnId);
-        // call the columnId func here.
-        // check fields index here and return true if not a scan field
-        // if it is a scan field - break
         break;
       }
     }
+    indexToCheck = getColumnIndex(columnId);
+    fieldType = fields[indexToCheck]?.type;
+    if (fieldType && !fieldType.includes("Scan")) {
+      return true;
+    }
+
+    for (let j = keyToCheck.length - 1; j >= 0; j--) {
+      char = keyToCheck[j];
+      if (char.charCodeAt(0) >= 48 && char.charCodeAt(0) <= 57) {
+        rowId = char + rowId;
+      } else {
+        break;
+      }
+    }
+    if (rowId > totalRows) {
+      return true;
+    }
   }
-  
-  //return true; // auto true whilst scaffolding logic
 }
 
-function checkDataObject(object, callback) {
+function checkDataObject(object, callback, ...args) {
   if (typeof object !== "object" || Array.isArray(object)) {
     return true;
   }
   if (callback) {
-    if (callback(object)) {
-      console.log("the callback func has returned true");
+    if (callback(object, ...args)) {
       return true;
     }
   }
@@ -820,7 +841,6 @@ function checkFields(fields) {
       return true;
     }
     if (checkFieldProperties(field, length, uniqueIds, fields, i)) {
-      console.log("fields prop failed");
       return true;
     }
   }
@@ -841,28 +861,23 @@ function checkObjectProperties(object) {
     return true;
   }
   if (testTableData(tableData)) {
-    console.log("table data fail");
     return true;
   }
   if (testTableColumns(columns)) {
-    console.log("columns fail");
     return true;
   }
   if (checkDataObject(styleSettings)) {
-    console.log("check data obj fail - styleSettings");
     return true;
   }
-  if (checkFieldTypes(fieldTypes)) {
-    console.log("maybe here?");
+  if (checkFieldTypes(fieldTypes, fields)) {
     return true;
   }
-  if (checkDataObject(matchValuesData, checkMatchValuesDataKeys)) {
-    // will also need to pass in fields here too
-    console.log("check data obj fail - matchVals");
+  if (
+    checkDataObject(matchValuesData, checkMatchValuesData, fields, totalRows)
+  ) {
     return true;
   }
   if (checkFields(fields)) {
-    console.log("failed fields check");
     return true;
   }
   if (
@@ -874,22 +889,17 @@ function checkObjectProperties(object) {
   if (totalRows !== tableData.length) {
     return true;
   }
-  // test matchValuesData cell names reference a "Scan" column
 }
 
 export function validateJsonFile(jsonObject) {
   const validJsonKeys = Object.keys(json);
   if (checkDataObject(jsonObject)) {
-    console.log("failed obj check");
     return false;
   } else if (checkObjectKeys(jsonObject, validJsonKeys)) {
-    console.log("failed keys check");
     return false;
   } else if (checkObjectProperties(jsonObject)) {
-    console.log("failed prop check");
     return false;
   } else {
-    console.log("file is fine babaaay!!");
     return true;
   }
 }

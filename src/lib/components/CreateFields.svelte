@@ -146,7 +146,6 @@
 
   onMount(() => {
     initialised = true;
-    console.log("CreateFields mounted");
   });
 </script>
 

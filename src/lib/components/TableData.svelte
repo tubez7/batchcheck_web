@@ -27,7 +27,6 @@
 
   // VARIABLES
   let receivedData = get(tableStoreData);
-  console.log(receivedData); // remove after validation testing complete
   let totalRows = get(totalRowsStored);
   let dataFromFile = get(dataImported);
   let darkMode = false;
@@ -109,8 +108,7 @@
 
   async function createAndExportJSON(updated) {
     if (updated) {
-      jsonSaveData.tableName = `${data.tableName}.json`; //?
-      //jsonSaveData.tableName = data.tableName; // or this - test
+      jsonSaveData.tableName = data.tableName;
       jsonSaveData.fields = receivedData;
       jsonSaveData.totalRows = totalRows;
       const jsonString = JSON.stringify(jsonSaveData, null, 2);
@@ -137,7 +135,7 @@
           if (error.code !== 20) {
             console.error("File save failed:", error);
           } else {
-            console.log("file save aborted by user");
+            console.error("file save aborted by user");
           }
         }
       } else {
@@ -171,7 +169,7 @@
     >
     <button id="reset" on:click={reset} {warningPopUpVisible}>RESET</button>
     <button id="save" on:click={confirmExport} {warningPopUpVisible}
-      >EXPORT TABLE DATA</button
+      >SAVE TABLE DATA</button
     >
   </div>
 
