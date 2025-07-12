@@ -1,5 +1,7 @@
 import { isEqual } from "lodash-es";
 import QRCode from "qrcode";
+import json from "./sampleJSON.json";
+import validData from "./validDataTemplates.json";
 
 export const nonWhiteSpaceRegex = /\S/;
 export const globalNumericRegex = /\d/g;
@@ -7,14 +9,7 @@ export const globalNumericRegex = /\d/g;
 export function handleKeyDown(e) {
   const numericOnlyRegex = /\d/;
   const key = e.key;
-  const validKeys = [
-    "Backspace",
-    "Delete",
-    "Del",
-    "Tab",
-    "ArrowLeft",
-    "ArrowRight",
-  ];
+  const validKeys = validData.validKeys;
 
   if (!numericOnlyRegex.test(key) && !validKeys.includes(key)) {
     e.preventDefault();
@@ -176,6 +171,8 @@ export function parseTableColumns(fields) {
     }
     if (!type.includes("SCAN")) {
       obj.readOnly = true;
+    } else {
+      obj.readOnly = false;
     }
 
     return obj;
@@ -405,7 +402,6 @@ async function createRowData(
   const type = field.type;
   let url;
 
-  // need to build in comp QR
   if (type === "Data") {
     rowData.push(createDataFieldCellValue(field, rowNumber));
   } else if (type === "QR") {
@@ -443,4 +439,474 @@ export async function createTableData(rows, fields) {
     fields
   );
   return tableData;
+}
+
+function checkObjectKeys(object, referenceKeys) {
+  const checkValues = referenceKeys.sort();
+  const keys = Object.keys(object).sort();
+  return !isEqual(checkValues, keys);
+}
+
+function testTableData(tableDataArray) {
+  if (!Array.isArray(tableDataArray)) return true;
+  for (let i = 0; i < tableDataArray.length; i++) {
+    if (!Array.isArray(tableDataArray[i])) {
+      return true;
+    }
+    for (let j = 0; j < tableDataArray[i].length; j++) {
+      if (typeof tableDataArray[i][j] !== "string") {
+        return true;
+      }
+    }
+  }
+}
+
+function testColumnProperties(column) {
+  const {
+    title,
+    type,
+    readOnly,
+    name,
+    source,
+    options,
+    editor,
+    allowEmpty,
+    width,
+    align,
+  } = column;
+  const convertedName = Number(name);
+  if (typeof title !== "string") {
+    return true;
+  }
+  if (typeof type !== "string") {
+    return true;
+  }
+  if (typeof readOnly !== "boolean") {
+    return true;
+  }
+  if (typeof name !== "string") {
+    return true;
+  }
+  if (!Number.isInteger(convertedName)) {
+    return true;
+  }
+  if (!Array.isArray(source)) {
+    return true;
+  }
+  if (!Array.isArray(options)) {
+    return true;
+  }
+  if (editor !== null) {
+    return true;
+  }
+  if (typeof allowEmpty !== "boolean") {
+    return true;
+  }
+  if (typeof width !== "number") {
+    return true;
+  }
+  if (typeof align !== "string") {
+    return true;
+  }
+}
+
+function testTableColumns(tableColumnsArray) {
+  if (!Array.isArray(tableColumnsArray) || tableColumnsArray.length < 1)
+    return true;
+  const validColumnKeys = Object.keys(json.columns[0]);
+  for (let i = 0; i < tableColumnsArray.length; i++) {
+    const element = tableColumnsArray[i];
+    if (typeof element !== "object" || Array.isArray(element)) {
+      return true;
+    }
+    if (checkObjectKeys(element, validColumnKeys)) {
+      return true;
+    }
+    if (testColumnProperties(element)) {
+      return true;
+    }
+  }
+}
+
+function checkFieldTypes(fieldTypesArray, fields) {
+  if (!Array.isArray(fieldTypesArray) || fieldTypesArray.length < 1)
+    return true;
+
+  const validFieldTypes = validData.fieldTypes;
+  for (let i = 0; i < fieldTypesArray.length; i++) {
+    if (!validFieldTypes.includes(fieldTypesArray[i])) {
+      return true;
+    }
+    if (fieldTypesArray[i] !== fields[i]?.type) {
+      return true;
+    }
+  }
+}
+
+export function getColumnIndex(columnString) {
+  let result = 0;
+  let letterValue = "";
+  for (let i = 0; i < columnString.length; i++) {
+    letterValue = columnString.charCodeAt(i) - 65;
+    result = result * 26 + (letterValue + 1);
+  }
+  return result - 1;
+}
+
+function checkMatchValuesData(object, fields, totalRows) {
+  const validKeyRegex = /^[A-Z]+[0-9]+$/;
+  let keyToCheck;
+  let columnId;
+  let char;
+  let indexToCheck;
+  let fieldType;
+  let rowId;
+  
+  for (const key in object) {
+    keyToCheck = `${key}`;
+    if (!validKeyRegex.test(keyToCheck)) {
+      return true;
+    }
+    if (typeof object[key] !== "string") {
+      return true;
+    }
+
+    columnId = "";
+    rowId = "";
+    for (let j = 0; j < keyToCheck.length; j++) {
+      char = keyToCheck[j];
+      if (char >= "A" && char <= "Z") {
+        columnId += char;
+      } else {
+        break;
+      }
+    }
+    indexToCheck = getColumnIndex(columnId);
+    fieldType = fields[indexToCheck]?.type;
+    if (fieldType && !fieldType.includes("Scan")) {
+      return true;
+    }
+
+    for (let j = keyToCheck.length - 1; j >= 0; j--) {
+      char = keyToCheck[j];
+      if (char.charCodeAt(0) >= 48 && char.charCodeAt(0) <= 57) {
+        rowId = char + rowId;
+      } else {
+        break;
+      }
+    }
+    if (rowId > totalRows) {
+      return true;
+    }
+  }
+}
+
+function checkDataObject(object, callback, ...args) {
+  if (typeof object !== "object" || Array.isArray(object)) {
+    return true;
+  }
+  if (callback) {
+    if (callback(object, ...args)) {
+      return true;
+    }
+  }
+}
+
+function typeCheck(
+  name,
+  hasSerial,
+  incrementValue,
+  recordsPerIncrement,
+  serialPadded,
+  padLead,
+  padTrail,
+  prefix,
+  suffix,
+  type,
+  fieldNumber,
+  id,
+  compositeData,
+  compositeSeparator,
+  expanded
+) {
+  if (typeof name !== "string") {
+    return true;
+  }
+  if (typeof hasSerial !== "boolean") {
+    return true;
+  }
+  if (typeof incrementValue !== "number") {
+    return true;
+  }
+  if (typeof recordsPerIncrement !== "number") {
+    return true;
+  }
+  if (typeof serialPadded !== "boolean") {
+    return true;
+  }
+  if (typeof padLead !== "string") {
+    return true;
+  }
+  if (typeof padTrail !== "string") {
+    return true;
+  }
+  if (typeof prefix !== "string") {
+    return true;
+  }
+  if (typeof suffix !== "string") {
+    return true;
+  }
+  if (typeof type !== "string") {
+    return true;
+  }
+  if (typeof fieldNumber !== "number") {
+    return true;
+  }
+  if (typeof id !== "number") {
+    return true;
+  }
+  if (!Array.isArray(compositeData)) {
+    return true;
+  }
+  if (typeof compositeSeparator !== "string") {
+    return true;
+  }
+  if (typeof expanded !== "boolean") {
+    return true;
+  }
+}
+
+function checkSerialNumberFormat(hasSerial, serial) {
+  if (hasSerial) {
+    if (typeof serial !== "number") {
+      return true;
+    }
+  } else {
+    if (serial !== null) {
+      return true;
+    }
+  }
+}
+
+function checkPadFormat(padded, length, serial, hasSerial, lead, trail) {
+  if (padded) {
+    const leadLength = lead.length;
+    const trailLength = trail.length;
+    if (!hasSerial) {
+      return true;
+    }
+    const minPadLength = serial.toString().length;
+    if (typeof length !== "number") {
+      return true;
+    }
+    if (length < minPadLength) {
+      return true;
+    }
+    if (leadLength > 0 && trailLength > 0) {
+      return true;
+    }
+    if (leadLength !== 1 && trailLength !== 1) {
+      return true;
+    }
+  } else {
+    if (length !== null) {
+      return true;
+    }
+  }
+}
+
+function checkValidValue(validValues, value) {
+  if (!validValues.includes(value)) {
+    return true;
+  }
+}
+
+function checkFieldNumber(number, maximum, indexReference) {
+  if (number > maximum || number !== indexReference + 1) {
+    return true;
+  }
+}
+
+function checkCompData(array, validIds, fields) {
+  const validCompDataKeys = Object.keys(validData.compositeData);
+  const compDataLength = array.length;
+  for (let i = 0; i < compDataLength; i++) {
+    const dataObject = array[i];
+    if (checkObjectKeys(dataObject, validCompDataKeys)) {
+      return true;
+    }
+    const fieldNumber = dataObject.fieldNumber;
+    if (checkFieldNumber(fieldNumber, compDataLength, i)) {
+      return true;
+    }
+    const idToCheck = dataObject.id;
+    if (!validIds.includes(idToCheck)) {
+      return true;
+    }
+    const fieldToCheck = fields.find((field) => field.id === idToCheck);
+    if (fieldToCheck.type.includes("Composite")) {
+      return true;
+    }
+  }
+}
+
+function checkFieldProperties(field, fieldsLength, ids, fields, index) {
+  const {
+    name,
+    hasSerial,
+    serial,
+    incrementValue,
+    recordsPerIncrement,
+    serialPadded,
+    padLength,
+    padLead,
+    padTrail,
+    prefix,
+    suffix,
+    type,
+    fieldNumber,
+    id,
+    compositeData,
+    compositeSeparator,
+    expanded,
+  } = field;
+
+  const validTypes = validData.fieldTypes;
+
+  if (
+    typeCheck(
+      name,
+      hasSerial,
+      incrementValue,
+      recordsPerIncrement,
+      serialPadded,
+      padLead,
+      padTrail,
+      prefix,
+      suffix,
+      type,
+      fieldNumber,
+      id,
+      compositeData,
+      compositeSeparator,
+      expanded
+    )
+  ) {
+    return true;
+  }
+  if (checkSerialNumberFormat(hasSerial, serial)) {
+    return true;
+  }
+  if (
+    checkPadFormat(
+      serialPadded,
+      padLength,
+      serial,
+      hasSerial,
+      padLead,
+      padTrail
+    )
+  ) {
+    return true;
+  }
+  if (checkValidValue(validTypes, type)) {
+    return true;
+  }
+  if (checkFieldNumber(fieldNumber, fieldsLength, index)) {
+    return true;
+  }
+  if (checkCompData(compositeData, ids, fields)) {
+    return true;
+  }
+}
+
+function checkFields(fields) {
+  const length = fields.length;
+  if (!Array.isArray(fields) || length < 1) {
+    return true;
+  }
+  const uniqueIds = getUniqueIdNumbers(fields);
+  if (uniqueIds.length !== length) {
+    return true;
+  }
+
+  const validKeys = Object.keys(json.fields[0]);
+  for (let i = 0; i < length; i++) {
+    const field = fields[i];
+
+    if (checkDataObject(field)) {
+      return true;
+    }
+    if (checkObjectKeys(field, validKeys)) {
+      return true;
+    }
+    if (checkFieldProperties(field, length, uniqueIds, fields, i)) {
+      return true;
+    }
+  }
+}
+
+function checkObjectProperties(object) {
+  const {
+    tableName,
+    tableData,
+    columns,
+    styleSettings,
+    fieldTypes,
+    matchValuesData,
+    fields,
+    totalRows,
+  } = object;
+  if (typeof tableName !== "string") {
+    return true;
+  }
+  if (testTableData(tableData)) {
+    return true;
+  }
+  if (testTableColumns(columns)) {
+    return true;
+  }
+  if (checkDataObject(styleSettings)) {
+    return true;
+  }
+  if (checkFieldTypes(fieldTypes, fields)) {
+    return true;
+  }
+  if (
+    checkDataObject(matchValuesData, checkMatchValuesData, fields, totalRows)
+  ) {
+    return true;
+  }
+  if (checkFields(fields)) {
+    return true;
+  }
+  if (
+    columns.length !== fieldTypes.length ||
+    fieldTypes.length !== fields.length
+  ) {
+    return true;
+  }
+  if (totalRows !== tableData.length) {
+    return true;
+  }
+}
+
+export function validateJsonFile(jsonObject) {
+  const validJsonKeys = Object.keys(json);
+  if (checkDataObject(jsonObject)) {
+    return false;
+  } else if (checkObjectKeys(jsonObject, validJsonKeys)) {
+    return false;
+  } else if (checkObjectProperties(jsonObject)) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+export function getUniqueId(array) {
+  if (array.length < 1) {
+    return 1;
+  }
+  return Math.max(...array.map((elem) => elem.id)) + 1;
 }

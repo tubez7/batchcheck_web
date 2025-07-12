@@ -1,7 +1,7 @@
 <script>
   // IMPORTS
   import { goto } from "$app/navigation";
-  import { tableStoreData, totalRowsStored } from "$lib/stores";
+  import { dataImported, tableStoreData, totalRowsStored } from "$lib/stores";
   // COMPONENTS
   import FieldItemStyle from "$lib/components/FieldItemStyle.svelte";
   import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
@@ -23,6 +23,7 @@
     cleanedName = encodeURIComponent(tableName);
     tableStoreData.set(fields);
     totalRowsStored.set(records);
+    dataImported.set(false);
     goto(`/${cleanedName}`);
   }
 

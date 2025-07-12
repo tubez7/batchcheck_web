@@ -41,7 +41,7 @@
     type="radio"
     id="fieldType3"
     name="field-type"
-    value="Visible data scan"
+    value="Visible Data Scan"
     bind:group={type}
     disabled={editMode}
   />

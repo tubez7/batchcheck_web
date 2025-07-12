@@ -1,6 +1,7 @@
 <script>
   // IMPORTS
   import Field from "$lib/field";
+  import { getUniqueId } from "$lib/utils.js";
   import { onMount } from "svelte";
   // COMPONENTS
   import FieldsetStyle from "$lib/components/FieldsetStyle.svelte";
@@ -24,7 +25,7 @@
 
   // VARIABLES
   let initialised = false;
-  $: fieldId = fields.length < 1 ? 1 : fieldId;
+  //$: fieldId = fields.length < 1 ? 1 : fieldId; // just declare variable here, e.g. let fieldId;
   $: fieldNumber = fields.length + 1;
 
   // Set FieldName
@@ -114,6 +115,7 @@
 
   function handleSubmit(e) {
     e.preventDefault();
+    const fieldId = getUniqueId(fields);
     padLength = serialPadded ? padLength || minimumPadLength : null;
     serial = hasSerial ? serial || 0 : null;
     padLead = serialPadded
@@ -139,13 +141,11 @@
       fieldId
     );
     addField(field);
-    fieldId++;
     handleReset();
   }
 
   onMount(() => {
     initialised = true;
-    console.log("CreateFields mounted");
   });
 </script>
 
