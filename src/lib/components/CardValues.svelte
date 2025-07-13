@@ -69,5 +69,6 @@
 
   .card {
     list-style-type: circle;
+    word-break: break-all;
   }
 </style>
