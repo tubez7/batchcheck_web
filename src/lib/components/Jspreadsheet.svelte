@@ -20,6 +20,8 @@
   let spreadsheetContainer; // BIND DIV TO VARIABLE
   let table; // table instance
   $: currentDefaultTextColour = darkMode ? "white" : "black";
+  const redFill = "rgb(250, 128, 128)";
+  const greenFill = "rgb(66, 237, 180)";
 
   function createJSONObject(clicked) {
     if (clicked) {
@@ -37,18 +39,47 @@
 
   function changeAndCheckValues(instance, cell, x, y, value) {
     let cellName = jspreadsheet.getColumnNameFromId([x, y]);
-
     if (value === matchValuesData[cellName]) {
       if (fieldTypes[x] === "Visible Data Scan") {
         styleSettings[cellName] =
-          `background-color: rgb(66, 237, 180); color: ${currentDefaultTextColour};`;
+          `background-color: ${greenFill}; color: ${currentDefaultTextColour};`;
       } else {
         styleSettings[cellName] =
-          "background-color: rgb(66, 237, 180); color: transparent;";
+          `background-color: ${greenFill}; color: transparent;`;
       }
-      table.setStyle(styleSettings);
+    } else {
+      if (fieldTypes[x] === "Visible Data Scan") {
+        styleSettings[cellName] =
+          `background-color: ${redFill}; color: ${currentDefaultTextColour};`;
+      } else {
+        styleSettings[cellName] =
+          `background-color: ${redFill}; color: transparent;`;
+      }
     }
+    table.setStyle(styleSettings);
   }
+  // const toolbar = [
+  //   {
+  //     type: "i",
+  //     content: "undo",
+  //     onclick: function () {
+  //       table.undo();
+  //     },
+  //   },
+  //   {
+  //     type: "i",
+  //     content: "redo",
+  //     onclick: function () {
+  //       table.redo();
+  //     },
+  //   },
+
+  //   {
+  //     type: "color",
+  //     content: "format_color_text",
+  //     k: "color",
+  //   },
+  // ];
 
   let options = {
     data: tableData,
@@ -62,6 +93,7 @@
     allowInsertRow: false,
     style: styleSettings,
     tableHeight: "auto",
+    //toolbar: toolbar,
     onchange: changeAndCheckValues,
   };
 
