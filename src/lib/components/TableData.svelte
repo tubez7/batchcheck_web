@@ -40,7 +40,7 @@
   $: warningPopUpVisible = false;
   let userConfirmation = false;
   let alert = "All table data will be permanently lost";
-  let jsonSaveData;
+  let jsonSaveData = {};
   let exportData = false;
   let updateCompleted = false;
 

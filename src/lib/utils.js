@@ -352,7 +352,8 @@ async function getQRUrl(cellValue) {
   const options = {
     errorCorrectionLevel: "M",
     type: "image/webp",
-    margin: 1,
+    margin: 4, // default 4 - quiet zone - test
+    //width: 40, //set widths in pixels - test
   };
   try {
     const url = await QRCode.toDataURL(cellValue, options);
@@ -561,7 +562,7 @@ function checkMatchValuesData(object, fields, totalRows) {
   let indexToCheck;
   let fieldType;
   let rowId;
-  
+
   for (const key in object) {
     keyToCheck = `${key}`;
     if (!validKeyRegex.test(keyToCheck)) {

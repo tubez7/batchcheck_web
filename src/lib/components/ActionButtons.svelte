@@ -91,7 +91,6 @@
             console.error(err);
           }
         };
-
         reader.readAsText(selectedFile);
       }
     }
