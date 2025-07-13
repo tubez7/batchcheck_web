@@ -58,28 +58,28 @@
     }
     table.setStyle(styleSettings);
   }
-  // const toolbar = [
-  //   {
-  //     type: "i",
-  //     content: "undo",
-  //     onclick: function () {
-  //       table.undo();
-  //     },
-  //   },
-  //   {
-  //     type: "i",
-  //     content: "redo",
-  //     onclick: function () {
-  //       table.redo();
-  //     },
-  //   },
+  const toolbar = [
+    {
+      type: "i",
+      content: "undo",
+      onclick: function () {
+        table.undo();
+      },
+    },
+    {
+      type: "i",
+      content: "redo",
+      onclick: function () {
+        table.redo();
+      },
+    },
 
-  //   {
-  //     type: "color",
-  //     content: "format_color_text",
-  //     k: "color",
-  //   },
-  // ];
+    {
+      type: "color",
+      content: "format_color_text",
+      k: "color",
+    },
+  ];
 
   let options = {
     data: tableData,
@@ -93,7 +93,7 @@
     allowInsertRow: false,
     style: styleSettings,
     tableHeight: "auto",
-    //toolbar: toolbar,
+    toolbar: toolbar,
     onchange: changeAndCheckValues,
   };
 
